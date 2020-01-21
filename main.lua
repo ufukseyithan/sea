@@ -78,12 +78,13 @@ if not table.isEmpty(appDirectories) then
         
         local mainScriptPath = appPath.."main.lua"
         if io.exists(mainScriptPath) then
-            print(mainScriptPath)
             app = dofile(mainScriptPath)
 
             local configPath = appPath.."config.lua"
             if io.exists(configPath) then
-                app.config = dofile(configPath)
+                --dofile(configPath)
+
+                app.path.config = configPath
             end 
 
             table.insert(sea.app, app) 
