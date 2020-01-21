@@ -93,8 +93,3 @@ function io.exists(file)
     end
     return ok, err
 end
-
-function io.isDir(path)
-    -- "/" works on both Unix and Windows
-    return io.exists(path .. '/')
-end
