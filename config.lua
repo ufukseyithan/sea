@@ -2,13 +2,17 @@ sea.config = {}
 
 sea.config.systemPrefix = "Sea Framework"
 
--- Do not remove the existing ones, you may add or change (not recommended)
+-- These formats are the only ones that the server transfer list supports, meaning you may remove as you wish but not add
+sea.config.supportedTransferFileFormats = {".bmp", ".jpg", ".jpeg", ".png", ".wav", ".ogg"}
+-- @TODO: Add a config variable for supported max file size (rather be 250kb for default)
+
+-- Do not touch these, use sea.addCustomColor function instead
 sea.config.color = {
     system = {
-        error = "255000000",
-        warning = "255255100",
-        info = "100255255",
-        success = "100255100",
+        error = "255155155",
+        warning = "255255155",
+        info = "155255255",
+        success = "155255155",
 
         default = "255255255"
     },
@@ -77,6 +81,13 @@ sea.config.mainMenuTabs = {
     },
     ["SETTINGS"] = { -- Controls and maybe some other preferences
 
+    }
+}
+
+sea.config.ui = {
+    soundPath = {
+        click = "",
+        hover = ""
     }
 }
 

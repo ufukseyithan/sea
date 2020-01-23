@@ -4,11 +4,12 @@ This is a framework made by Masea for his own CS2D projects.
 ## Installation
 
 ## How to use
-### Rules
-- This framework requires an empty "servertransfer.lst"
+### Prerequisites
+- Requires this .zip that contains necessarry GFX files to be extracted into the CS2D directory
+- Requires `servertransfer.ls` to be entirely empty (comments included)
 
-## Creating app
+### Creating app
 
-### Creating main.lua
+#### Creating main.lua
 
-### Creating config.lua
+#### Creating config.lua

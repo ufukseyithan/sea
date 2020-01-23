@@ -64,6 +64,123 @@ sea.help = function(player, text)
 end
 
 -- Utilities
+sea.loadApp = function(directory)
+    local app
+    
+    local mainScriptPath = directory.."main.lua"
+    if not io.exists(mainScriptPath) then
+        sea.error("The app directory \""..directory.."\" cannot be loaded, it does not include \"main.lua\".")
+        return false
+    end
+
+    app = dofile(mainScriptPath)
+
+    if not app.name then
+        sea.error("The app cannot be loaded, it does not have a name.")
+        return false
+    end
+
+    if app.disabled then
+        sea.info("The app "..app.name.." is not loaded as it is disabled.")
+        return false
+    end
+
+    for k, v in pairs(sea.app) do
+        if v.name == app.name then
+            sea.error("The app "..app.name.." cannot be loaded, it already exists.")
+            return false
+        end
+    end
+
+    local transferFiles = 0
+    for pathName, appCustomPath in pairs(app.path) do
+        if pathName == "gfx" or pathName == "sfx" then
+            for _, filePath in pairs(io.getFilePaths(appCustomPath, true)) do
+                sea.addTransferFile(filePath)
+
+                transferFiles = transferFiles + 1
+            end
+        end
+    end
+
+    local configPath, successConfig = directory.."config.lua", 0
+    if io.exists(configPath) then
+        local config = dofile(configPath)
+
+        for category, content in pairs(config) do
+            if category == "color" then
+                for name, color in pairs(content) do
+                    if sea.addCustomColor(name, color) then
+                        successConfig = successConfig + 1
+                    end
+                end
+            elseif category == "player" then
+                for k, v in pairs(content) do
+                    if k == "info" then
+                        for name, func in pairs(v) do
+                            if sea.addPlayerInfo(name, func) then
+                                successConfig = successConfig + 1
+                            end
+                        end
+                    elseif k == "stat" then
+                        for name, v in pairs(v) do
+                            if sea.addPlayerStat(name, type(v) == "table" and v[1] or v, v[2]) then
+                                successConfig = successConfig + 1
+                            end
+                        end
+                    elseif k == "variable" then
+                        for name, v in pairs(v) do
+                            if sea.addPlayerVariable(name, type(v) == "table" and v[1] or v, v[2]) then
+                                successConfig = successConfig + 1
+                            end
+                        end
+                    elseif k == "setting" then
+                        -- @TODO
+                    end
+                end
+            elseif category == "server" then
+                for k, v in pairs(content) do
+                    if k == "info" then
+                        sea.setServerInfo(v)
+
+                        successConfig = successConfig + 1
+                    elseif k == "news" then
+                        for _, article in pairs(v) do
+                            sea.addServerNews(article)
+
+                            successConfig = successConfig + 1
+                        end
+                    elseif k == "setting" then
+                        for setting, value in pairs(v) do
+                            if sea.setServerSetting(setting, value) then
+                                successConfig = successConfig + 1
+                            end
+                        end
+                    elseif k == "bindings" then
+                        for _, key in pairs(v) do
+                            if sea.addServerBinding(key) then
+                                successConfig = successConfig + 1
+                            end
+                        end
+                    end
+                end
+            elseif category == "mainMenuTabs" then
+                for name, buttons in pairs(content) do
+                    sea.addMainMenuTab(name, buttons)
+                end
+            end
+        end
+
+        app.config, app.path.config = config, configPath
+    end
+
+    table.insert(sea.app, app) 
+
+    sea.success("Loaded app: "..app.name.." v"..app.version.." by "..app.author.." ("..successConfig.." successful configurations, "..transferFiles.." transfer files)")
+
+    return true
+end
+
 sea.addTransferFile = function(path, response)
 	if not io.exists(path) then
 		sea.error("The file \""..path.."\" cannot be added as a transfer file, it does not exist.")
@@ -75,9 +192,24 @@ sea.addTransferFile = function(path, response)
 		return false
     end
 
-    -- @TODO: Check the formats supported by servertransfer.lst (It is written in servertransfer.lst when you download a fresh CS2D copy)
+    local hasUnsupportedFormat
+    for _, format in pairs(sea.config.supportedTransferFileFormats) do
+        if path:find(format) then
+            hasUnsupportedFormat = true
+        end
+    end
 
-    -- @TODO: Check if the file is bigger than 250Kb, if so throw a warning
+    if not hasUnsupportedFormat then
+        sea.error("The file \""..path.."\" cannot be added as a transfer file, its format is not supported.")
+        return false
+    end
+
+    local file = io.open(path)
+    local fileSizeInKB = math.round(file:seek("end") / 1024, 2)
+    if fileSizeInKB >= 250 then
+        sea.warning("The size of the file \""..path.."\" is "..fileSizeInKB.." KB, some players may not be able to download it.")
+    end
+    file:close()
 
     table.insert(sea.transferFiles, path)
     
@@ -88,13 +220,11 @@ sea.addTransferFile = function(path, response)
 	return true
 end
 
-sea.produceTransferFile = function(response)
+sea.updateServerTransferList = function(response)
     local serverTransferListPath = sea.path.sys.."servertransfer.lst"
 
     io.toTable(serverTransferListPath, sea.transferFiles)
-
-    sea.transferFiles = table.removeDuplicates(sea.transferFiles)
-
+    
     local addedFiles = 0
     local file = io.open(serverTransferListPath, "w+") or io.tmpfile()
 	for k, v in pairs(sea.transferFiles) do
@@ -106,11 +236,12 @@ sea.produceTransferFile = function(response)
         
         addedFiles = addedFiles + 1
 	end
-	file:close()
+    file:close()
+    
+    sea.transferFiles = table.removeDuplicates(sea.transferFiles)
 
     if addedFiles > 0 then
-        -- @TODO: Write a better info
-		sea.info("The server transfer list has been updated with "..addedFiles.." lines. You may need to restart the server.")
+		sea.info("The server transfer list has been updated. You may need to restart the server in order to get use of it.")
 	end
 end
 
@@ -154,12 +285,12 @@ sea.addPlayerStat = function(name, defaultValue, customDisplay)
 
     playerStat[name] = not customDisplay and defaultValue or {defaultValue, customDisplay}
 
-    sea.info("Added player stat: \""..name.."\"")
+    sea.info("Added player stat: \""..name.."\" (default value: "..defaultValue..(customDisplay and ", has custom display" or "")..")")
 
     return true
 end
 
-sea.addPlayerVariable = function(name, defaultValue)
+sea.addPlayerVariable = function(name, defaultValue, isData)
     local playerVariable = sea.config.player.variable
 
     if playerVariable[name] then
@@ -167,9 +298,9 @@ sea.addPlayerVariable = function(name, defaultValue)
         return false
     end
 
-    playerVariable[name] = defaultValue
+    playerVariable[name] = not isData and defaultValue or {defaultValue, isData}
 
-    sea.info("Added player variable: \""..name.."\" ("..defaultValue..")")
+    sea.info("Added player variable: \""..name.."\" (default value: "..defaultValue..(isData and ", data" or "")..")")
 
     return true
 end
@@ -198,6 +329,7 @@ sea.setServerSetting = function(setting, value)
     local serverSetting  = sea.config.server.setting
 
     if not serverSetting[setting] then
+        -- @TODO: Find a better error message
         sea.error("The server setting \""..setting.."\" cannot be set, it does not exist.")
         return false
     end
@@ -205,6 +337,8 @@ sea.setServerSetting = function(setting, value)
     serverSetting[setting] = value
 
     sea.info("Set server setting: \""..setting.."\" = "..tostring(value))
+
+    return true
 end
 
 sea.addServerBinding = function(key)
@@ -223,5 +357,16 @@ sea.addServerBinding = function(key)
 end
 
 sea.addMainMenuTab = function(name, buttons)
+    local mainMenuTabs = sea.config.mainMenuTabs
 
+    if mainMenuTabs[name] then
+        sea.error("The main menu tab \""..name.."\" cannot be added, it already exist.")
+        return false
+    end
+    
+    mainMenuTabs[name] = buttons
+
+    sea.info("Added main menu tab: \""..name.."\"")
+
+    return true
 end

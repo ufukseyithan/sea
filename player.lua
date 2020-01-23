@@ -13,3 +13,5 @@ sea.player.create = function(id)
 
     return self
 end
+
+-- @TODO: get, getAll, getLiving, getCts, getTs, getLivingCts, getLivingTs, getSpectators 

@@ -4,6 +4,6 @@ sea.commands = {
     },
 
     console = {
-        -- @TODO: Show app info
+        -- @TODO: !app_info <app_name>
     }
 }
