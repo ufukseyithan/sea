@@ -69,9 +69,15 @@ function io.getDirectoryPaths(directory, deep)
     return directoryPaths
 end
 
-function dofileDirectory(directory, deep)
+function dofileDirectory(directory, formats, deep)
     for _, filePath in pairs(io.getFilePaths(directory, deep)) do
-        if filePath:sub(-4) == ".lua" then
+        if type(formats) == "table" then
+            for _, format in pairs(formats) do
+                if filePath:sub(-4) == format then
+                    dofile(filePath)
+                end
+            end
+        elseif filePath:sub(-4) == formats then
             dofile(filePath)
         end
     end
@@ -86,7 +92,7 @@ sea.path.lua = getLocalPath()
 
 print("[Sea Framework] Loading library...")
 sea.path.lib = sea.path.lua.."lib/"
-dofileDirectory(sea.path.lib)
+dofileDirectory(sea.path.lib, ".lua")
 print("[Sea Framework] Library has been loaded.")
 
 -- Loading core

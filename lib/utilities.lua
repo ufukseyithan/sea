@@ -37,3 +37,39 @@ function parse(...)
     end
     _parse(command)
 end
+
+function deepcopy(object)
+	local lookup_table = {}
+	local function _copy(object)
+		if type(object) ~= "table" then
+			return object
+		elseif lookup_table[object] then
+			return lookup_table[object]
+		end
+		local new_table = {}
+		lookup_table[object] = new_table
+		for index, value in pairs(object) do
+			new_table[_copy(index)] = _copy(value)
+		end
+		return setmetatable(new_table, getmetatable(object))
+	end
+	return _copy(object)
+end
+
+-- @TODO: Check if this is working correctly
+function camelCaseToUnderscore(str)
+    local tab = {}
+    str:gsub('%u?%l+', function (c)
+        table.insert(tab, c:lower())
+    end)
+    return table.concat(tab, '_')
+end
+
+-- @TODO: Check if this is working correctly
+function underscoreToPascalCase(str)
+    local tab = {}
+    str:gsub('([^_]+)', function (c)
+        table.insert(tab, c:upperFirst())
+    end)
+    return table.concat(tab)
+end

@@ -46,37 +46,28 @@ sea.success = function(text)
 end
 
 sea.message = function(player, text, color, prefix, prefixColor)
-    text = sea.createText(prefix and "["..prefix.."] " or "", prefixColor)..sea.createColorText(text, color)
+    text = sea.createText(prefix and "["..prefix.."] " or "", prefixColor)..sea.createText(text, color)
     
     if not player then
         msg(text)
     else
-        msg2(player.id, text)
+        msg2(tonumber(player), text)
     end
 end
 
-sea.notification = function(player, title, text)
-    sea.message(player, text, nil, title)
-end
-
-sea.help = function(player, text)
-    sea.message(player, text)
-end
-
--- Utilities
 sea.loadApp = function(directory)
     local app
     
-    local mainScriptPath = directory.."main.lua"
-    if not io.exists(mainScriptPath) then
+    local mainPath = directory.."main.lua"
+    if not io.exists(mainPath) then
         sea.error("The app directory \""..directory.."\" cannot be loaded, it does not include \"main.lua\".")
         return false
     end
 
-    app = dofile(mainScriptPath)
+    app = dofile(mainPath)
 
     if not app.name then
-        sea.error("The app cannot be loaded, it does not have a name.")
+        sea.error("The app directory \""..directory.."\" cannot be loaded, it does not have a name.")
         return false
     end
 
@@ -166,7 +157,9 @@ sea.loadApp = function(directory)
                 end
             elseif category == "mainMenuTabs" then
                 for name, buttons in pairs(content) do
-                    sea.addMainMenuTab(name, buttons)
+                    if sea.addMainMenuTab(name, buttons) then
+                        successConfig = successConfig + 1
+                    end
                 end
             end
         end
@@ -174,9 +167,35 @@ sea.loadApp = function(directory)
         app.config, app.path.config = config, configPath
     end
 
+    local loadedScripts = 0
+    if app.scripts then
+        for _, path in ipairs(app.scripts) do
+            if sea.loadScript(directory..path) then
+                loadedScripts = loadedScripts + 1
+            end
+        end
+    end  
+
     table.insert(sea.app, app) 
 
-    sea.success("Loaded app: "..app.name.." v"..app.version.." by "..app.author.." ("..successConfig.." successful configurations, "..transferFiles.." transfer files)")
+    sea.success("Loaded app: "..app.name.." v"..app.version.." by "..app.author.." ("..transferFiles.." transfer files, "..successConfig.." successful configurations, "..loadedScripts.." loaded scripts)")
+
+    return true
+end
+
+sea.loadScript = function(path)
+    if path:sub(-4) ~= ".lua" then
+        path = path..".lua"
+    end
+
+    if not io.exists(path) then
+        sea.error("The script \""..path.."\" cannot be loaded, it does not exist.")
+        return false
+    end
+
+    dofile(path)
+
+    sea.info("Loaded script: \""..path.."\"")
 
     return true
 end
