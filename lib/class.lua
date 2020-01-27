@@ -1,6 +1,6 @@
---[[local function useAttributes(class)
+local function useAttributes(class)
     function class:__index(key)
-        local attribute_key = "get"..underscoreToCamelCase(key).."Attribute"
+        local attribute_key = "get"..underscoreToPascalCase(key).."Attribute"
         if class[attribute_key] then
             return class[attribute_key](self)
         end
@@ -8,14 +8,14 @@
     end
 
     function class:__newindex(key, value)
-        local attribute_key = "set"..underscoreToCamelCase(key).."Attribute"
+        local attribute_key = "set"..underscoreToPascalCase(key).."Attribute"
         if class[attribute_key] then
             class[attribute_key](self, value)
         else
             rawset(self, key, value)
         end
     end
-end]]
+end
 
 -- The following function will return a class. It can also inherit properties
 -- from another class by passing the needed class as the first argument.
@@ -38,7 +38,8 @@ class = function(inheritsFrom)
             __index = inheritsFrom,
             __call = function(_, ...) -- If it was called as a function, then call the constructor.
                 inheritsFrom.constructor(...)
-            end})
+            end
+        })
         setmetatable(class, {__index = inheritsFrom}) -- Inherit properties.
     end
 
@@ -75,7 +76,7 @@ class = function(inheritsFrom)
         return instance
     end
 
-    --useAttributes(class)
+    useAttributes(class)
 
     -- Returns the class.
     return class

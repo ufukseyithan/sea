@@ -110,9 +110,9 @@ local appDirectoryPaths = io.getDirectoryPaths(sea.path.app)
 
 if not table.isEmpty(appDirectoryPaths) then
     for _, appDirectoryPath in pairs(appDirectoryPaths) do
-        sea.info("Found app directory: \""..appDirectoryPath.."\", attempting to load...")
+        sea.info("Found app directory: \""..appDirectoryPath.."\", attempting to initialize...")
 
-        sea.loadApp(appDirectoryPath)
+        sea.initApp(appDirectoryPath)
     end
 
     sea.info("Loaded "..#sea.app.."/"..#appDirectoryPaths.." app directories in total.")

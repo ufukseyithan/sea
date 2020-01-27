@@ -55,7 +55,7 @@ sea.message = function(player, text, color, prefix, prefixColor)
     end
 end
 
-sea.loadApp = function(directory)
+sea.initApp = function(directory)
     local app
     
     local mainPath = directory.."main.lua"
@@ -99,69 +99,84 @@ sea.loadApp = function(directory)
         local config = dofile(configPath)
 
         for category, content in pairs(config) do
-            if category == "color" then
-                for name, color in pairs(content) do
-                    if sea.addCustomColor(name, color) then
-                        successConfig = successConfig + 1
-                    end
-                end
-            elseif category == "player" then
-                for k, v in pairs(content) do
-                    if k == "info" then
-                        for name, func in pairs(v) do
-                            if sea.addPlayerInfo(name, func) then
-                                successConfig = successConfig + 1
-                            end
-                        end
-                    elseif k == "stat" then
-                        for name, v in pairs(v) do
-                            if sea.addPlayerStat(name, type(v) == "table" and v[1] or v, v[2]) then
-                                successConfig = successConfig + 1
-                            end
-                        end
-                    elseif k == "variable" then
-                        for name, v in pairs(v) do
-                            if sea.addPlayerVariable(name, type(v) == "table" and v[1] or v, v[2]) then
-                                successConfig = successConfig + 1
-                            end
-                        end
-                    elseif k == "setting" then
-                        -- @TODO
-                    end
-                end
-            elseif category == "server" then
-                for k, v in pairs(content) do
-                    if k == "info" then
-                        sea.setServerInfo(v)
-
-                        successConfig = successConfig + 1
-                    elseif k == "news" then
-                        for _, article in pairs(v) do
-                            sea.addServerNews(article)
-
+            switch (category) {
+                color = function()
+                    for name, color in pairs(content) do
+                        if sea.addCustomColor(name, color) then
                             successConfig = successConfig + 1
                         end
-                    elseif k == "setting" then
-                        for setting, value in pairs(v) do
-                            if sea.setServerSetting(setting, value) then
-                                successConfig = successConfig + 1
+                    end
+                end,
+                player = function()
+                    for k, v in pairs(content) do
+                        switch(k) {
+                            info = function()
+                                for name, func in pairs(v) do
+                                    if sea.addPlayerInfo(name, func) then
+                                        successConfig = successConfig + 1
+                                    end
+                                end
+                            end,
+                            stat = function()
+                                for name, v in pairs(v) do
+                                    if sea.addPlayerStat(name, type(v) == "table" and v[1] or v, v[2]) then
+                                        successConfig = successConfig + 1
+                                    end
+                                end
+                            end,
+                            variable = function()
+                                for name, v in pairs(v) do
+                                    if sea.addPlayerVariable(name, type(v) == "table" and v[1] or v, v[2]) then
+                                        successConfig = successConfig + 1
+                                    end
+                                end
+                            end,
+                            setting = function()
+                                -- @TODO
                             end
-                        end
-                    elseif k == "bindings" then
-                        for _, key in pairs(v) do
-                            if sea.addServerBinding(key) then
+                        }
+                    end
+                end,
+                server = function()
+                    for k, v in pairs(content) do
+                        switch (k) {
+                            info = function()
+                                sea.setServerInfo(v)
+    
                                 successConfig = successConfig + 1
+                            end,
+                            news = function()
+                                for _, article in pairs(v) do
+                                    sea.addServerNews(article)
+        
+                                    successConfig = successConfig + 1
+                                end
+                            end,
+                            setting = function()
+                                for setting, value in pairs(v) do
+                                    if sea.setServerSetting(setting, value) then
+                                        successConfig = successConfig + 1
+                                    end
+                                end
+                            end,
+                            bindings = function()
+                                for _, key in pairs(v) do
+                                    if sea.addServerBinding(key) then
+                                        successConfig = successConfig + 1
+                                    end
+                                end
                             end
+                        }
+                    end
+                end,
+                mainMenuTabs = function()
+                    for name, buttons in pairs(content) do
+                        if sea.addMainMenuTab(name, buttons) then
+                            successConfig = successConfig + 1
                         end
                     end
                 end
-            elseif category == "mainMenuTabs" then
-                for name, buttons in pairs(content) do
-                    if sea.addMainMenuTab(name, buttons) then
-                        successConfig = successConfig + 1
-                    end
-                end
-            end
+            }
         end
 
         app.config, app.path.config = config, configPath
@@ -178,7 +193,7 @@ sea.loadApp = function(directory)
 
     table.insert(sea.app, app) 
 
-    sea.success("Loaded app: "..app.name.." v"..app.version.." by "..app.author.." ("..transferFiles.." transfer files, "..successConfig.." successful configurations, "..loadedScripts.." loaded scripts)")
+    sea.success("Initialized app: "..app.name.." v"..app.version.." by "..app.author.." ("..transferFiles.." transfer files, "..successConfig.." successful configurations, "..loadedScripts.." loaded scripts)")
 
     return true
 end

@@ -7,3 +7,16 @@ function switch (i)
         end
     })
 end
+
+--[[
+    Usage: 
+    
+    switch(case) {
+        [1] = function () print"number 1!" end,
+        [2] = math.sin,
+        [false] = function (a) return function (b) return (a or b) and not (a and b) end end,
+        Default = function (x) print"Look, Mom, I can differentiate types!" end, -- ["Default"] ;)
+        [Default] = print,
+        [Nil] = function () print"I must've left it in my other jeans." end,
+    }
+]]

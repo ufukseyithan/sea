@@ -31,7 +31,7 @@ sea.config.player = {
     info = {
         ["Name"] = function(player) return player.name end,
         ["U.S.G.N."] = function(player) return player.usgn or "Not logged in" end,
-        ["Steam"] = function(player) return player.steamName or "Not logged in" end
+        ["Steam"] = function(player) return player.steamname or "Not logged in" end
     },
 
     stat = { -- Get illuminated: http://www.cs2d.com/help.php?luacat=player&luacmd=player#cmd, http://www.cs2d.com/help.php?luacat=player&luacmd=stats#cmd & http://www.cs2d.com/help.php?luacat=player&luacmd=steamstats#cmd
@@ -40,13 +40,11 @@ sea.config.player = {
         ["Deaths"] = 0
     },
 
-    variable = {
+    variable = {},
 
-    },
+    -- @TODO: Method
 
-    setting = {
-
-    }
+    setting = {}
 }
 
 sea.config.server = {
@@ -64,6 +62,13 @@ sea.config.server = {
     }, 
 
     bindings = {"escape", "mouse1", "mouse2"}
+}
+
+sea.config.ui = {
+    soundPath = {
+        click = "",
+        hover = ""
+    }
 }
 
 sea.config.mainMenuTabs = {
@@ -84,10 +89,4 @@ sea.config.mainMenuTabs = {
     }
 }
 
-sea.config.ui = {
-    soundPath = {
-        click = "",
-        hover = ""
-    }
-}
 

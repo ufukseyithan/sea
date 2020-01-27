@@ -1,3 +1,0 @@
-sea.item = {}
-
-sea.itemType = {}
