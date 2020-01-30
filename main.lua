@@ -11,7 +11,10 @@ sea.path = {
 sea.app = {}
 sea.transferFiles = {}
 
--- Loading lib
+-------------------------
+--         LIB         --
+-------------------------
+
 function table.mergeValues(tbl, tbl2)
     for k, v in pairs(tbl2) do 
         table.insert(tbl, v)
@@ -95,15 +98,25 @@ sea.path.lib = sea.path.lua.."lib/"
 dofileDirectory(sea.path.lib, ".lua")
 print("[Sea Framework] Library has been loaded.")
 
--- Loading core
+-------------------------
+--         CORE        --
+-------------------------
+
 print("[Sea Framework] Loading core scripts...")
 dofile(sea.path.lua.."functions.lua")
 sea.path.config = sea.path.lua.."config.lua"
 dofile(sea.path.config)
 dofile(sea.path.lua.."event.lua")
+sea.path.src = sea.path.lua.."src/"
+dofileDirectory(sea.path.src, ".lua", true)
 sea.success("Core scripts have been loaded.")
 
--- Loading apps
+sea.map = sea.Map:new()
+
+-------------------------
+--         APPS        --
+-------------------------
+
 sea.info("Checking app directories...")
 sea.path.app = sea.path.lua.."app/"
 local appDirectoryPaths = io.getDirectoryPaths(sea.path.app)
@@ -115,15 +128,15 @@ if not table.isEmpty(appDirectoryPaths) then
         sea.initApp(appDirectoryPath)
     end
 
-    sea.info("Loaded "..#sea.app.."/"..#appDirectoryPaths.." app directories in total.")
+    sea.info("Initialized "..#sea.app.."/"..#appDirectoryPaths.." app directories in total.")
     sea.info("Type \"!app_info <app_name>\" in console to see the details of an app.")
 else
-    sea.info("No app directories have been found to load.")
+    sea.info("No app directories have been found to initialize.")
 end
 
 sea.updateServerTransferList()
 
--- @TODO: Add system generated bindings (see if it is possible to hide console prints though) (players can also set their bindings too)
+-- @TODO: Add system generated bindings (see if it is possible to hide console prints though) (players can also set their bindings later on too)
 
 -- @TODO: Set server settings according to config
 

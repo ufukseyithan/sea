@@ -1,6 +1,6 @@
 local function useAttributes(class)
     function class:__index(key)
-        local attribute_key = "get"..underscoreToPascalCase(key).."Attribute"
+        local attribute_key = "get"..camelCaseToPascalCase(key).."Attribute"
         if class[attribute_key] then
             return class[attribute_key](self)
         end
@@ -8,7 +8,7 @@ local function useAttributes(class)
     end
 
     function class:__newindex(key, value)
-        local attribute_key = "set"..underscoreToPascalCase(key).."Attribute"
+        local attribute_key = "set"..camelCaseToPascalCase(key).."Attribute"
         if class[attribute_key] then
             class[attribute_key](self, value)
         else

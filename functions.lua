@@ -1,15 +1,14 @@
--- Core
-sea.getColor = function(name, category)
+function sea.getColor(name, category)
     return category and sea.config.color[category][name] or sea.config.color.custom[name]
 end
 
-sea.createText =  function(text, color)
+function sea.createText(text, color)
     return "\169"..(color or sea.getColor("default", "system"))..text
 end
 
 -- @TODO: Create paragraph
 
-sea.createArticle = function(title, content, imagePath)
+function sea.createArticle(title, content, imagePath)
     return {
         title = title,
         content = content,
@@ -17,35 +16,35 @@ sea.createArticle = function(title, content, imagePath)
     }
 end
 
-sea.createConsoleText = function(text, color, prefix, prefixColor)
+function sea.createConsoleText(text, color, prefix, prefixColor)
     return sea.createText("["..sea.config.systemPrefix.."] "..(prefix and "["..prefix.."] " or ""), prefixColor)..sea.createText(text, color)
 end
 
-sea.print = function(text, color, prefix, prefixColor)
+function sea.print(text, color, prefix, prefixColor)
     print(sea.createConsoleText(text, color, prefix, prefixColor))
 end
 
-sea.systemPrint = function(text, type)
+function sea.systemPrint(text, type)
     sea.print(text, nil, type:upperFirst(), sea.getColor(type, "system"))
 end
 
-sea.error = function(text)
+function sea.error(text)
     sea.systemPrint(text, "error")
 end
 
-sea.warning = function(text)
+function sea.warning(text)
     sea.systemPrint(text, "warning")
 end
 
-sea.info = function(text)
+function sea.info(text)
     sea.systemPrint(text, "info")
 end
 
-sea.success = function(text)
+function sea.success(text)
     sea.systemPrint(text, "success")
 end
 
-sea.message = function(player, text, color, prefix, prefixColor)
+function sea.message(player, text, color, prefix, prefixColor)
     text = sea.createText(prefix and "["..prefix.."] " or "", prefixColor)..sea.createText(text, color)
     
     if not player then
@@ -55,7 +54,7 @@ sea.message = function(player, text, color, prefix, prefixColor)
     end
 end
 
-sea.initApp = function(directory)
+function sea.initApp(directory)
     local app
     
     local mainPath = directory.."main.lua"
@@ -198,7 +197,7 @@ sea.initApp = function(directory)
     return true
 end
 
-sea.loadScript = function(path)
+function sea.loadScript(path)
     if path:sub(-4) ~= ".lua" then
         path = path..".lua"
     end
@@ -215,7 +214,7 @@ sea.loadScript = function(path)
     return true
 end
 
-sea.addTransferFile = function(path, response)
+function sea.addTransferFile(path, response)
 	if not io.exists(path) then
 		sea.error("The file \""..path.."\" cannot be added as a transfer file, it does not exist.")
 		return false
@@ -254,7 +253,7 @@ sea.addTransferFile = function(path, response)
 	return true
 end
 
-sea.updateServerTransferList = function(response)
+function sea.updateServerTransferList(response)
     local serverTransferListPath = sea.path.sys.."servertransfer.lst"
 
     io.toTable(serverTransferListPath, sea.transferFiles)
@@ -279,7 +278,7 @@ sea.updateServerTransferList = function(response)
 	end
 end
 
-sea.addCustomColor = function(name, color)
+function sea.addCustomColor(name, color)
     local customColor = sea.config.color.custom
 
     if customColor[name] then
@@ -294,7 +293,7 @@ sea.addCustomColor = function(name, color)
     return true
 end
 
-sea.addPlayerInfo = function(name, func)
+function sea.addPlayerInfo(name, func)
     local playerInfo = sea.config.player.info
 
     if playerInfo[name] then
@@ -309,7 +308,7 @@ sea.addPlayerInfo = function(name, func)
     return true
 end
 
-sea.addPlayerStat = function(name, defaultValue, customDisplay)
+function sea.addPlayerStat(name, defaultValue, customDisplay)
     local playerStat = sea.config.player.stat
 
     if playerStat[name] then
@@ -324,7 +323,7 @@ sea.addPlayerStat = function(name, defaultValue, customDisplay)
     return true
 end
 
-sea.addPlayerVariable = function(name, defaultValue, isData)
+function sea.addPlayerVariable(name, defaultValue, isData)
     local playerVariable = sea.config.player.variable
 
     if playerVariable[name] then
@@ -339,11 +338,11 @@ sea.addPlayerVariable = function(name, defaultValue, isData)
     return true
 end
 
-sea.addPlayerSetting = function()
+function sea.addPlayerSetting()
 
 end
 
-sea.setServerInfo = function(article)
+function sea.setServerInfo(article)
     local serverInfo = sea.config.server.info
 
     serverInfo = article
@@ -351,7 +350,7 @@ sea.setServerInfo = function(article)
     sea.info("Set server info: \""..article.title.."\"")
 end
 
-sea.addServerNews = function(article)
+function sea.addServerNews(article)
     local serverNews = sea.config.server.news
 
     table.insert(serverNews, article)
@@ -359,7 +358,7 @@ sea.addServerNews = function(article)
     sea.info("Added server news: \""..article.title.."\"")
 end
 
-sea.setServerSetting = function(setting, value)
+function sea.setServerSetting(setting, value)
     local serverSetting  = sea.config.server.setting
 
     if not serverSetting[setting] then
@@ -375,7 +374,7 @@ sea.setServerSetting = function(setting, value)
     return true
 end
 
-sea.addServerBinding = function(key)
+function sea.addServerBinding(key)
     local serverBindings = sea.config.server.bindings
 
     if table.contains(serverBindings, key) then
@@ -390,7 +389,7 @@ sea.addServerBinding = function(key)
     return true
 end
 
-sea.addMainMenuTab = function(name, buttons)
+function sea.addMainMenuTab(name, buttons)
     local mainMenuTabs = sea.config.mainMenuTabs
 
     if mainMenuTabs[name] then

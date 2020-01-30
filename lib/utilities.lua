@@ -73,3 +73,7 @@ function underscoreToPascalCase(str)
     end)
     return table.concat(tab)
 end
+
+function camelCaseToPascalCase(str)
+    return str:upperFirst()
+end

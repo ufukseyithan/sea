@@ -83,6 +83,22 @@ function table.merge(tbl, tbl2, override)
     end
 end
 
+function table.removeValue(tbl, value)
+    for k, v in pairs(tbl) do
+        if v == value then
+            table.remove(tbl, k)
+            return true
+        end
+    end
+
+    return false
+end
+
+function table.insert2D(tbl, x, y, value)
+    tbl[x] = tbl[x] or {}
+    tbl[x][y] = value
+end
+
 function table.isEmpty(tab)
     return next(tab) == nil
 end
