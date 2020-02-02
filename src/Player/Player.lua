@@ -1,16 +1,64 @@
 sea.player = {}
 sea.Player = class()
 
--- @TODO: Player get & set info
-
--- @TODO: Player get & set stat
-
--- @TODO: Player get & set setting
-
--- @TODO: Player get & set variable
-
 function sea.Player:constructor(id)
     self.id = id
+
+	for name, v in pairs(sea.config.player.variable) do
+		if not self[name] then
+			self[name] = v[1]
+		end
+	end
+
+	self.stat = {}
+	for name, v in pairs(sea.config.player.stat) do
+		self.stat[name] = v[1]
+	end
+
+
+	self.setting = {}
+	for name, v in pairs(sea.config.player.setting) do
+		if not self.setting[name] then
+			self.setting[name] = v[1]
+		end
+	end
+
+	self.control = {}
+	for name, v in pairs(sea.config.player.control) do
+		if not self.control[name] then
+			self.control[name] = v[1]
+		end
+	end
+end
+
+function sea.Player:load()
+
+end
+
+function sea.Player:save()
+	-- Save data variables
+	-- Save stats
+	-- Save settings
+	-- Save controls
+end
+
+--[[
+	@TODO: 
+	This gotta be updated once an update for addbind gets released, see: http://www.unrealsoftware.de/forum_posts.php?post=327522&start=3100#post426954
+	Until then this needs a workaround
+]]
+function sea.Player:reassignControl(name, key)
+	if not addbind(key) then
+		return false
+	end
+
+	self.control[name] = key
+	
+	return true
+end
+
+function sea.Player:getInfo(name, ...)
+	return sea.config.player.info[name](self, ...)
 end
 
 function sea.Player:kick(reason)
@@ -26,7 +74,7 @@ function sea.Player:banName(duration, reason)
 end
 
 function sea.Player:banSteam(duration, reason)
-	parse("bansteam", self.steamid, duration, reason)
+	parse("bansteam", self.steamID, duration, reason)
 end
 
 function sea.Player:banUSGN(duration, reason)
@@ -37,8 +85,8 @@ function sea.Player:kill()
 	parse("killplayer", self.id)
 end
 
-function sea.Player:killBy(killer, weapon)
-	parse("customkill", killer, weapon, self.id)
+function sea.Player:killBy(killer, itemID)
+	parse("customkill", killer, itemID, self.id)
 end
 
 function sea.Player:slap()
@@ -53,13 +101,13 @@ function sea.Player:spawn(x, y)
 	parse("spawnplayer", self.id, x, y)
 end
 
-function sea.Player:equip(weapon)
-	parse("equip", self.id, weapon)
+function sea.Player:equip(itemID)
+	parse("equip", self.id, itemID)
 end
 
-function sea.Player:equipAndSet(weapon)
-	self:equip(weapon)
-	self.weapon = weapon
+function sea.Player:equipAndSet(itemID)
+	self:equip(itemID)
+	self.weapon = itemID
 end
 
 function sea.Player:reroute(address)
@@ -70,18 +118,22 @@ function sea.Player:shake(power)
 	parse("shake", self.id, power)
 end
 
-function sea.Player:strip(weapon)
-	parse("strip", self.id, weapon)
+function sea.Player:strip(itemID)
+	parse("strip", self.id, itemID)
 end
 
-function sea.Player:getWeapons()
+function sea.Player:message(text, color, prefix, prefixColor)
+	sea.message(self.id, text, color, prefix, prefixColor)
+end
+
+function sea.Player:getItems()
 	-- @TODO: This should return itemType objects instead
 	return playerweapons(self.id)
 end
 
-function sea.Player:hasWeapon(weapon)
+function sea.Player:hasItem(itemID)
 	for _, id in pairs(playerweapons(self.id)) do
-		if id == weapon then
+		if id == itemID then
 			return true
 		end
 	end
@@ -89,8 +141,8 @@ function sea.Player:hasWeapon(weapon)
 	return false
 end
 
-function sea.Player:getAmmo(weapon)
-	local ammoIn, ammo = playerammo(self.id, weapon)
+function sea.Player:getAmmo(itemID)
+	local ammoIn, ammo = playerammo(self.id, itemID)
 
 	return {
 		["in"] = ammoIn,
@@ -101,6 +153,18 @@ end
 -------------------------
 --        CONST        --
 -------------------------
+
+function sea.Player.create(id)
+	local player = sea.Player.new(id)
+
+	sea.player[id] = player
+
+	return player
+end
+
+function sea.Player.remove(id)
+	sea.player[id] = nil
+end
 
 local function getPlayers(mode, specific)
 	local players = {}

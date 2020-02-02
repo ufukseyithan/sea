@@ -2,7 +2,7 @@ sea.config = {}
 
 sea.config.systemPrefix = "Sea Framework"
 
--- These formats are the only ones that the server transfer list supports, meaning you may remove as you wish but not add
+-- These formats are the only ones that the server transfer list supports, meaning you may remove the existing ones as you wish but not add new ones
 sea.config.supportedTransferFileFormats = {".bmp", ".jpg", ".jpeg", ".png", ".wav", ".ogg"}
 -- @TODO: Add a config variable for supported max file size (rather be 250kb for default)
 
@@ -27,6 +27,13 @@ sea.config.color = {
     custom = {}
 }
 
+--[[
+    suicide (boolean): "suicide" hook - return 1
+    buy (boolean): "buy" hook - return 1
+    customChat (function): a function (parameters: player, text) that returns text, textColor, prefix, prefixColor (last three are optional) 
+]]
+sea.config.game = {}
+
 sea.config.player = {
     info = {
         ["Name"] = function(player) return player.name end,
@@ -36,15 +43,23 @@ sea.config.player = {
 
     stat = { -- Get illuminated: http://www.cs2d.com/help.php?luacat=player&luacmd=player#cmd, http://www.cs2d.com/help.php?luacat=player&luacmd=stats#cmd & http://www.cs2d.com/help.php?luacat=player&luacmd=steamstats#cmd
         ["Time Played"] = {0, function(value) return value end},
-        ["Kills"] = 0,
-        ["Deaths"] = 0
+        ["Kills"] = {0},
+        ["Deaths"] = {0}
     },
 
     variable = {},
 
-    -- @TODO: Method
+    method = {},
 
-    setting = {}
+    setting = {},
+
+    control = {
+        ["Escape"] = {"escape"},
+        ["Mouse1"] = {"mouse1"},
+        ["Mouse2"] = {"mouse2"},
+        ["Mouse Scroll Up"] = {"mwheelup"},
+        ["Mouse Scroll Down"] = {"mwheeldown"}
+    }
 }
 
 sea.config.server = {
@@ -54,14 +69,7 @@ sea.config.server = {
         sea.createArticle("This Is an Example News Title", "This is an example news description. Let's see if it works!")
     },
     
-    setting = {
-        radar = true, 
-        buying = true,
-        suiciding = true,
-        hud = 127,
-    }, 
-
-    bindings = {"escape", "mouse1", "mouse2"}
+    setting = {}
 }
 
 sea.config.ui = {

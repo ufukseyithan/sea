@@ -49,6 +49,20 @@ function math.average(...)
 end
 
 -- Table
+function table.getKeys(tbl)
+    local keys = {}
+
+    for k, v in pairs(tbl) do
+        table.insert(keys, k)
+    end
+
+    return keys
+end
+
+function table.count(tbl)
+    return table.maxn(tbl) == 0 and #table.getKeys(tbl) or table.maxn(tbl)
+end
+
 function table.contains(tab, value)
     for _, v in pairs(tab) do
         if (v == value) then

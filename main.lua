@@ -112,6 +112,7 @@ dofileDirectory(sea.path.src, ".lua", true)
 sea.success("Core scripts have been loaded.")
 
 sea.map = sea.Map:new()
+sea.game = sea.Game:new()
 
 -------------------------
 --         APPS        --
@@ -128,16 +129,27 @@ if not table.isEmpty(appDirectoryPaths) then
         sea.initApp(appDirectoryPath)
     end
 
-    sea.info("Initialized "..#sea.app.."/"..#appDirectoryPaths.." app directories in total.")
-    sea.info("Type \"!app_info <app_name>\" in console to see the details of an app.")
+    sea.info("Initialized "..table.count(sea.app).."/"..table.count(appDirectoryPaths).." app directories in total.")
+    sea.info("Type \"app info <app name>\" in console to see the details of an app.")
 else
     sea.info("No app directories have been found to initialize.")
 end
 
+-------------------------
+--         INIT        --
+-------------------------
+
 sea.updateServerTransferList()
 
--- @TODO: Add system generated bindings (see if it is possible to hide console prints though) (players can also set their bindings later on too)
+-- Adding player methods
+for name, func in pairs(sea.config.player.method) do
+    sea.Player[name] = func
+end
 
--- @TODO: Set server settings according to config
+-- Adding default control key bindings
+for _, v in pairs(sea.config.player.control) do
+    addbind(v[1])
+end
+
 
 sea.success("Sea Framework v"..sea.version.." has been loaded and is ready to use!")
