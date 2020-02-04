@@ -64,19 +64,32 @@ function sea.Item.get()
         table.insert(items, item)
     end
 
-    return items
+    return allObjectsMetaTable(items)
+end
+
+--[[
+	@param radius (number) Radius in tiles. 
+]]
+function sea.Item.getCloseToPlayer(player, radius)
+	local items = {}
+
+	for _, id in pairs(closeitems(player.id, radius)) do
+		table.insert(items, sea.item[id])
+	end
+
+	return allObjectsMetaTable(items)
 end
 
 function sea.Item.getAt(x, y)
 	local items = {}
 
 	for _, item in pairs(sea.item) do
-		if sea.Item.x == x and sea.Item.y == y then
+		if item.x == x and item.y == y then
 			table.insert(items, item)
 		end
     end
 
-    return items
+    return allObjectsMetaTable(items)
 end
 
 -------------------------

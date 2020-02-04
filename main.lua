@@ -93,20 +93,70 @@ end
 
 sea.path.lua = getLocalPath()
 
-print("[Sea Framework] Loading library...")
+print("[Sea] Loading library...")
 sea.path.lib = sea.path.lua.."lib/"
 dofileDirectory(sea.path.lib, ".lua")
-print("[Sea Framework] Library has been loaded.")
+print("[Sea] Library has been loaded.")
 
 -------------------------
 --         CORE        --
 -------------------------
 
-print("[Sea Framework] Loading core scripts...")
+print("[Sea] Loading core scripts...")
 dofile(sea.path.lua.."functions.lua")
 sea.path.config = sea.path.lua.."config.lua"
 dofile(sea.path.config)
 dofile(sea.path.lua.."event.lua")
+
+--[[
+    This function is for tables that contain objects (for example: sea.Player.get(), sea.Item.get())
+
+    @TODO: A better name is kinda needed in here
+]]
+function allObjectsMetaTable(tbl)
+    return setmetatable(tbl, {
+		__index = function(tbl, key)
+			for k, v in pairs(tbl) do
+				return v[key]
+			end
+		end,	
+		__newindex = function(tbl, key, value)
+			for k, v in pairs(tbl) do
+				v[key] = value
+			end
+		end
+	})
+end
+
+--[[
+    sea.game
+    sea.Game
+
+    sea.item
+    sea.Item
+    sea.itemType
+    sea.ItemType
+    sea.projectile
+    sea.Projectile
+
+    sea.entity
+    sea.Entity
+    sea.map
+    sea.Map
+    sea.tile
+    sea.Tile
+
+    sea.image
+    sea.Image
+    sea.object
+    sea.Object
+    sea.objectType
+    sea.ObjectType
+
+    sea.player
+    sea.Player
+]]
+
 sea.path.src = sea.path.lua.."src/"
 dofileDirectory(sea.path.src, ".lua", true)
 sea.success("Core scripts have been loaded.")
@@ -141,7 +191,7 @@ end
 
 sea.updateServerTransferList()
 
--- Adding player methods
+-- Adding custom player methods
 for name, func in pairs(sea.config.player.method) do
     sea.Player[name] = func
 end
@@ -150,6 +200,5 @@ end
 for _, v in pairs(sea.config.player.control) do
     addbind(v[1])
 end
-
 
 sea.success("Sea Framework v"..sea.version.." has been loaded and is ready to use!")

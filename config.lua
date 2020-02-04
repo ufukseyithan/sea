@@ -1,16 +1,16 @@
 sea.config = {}
 
-sea.config.systemPrefix = "Sea Framework"
+-- The prefix used for console outputs
+sea.config.systemPrefix = "[Sea]"
 
 -- These formats are the only ones that the server transfer list supports, meaning you may remove the existing ones as you wish but not add new ones
 sea.config.supportedTransferFileFormats = {".bmp", ".jpg", ".jpeg", ".png", ".wav", ".ogg"}
--- @TODO: Add a config variable for supported max file size (rather be 250kb for default)
 
--- Do not touch these, use sea.addCustomColor function instead
+-- Do not touch these, use sea.addColor function instead
 sea.config.color = {
     system = {
-        error = "255155155",
-        warning = "255255155",
+        error = "255025054",
+        warning = "255155000",
         info = "155255255",
         success = "155255155",
 
@@ -28,8 +28,6 @@ sea.config.color = {
 }
 
 --[[
-    suicide (boolean): "suicide" hook - return 1
-    buy (boolean): "buy" hook - return 1
     customChat (function): a function (parameters: player, text) that returns text, textColor, prefix, prefixColor (last three are optional) 
 ]]
 sea.config.game = {}
@@ -51,6 +49,7 @@ sea.config.player = {
 
     method = {},
 
+    -- @TODO: Settings should also have descriptions, see the config.lua of citylife
     setting = {},
 
     control = {

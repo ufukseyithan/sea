@@ -77,3 +77,4 @@ end
 function camelCaseToPascalCase(str)
     return str:upperFirst()
 end
+

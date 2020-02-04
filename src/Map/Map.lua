@@ -14,7 +14,7 @@ function sea.Map:generateTiles()
 
             table.insert2D(self.tile, x, y, tile)
         end
-    end
+	end
 end
 
 function sea.Map:getTile(x, y)

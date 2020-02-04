@@ -31,6 +31,10 @@ function sea.Player:constructor(id)
 	end
 end
 
+function sea.Player:destroy()
+	sea.Player.remove(self.id)
+end
+
 function sea.Player:load()
 
 end
@@ -122,13 +126,29 @@ function sea.Player:strip(itemID)
 	parse("strip", self.id, itemID)
 end
 
-function sea.Player:message(text, color, prefix, prefixColor)
-	sea.message(self.id, text, color, prefix, prefixColor)
+function sea.Player:message(text)
+	sea.message(self.id, text)
+end
+
+function sea.Player:notify(type, text)
+	sea.notify(self.id, type, text)
 end
 
 function sea.Player:getItems()
-	-- @TODO: This should return itemType objects instead
-	return playerweapons(self.id)
+	local itemTypes = {}
+
+	for _, id in pairs(playerweapons(self.id)) do
+		table.insert(itemTypes, sea.itemType[id])
+	end
+
+	return itemTypes
+end
+
+--[[
+	@param radius (number) Radius in tiles. 
+]]
+function sea.Player:getCloseItems(radius)
+	return sea.Item.getCloseToPlayer(self, radius)
 end
 
 function sea.Player:hasItem(itemID)
@@ -159,11 +179,15 @@ function sea.Player.create(id)
 
 	sea.player[id] = player
 
+	sea.info("Created player with the ID "..id)
+
 	return player
 end
 
 function sea.Player.remove(id)
 	sea.player[id] = nil
+
+	sea.info("Removed player with the ID "..id)
 end
 
 local function getPlayers(mode, specific)
@@ -179,7 +203,7 @@ local function getPlayers(mode, specific)
 		end
 	end
 	
-    return players
+    return allObjectsMetaTable(players)
 end
 
 function sea.Player.get(specific)
@@ -204,6 +228,10 @@ end
 
 function sea.Player.getLivingCounterTerrorists(specific)
     return getPlayers("team2living", specific)
+end
+
+function sea.Player.getAtRadius(x, y, radius)
+	-- Use closeplayers()
 end
 
 -------------------------

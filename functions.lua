@@ -3,11 +3,57 @@ function sea.getColor(name, category)
 end
 
 function sea.createText(text, color, prefix, prefixColor)
-    local prefix = prefix and "©"..(prefixColor or sea.getColor("default", "system"))..prefix.." " or "" 
-    return prefix.."©"..(color or sea.getColor("default", "system"))..text
+    local prefix = prefix and "©"..(prefixColor or sea.getColor("default", "system"))..prefix or "" 
+    return prefix.." ©"..(color or sea.getColor("default", "system"))..text
 end
 
--- @TODO: createParagrahp func
+function sea.createSystemText(text, color, prefix, prefixColor)
+    return sea.createText(text, color, sea.config.systemPrefix..(prefix and (" "..prefix) or ""), prefixColor)
+end
+
+function sea.print(text)
+    print(text)
+end
+
+function sea.systemPrint(type, text)
+    sea.print(sea.createSystemText(text, nil, "["..type:upperFirst().."]", sea.getColor(type, "system")))
+end
+
+function sea.error(text)
+    sea.systemPrint("error", text)
+end
+
+function sea.warning(text)
+    sea.systemPrint("warning", text)
+end
+
+function sea.info(text)
+    sea.systemPrint("info", text)
+end
+
+function sea.success(text)
+    sea.systemPrint("success", text)
+end
+
+function sea.message(id, text)
+    if not id or id == 0 then
+        msg(text)
+    else
+        msg2(id, text)
+    end
+end
+
+function sea.consoleMessage(id, text)
+    if not id or id == 0 then
+        parse("cmsg", text)
+    else
+        parse("cmsg", text, id)
+    end
+end
+
+function sea.notify(id, type, text)
+    sea.message(id, sea.createText(text, sea.getColor(type, "system")))
+end
 
 function sea.createArticle(title, content, imagePath)
     return {
@@ -17,42 +63,89 @@ function sea.createArticle(title, content, imagePath)
     }
 end
 
-function sea.createConsoleText(text, color, prefix, prefixColor)
-    return sea.createText(text, color, "["..sea.config.systemPrefix.."]"..(prefix and (" "..prefix) or ""), prefixColor)
-end
-
-function sea.print(text, color, prefix, prefixColor)
-    print(sea.createConsoleText(text, color, prefix, prefixColor))
-end
-
-function sea.systemPrint(text, type)
-    sea.print(text, nil, "["..type:upperFirst().."]", sea.getColor(type, "system"))
-end
-
-function sea.error(text)
-    sea.systemPrint(text, "error")
-end
-
-function sea.warning(text)
-    sea.systemPrint(text, "warning")
-end
-
-function sea.info(text)
-    sea.systemPrint(text, "info")
-end
-
-function sea.success(text)
-    sea.systemPrint(text, "success")
-end
-
-function sea.message(id, text, color, prefix, prefixColor)
-    text = sea.createText(text, color, prefix, prefixColor)
-    
-    if not id or id == 0 then
-        msg(text)
-    else
-        msg2(id, text)
+function sea.loadScript(path)
+    if path:sub(-4) ~= ".lua" then
+        path = path..".lua"
     end
+
+    if not io.exists(path) then
+        sea.error("The script "..path.." cannot be loaded, it does not exist.")
+        return false
+    end
+
+    dofile(path)
+
+    sea.info("Loaded script: "..path)
+
+    return true
+end
+
+function sea.addTransferFile(path, response, update)
+	if not io.exists(path) then
+		sea.error("The file "..path.." cannot be added as a transfer file, it does not exist.")
+		return false
+    end
+    
+    if io.isDirectory(path) then
+        sea.error("The file "..path.." cannot be added as a transfer file, it is a directory.")
+		return false
+    end
+
+    local hasUnsupportedFormat
+    for _, format in pairs(sea.config.supportedTransferFileFormats) do
+        if path:find(format) then
+            hasUnsupportedFormat = true
+        end
+    end
+
+    if not hasUnsupportedFormat then
+        sea.error("The file "..path.." cannot be added as a transfer file, its format is not supported.")
+        return false
+    end
+
+    local file = io.open(path)
+    local fileSizeInKB = math.round(file:seek("end") / 1024, 2)
+    if fileSizeInKB >= 250 then
+        sea.warning("The size of the file "..path.." is "..fileSizeInKB.." KB, some players may not be able to download it.")
+    end
+    file:close()
+
+    table.insert(sea.transferFiles, path)
+    
+    if response then
+        sea.success("Added transfer file: "..path)
+    end
+
+    if update then
+        sea.updateServerTransferList()
+    end
+
+	return true
+end
+
+function sea.updateServerTransferList(response)
+    local serverTransferListPath = sea.path.sys.."servertransfer.lst"
+
+    io.toTable(serverTransferListPath, sea.transferFiles)
+    
+    local addedFiles = 0
+    local file = io.open(serverTransferListPath, "w+") or io.tmpfile()
+	for k, v in pairs(sea.transferFiles) do
+		file:write(v.."\n")
+		
+		if response then
+			sea.success("The file "..v.." has been added to the server transfer list.")
+        end
+        
+        addedFiles = addedFiles + 1
+	end
+    file:close()
+    
+    sea.transferFiles = table.removeDuplicates(sea.transferFiles)
+
+    if addedFiles > 0 then
+		sea.info("The server transfer list has been updated. You may need to restart the server in order to get use of it.")
+	end
 end
 
 function sea.initApp(directory)
@@ -100,7 +193,7 @@ function sea.initApp(directory)
             switch (category) {
                 color = function()
                     for name, color in pairs(content) do
-                        if sea.addCustomColor(name, color) then
+                        if sea.addColor(name, color) then
                             successfulConfig = successfulConfig + 1
                         end
                     end
@@ -214,90 +307,9 @@ function sea.initApp(directory)
     return true
 end
 
-function sea.loadScript(path)
-    if path:sub(-4) ~= ".lua" then
-        path = path..".lua"
-    end
-
-    if not io.exists(path) then
-        sea.error("The script "..path.." cannot be loaded, it does not exist.")
-        return false
-    end
-
-    dofile(path)
-
-    sea.info("Loaded script: "..path)
-
-    return true
-end
-
-function sea.addTransferFile(path, response, update)
-	if not io.exists(path) then
-		sea.error("The file "..path.." cannot be added as a transfer file, it does not exist.")
-		return false
-    end
-    
-    if io.isDirectory(path) then
-        sea.error("The file "..path.." cannot be added as a transfer file, it is a directory.")
-		return false
-    end
-
-    local hasUnsupportedFormat
-    for _, format in pairs(sea.config.supportedTransferFileFormats) do
-        if path:find(format) then
-            hasUnsupportedFormat = true
-        end
-    end
-
-    if not hasUnsupportedFormat then
-        sea.error("The file "..path.." cannot be added as a transfer file, its format is not supported.")
-        return false
-    end
-
-    local file = io.open(path)
-    local fileSizeInKB = math.round(file:seek("end") / 1024, 2)
-    if fileSizeInKB >= 250 then
-        sea.warning("The size of the file "..path.." is "..fileSizeInKB.." KB, some players may not be able to download it.")
-    end
-    file:close()
-
-    table.insert(sea.transferFiles, path)
-    
-    if response then
-        sea.success("Added transfer file: "..path)
-    end
-
-    if update then
-        sea.updateServerTransferList()
-    end
-
-	return true
-end
-
-function sea.updateServerTransferList(response)
-    local serverTransferListPath = sea.path.sys.."servertransfer.lst"
-
-    io.toTable(serverTransferListPath, sea.transferFiles)
-    
-    local addedFiles = 0
-    local file = io.open(serverTransferListPath, "w+") or io.tmpfile()
-	for k, v in pairs(sea.transferFiles) do
-		file:write(v.."\n")
-		
-		if response then
-			sea.success("The file "..v.." has been added to the server transfer list.")
-        end
-        
-        addedFiles = addedFiles + 1
-	end
-    file:close()
-    
-    sea.transferFiles = table.removeDuplicates(sea.transferFiles)
-
-    if addedFiles > 0 then
-		sea.info("The server transfer list has been updated. You may need to restart the server in order to get use of it.")
-	end
-end
+-------------------------
+--     CONFIG FUNCS    --
+-------------------------
 
 function sea.setGameOption(name, value)
     local gameOption = sea.config.game
@@ -313,7 +325,7 @@ function sea.setGameOption(name, value)
     end
 end
 
-function sea.addCustomColor(name, color)
+function sea.addColor(name, color)
     local customColor = sea.config.color.custom
 
     if customColor[name] then
@@ -445,8 +457,6 @@ function sea.setServerSetting(setting, value)
 
     return true
 end
-
-
 
 function sea.addMainMenuTab(name, buttons)
     local mainMenuTabs = sea.config.mainMenuTabs
