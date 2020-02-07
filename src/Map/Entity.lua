@@ -49,13 +49,3 @@ end
 function sea.Entity:getAistateAttribute()
     return entity(self.x, self.y, "aistate")
 end
-
--------------------------
---        INIT         --
--------------------------
-
-for _, e in pairs(entitylist()) do
-    local entity = sea.Entity.new(e.x, e.y)
-
-    table.insert2D(sea.entity, e.x, e.y, entity)
-end

@@ -4,16 +4,22 @@ function sea.Map:constructor()
 	self.tile = sea.tile
 	self.entity = sea.entity
 
-	self:generateTiles()
+	self:generate()
 end
 
-function sea.Map:generateTiles()
+function sea.Map:generate()
     for x = 0, self.xSize - 1 do
         for y = 0, self.ySize - 1 do
             local tile = sea.Tile.new(x, y)
 
             table.insert2D(self.tile, x, y, tile)
         end
+	end
+
+	for _, e in pairs(entitylist()) do
+		local entity = sea.Entity.new(e.x, e.y)
+	
+		table.insert2D(self.entity, e.x, e.y, entity)
 	end
 end
 

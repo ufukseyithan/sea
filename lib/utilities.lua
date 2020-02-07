@@ -56,25 +56,25 @@ function deepcopy(object)
 	return _copy(object)
 end
 
--- @TODO: Check if this is working correctly
-function camelCaseToUnderscore(str)
-    local tab = {}
-    str:gsub('%u?%l+', function (c)
-        table.insert(tab, c:lower())
-    end)
-    return table.concat(tab, '_')
-end
+function spairs(t, order)
+    -- collect the keys
+    local keys = {}
+    for k in pairs(t) do keys[#keys+1] = k end
 
--- @TODO: Check if this is working correctly
-function underscoreToPascalCase(str)
-    local tab = {}
-    str:gsub('([^_]+)', function (c)
-        table.insert(tab, c:upperFirst())
-    end)
-    return table.concat(tab)
-end
+    -- if order function given, sort by it by passing the table and keys a, b,
+    -- otherwise just sort the keys 
+    if order then
+        table.sort(keys, function(a,b) return order(t, a, b) end)
+    else
+        table.sort(keys)
+    end
 
-function camelCaseToPascalCase(str)
-    return str:upperFirst()
+    -- return the iterator function
+    local i = 0
+    return function()
+        i = i + 1
+        if keys[i] then
+            return keys[i], t[keys[i]]
+        end
+    end
 end
-

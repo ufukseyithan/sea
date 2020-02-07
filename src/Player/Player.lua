@@ -35,20 +35,46 @@ function sea.Player:destroy()
 	sea.Player.remove(self.id)
 end
 
-function sea.Player:load()
+function sea.Player:loadData()
+	--if self.steamID ~= "0" then
+		local data = table.load(sea.path.data..self.steamID..".lua")
 
+		if data then
+			table.merge(self, data)
+
+			self:notification(sea.createText("Your data has been loaded."))
+		end
+	--end
 end
 
-function sea.Player:save()
-	-- Save data variables
-	-- Save stats
-	-- Save settings
-	-- Save controls
+function sea.Player:saveData()
+	--if self.steamID ~= "0" then
+		local data = {}
+
+		local function mergeData(k)
+			data[k] = {}
+			table.merge(data[k], self[k])
+		end
+
+		mergeData("stat")
+		mergeData("setting")
+		mergeData("control")
+
+		for k, v in pairs(sea.config.player.variable) do
+			if v[2] then
+				data[k] = self[k]
+			end
+		end
+
+		table.save(data, sea.path.data..self.steamID..".lua")
+
+		self:notification(sea.createText("Your data has been saved."))
+	--end
 end
 
 --[[
 	@TODO: 
-	This gotta be updated once an update for addbind gets released, see: http://www.unrealsoftware.de/forum_posts.php?post=327522&start=3100#post426954
+	This gotta be updated once an update for addbind is released, see: http://www.unrealsoftware.de/forum_posts.php?post=327522&start=3100#post426954
 	Until then this needs a workaround
 ]]
 function sea.Player:reassignControl(name, key)
@@ -130,8 +156,20 @@ function sea.Player:message(text)
 	sea.message(self.id, text)
 end
 
-function sea.Player:notify(type, text)
-	sea.notify(self.id, type, text)
+function sea.Player:notification(text)
+	sea.message(self.id, text)
+
+	-- @TODO: add it to the notifications
+end
+
+function sea.Player:help(text)
+	sea.message(self.id, text)
+
+	-- @TODO: add it to the help
+end
+
+function sea.Player:consoleMessage(text)
+	sea.consoleMessage(self.id, text)
 end
 
 function sea.Player:getItems()
@@ -203,7 +241,7 @@ local function getPlayers(mode, specific)
 		end
 	end
 	
-    return allObjectsMetaTable(players)
+    return players
 end
 
 function sea.Player.get(specific)
@@ -291,11 +329,11 @@ function sea.Player:getLookAttribute()
 end
 
 function sea.Player:getXAttribute()
-	return player(self.id, "x")
+	return math.round(player(self.id, "x"), 2)
 end
 
 function sea.Player:getYAttribute()
-	return player(self.id, "y")
+	return math.round(player(self.id, "y"), 2)
 end
 
 function sea.Player:getRotationAttribute()

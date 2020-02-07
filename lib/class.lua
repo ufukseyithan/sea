@@ -1,6 +1,6 @@
 local function useAttributes(class)
     function class:__index(key)
-        local attribute_key = "get"..camelCaseToPascalCase(key).."Attribute"
+        local attribute_key = "get"..string.camelCaseToPascalCase(key).."Attribute"
         if class[attribute_key] then
             return class[attribute_key](self)
         end
@@ -8,7 +8,7 @@ local function useAttributes(class)
     end
 
     function class:__newindex(key, value)
-        local attribute_key = "set"..camelCaseToPascalCase(key).."Attribute"
+        local attribute_key = "set"..string.camelCaseToPascalCase(key).."Attribute"
         if class[attribute_key] then
             class[attribute_key](self, value)
         else

@@ -212,7 +212,7 @@ function sea.Game:getLagCompensationDivisorAttribute()
 	return game("mp_lagcompensationdivisor")
 end
 
-function sea.Game:getLocalRCONOutputAttribute()
+function sea.Game:getLocalRConOutputAttribute()
 	return game("mp_localrconoutput")
 end
 
@@ -236,7 +236,7 @@ function sea.Game:getMaxClientsIPAttribute()
 	return game("mp_maxclientsip")
 end
 
-function sea.Game:getMaxRCONFailsAttribute()
+function sea.Game:getMaxRConFailsAttribute()
 	return game("mp_maxrconfails")
 end
 
@@ -620,7 +620,7 @@ function sea.Game:setLagCompensationDivisorAttribute(value)
     parse("mp_lagcompensationdivisor", value)
 end
 
-function sea.Game:setLocalRCONOutputAttribute(value)
+function sea.Game:setLocalRConOutputAttribute(value)
     parse("mp_localrconoutput", value)
 end
 
@@ -644,7 +644,7 @@ function sea.Game:setMaxClientsIPAttribute(value)
     parse("mp_maxclientsip", value)
 end
 
-function sea.Game:setMaxRCONFailsAttribute(value)
+function sea.Game:setMaxRConFailsAttribute(value)
     parsed("mp_maxrconfails", value)
 end
 

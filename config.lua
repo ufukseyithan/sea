@@ -36,7 +36,8 @@ sea.config.player = {
     info = {
         ["Name"] = function(player) return player.name end,
         ["U.S.G.N."] = function(player) return player.usgn or "Not logged in" end,
-        ["Steam"] = function(player) return player.steamname or "Not logged in" end
+        ["Steam"] = function(player) return player.steamname or "Not logged in" end,
+        ["Position"] = function(player) return player.tileX.." | "..player.tileY.." ("..player.x.." | "..player.y..")" end
     },
 
     stat = { -- Get illuminated: http://www.cs2d.com/help.php?luacat=player&luacmd=player#cmd, http://www.cs2d.com/help.php?luacat=player&luacmd=stats#cmd & http://www.cs2d.com/help.php?luacat=player&luacmd=steamstats#cmd
@@ -53,11 +54,11 @@ sea.config.player = {
     setting = {},
 
     control = {
-        ["Escape"] = {"escape"},
-        ["Mouse1"] = {"mouse1"},
-        ["Mouse2"] = {"mouse2"},
-        ["Mouse Scroll Up"] = {"mwheelup"},
-        ["Mouse Scroll Down"] = {"mwheeldown"}
+        escape = {"escape"},
+        leftmouse = {"mouse1"},
+        rightmouse = {"mouse2"},
+        mousescrollup = {"mwheelup"},
+        mousescrolldown = {"mwheeldown"}
     }
 }
 

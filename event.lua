@@ -73,43 +73,57 @@ local hooks = {
     walkover = {"player", "item", "itemType", true, true, true}
 }
 
+local function createName(action, name)
+    return "on"..action:upperFirst()..name:upperFirst()
+end
+
 function sea.addEvent(name, func, priority)
-    if not table.contains(table.getKeys(hooks), name) then
+    if not sea.event[name] then
         sea.error("Attempted to add event with the invalid name \""..name.."\"")
         return false
     end
 
-    local event = sea.event[name]
-
-    event = event or {}
-
-    table.insert(event, {
+    table.insert(sea.event[name], {
         func = func,
         priority = priority or 0
     })
+
+    -- @TODO: Maybe a better info?
+    sea.info("Tied function to the event \""..name.."\"")
 
     return true
 end
 
 function sea.callEvent(name, ...)
-    if not table.contains(table.getKeys(hooks), name) then
+    if not sea.event[name] then
         sea.error("Attempted to call event with the invalid name \""..name.."\"")
-        return false
+        return
     end
     
-    -- @TODO Sort the event table according to the priorities and then use ipairs
+    local returnValue
+
+    for _, v in spairs(sea.event[name], function(tbl, a, b) return tbl[b].priority < tbl[a].priority end) do
+        returnValue = v.func(...)
+    end
+
+    return returnValue or false
+end
+
+-- Adding player control events
+for name, key in pairs(sea.config.player.control) do
+    sea.event[createName("press", name)] = {} 
+    sea.event[createName("release", name)] = {} 
 end
 
 sea.hook = {}
 
---parse("debuglua", 0)
-
 for name, params in pairs(hooks) do
+    sea.event[createName("hook", name)] = {}
     sea.hook[name] = function(...)
         local args = {...}
 
         if name == "join" then
-            sea.Player.create(args[1])
+            sea.Player.create(args[1]):loadData()
         end
 
         for i = 1, #args do
@@ -119,29 +133,34 @@ for name, params in pairs(hooks) do
         end
 
         if name == "leave" then
+            args[1]:saveData()
+
             args[1]:destroy()
-        elseif name == "buy" and sea.config.game.buy == false then
-            args[1]:notify("error", "Buying is not allowed.")
-
-            return 1
-        elseif name == "suicide" and sea.config.game.suicide == false then
-            args[1]:notify("error", "Suiciding is not allowed.")
-
-            return 1
+        elseif name == "key" then
+            for k, v in pairs(args[1].control) do
+                if v == args[2] then                  
+                    return sea.callEvent(createName(args[3] == 1 and "press" or "release", k), args[1])
+                end
+            end
+        elseif name == "second" then
+            for k, v in pairs(sea.Player.get()) do
+                v.stat["Time Played"] = v.stat["Time Played"] + 1
+            end
+        elseif name == "die" then
+            args[1].stat["Deaths"] = args[1].stat["Deaths"] + 1
+        elseif name == "kill" then
+            args[1].stat["Kills"] = args[1].stat["Kills"] + 1
         elseif name == "say" and sea.config.game.customChat then
             sea.message(0, sea.createText(sea.config.game.customChat(args[1], args[2])))
             
             return 1
         end
 
-        return sea.callEvent(name, unpack(args))
+        return sea.callEvent(createName("hook", name), unpack(args))
     end
     addhook(name, "sea.hook."..name)
 end
 
---parse("debuglua", 1)
-
--- Change default addhook function
 function addhook()
     sea.error("addhook is not valid, use sea.addEvent instead.")
 end

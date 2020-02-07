@@ -21,6 +21,28 @@ function string:toPascalCase(delimiter)
     end)
     return table.concat(tab)
 end
+
+-- @TODO: Check if this is working correctly
+function string.camelCaseToUnderscore(str)
+    local tab = {}
+    str:gsub('%u?%l+', function (c)
+        table.insert(tab, c:lower())
+    end)
+    return table.concat(tab, '_')
+end
+
+-- @TODO: Check if this is working correctly
+function string.underscoreToPascalCase(str)
+    local tab = {}
+    str:gsub('([^_]+)', function (c)
+        table.insert(tab, c:upperFirst())
+    end)
+    return table.concat(tab)
+end
+
+function string.camelCaseToPascalCase(str)
+    return str:upperFirst()
+end
  
 -- Math
 function math.round(num,base)

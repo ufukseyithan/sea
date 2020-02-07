@@ -64,7 +64,7 @@ function sea.Item.get()
         table.insert(items, item)
     end
 
-    return allObjectsMetaTable(items)
+    return items
 end
 
 --[[
@@ -77,7 +77,7 @@ function sea.Item.getCloseToPlayer(player, radius)
 		table.insert(items, sea.item[id])
 	end
 
-	return allObjectsMetaTable(items)
+	return items
 end
 
 function sea.Item.getAt(x, y)
@@ -89,7 +89,7 @@ function sea.Item.getAt(x, y)
 		end
     end
 
-    return allObjectsMetaTable(items)
+    return items
 end
 
 -------------------------

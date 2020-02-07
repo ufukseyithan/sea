@@ -94,8 +94,10 @@ end
 sea.path.lua = getLocalPath()
 
 print("[Sea] Loading library...")
+
 sea.path.lib = sea.path.lua.."lib/"
 dofileDirectory(sea.path.lib, ".lua")
+
 print("[Sea] Library has been loaded.")
 
 -------------------------
@@ -103,30 +105,14 @@ print("[Sea] Library has been loaded.")
 -------------------------
 
 print("[Sea] Loading core scripts...")
+
+dofile(sea.path.lua.."command.lua")
 dofile(sea.path.lua.."functions.lua")
+
 sea.path.config = sea.path.lua.."config.lua"
 dofile(sea.path.config)
+
 dofile(sea.path.lua.."event.lua")
-
---[[
-    This function is for tables that contain objects (for example: sea.Player.get(), sea.Item.get())
-
-    @TODO: A better name is kinda needed in here
-]]
-function allObjectsMetaTable(tbl)
-    return setmetatable(tbl, {
-		__index = function(tbl, key)
-			for k, v in pairs(tbl) do
-				return v[key]
-			end
-		end,	
-		__newindex = function(tbl, key, value)
-			for k, v in pairs(tbl) do
-				v[key] = value
-			end
-		end
-	})
-end
 
 --[[
     sea.game
@@ -158,11 +144,13 @@ end
 ]]
 
 sea.path.src = sea.path.lua.."src/"
+sea.path.data = sea.path.lua.."data/"
 dofileDirectory(sea.path.src, ".lua", true)
-sea.success("Core scripts have been loaded.")
 
-sea.map = sea.Map:new()
-sea.game = sea.Game:new()
+sea.game = sea.Game.new()
+sea.map = sea.Map.new()
+
+sea.success("Core scripts have been loaded.")
 
 -------------------------
 --         APPS        --
@@ -180,7 +168,6 @@ if not table.isEmpty(appDirectoryPaths) then
     end
 
     sea.info("Initialized "..table.count(sea.app).."/"..table.count(appDirectoryPaths).." app directories in total.")
-    sea.info("Type \"app info <app name>\" in console to see the details of an app.")
 else
     sea.info("No app directories have been found to initialize.")
 end
@@ -188,6 +175,8 @@ end
 -------------------------
 --         INIT        --
 -------------------------
+
+sea.info("Putting the final touches...")
 
 sea.updateServerTransferList()
 
@@ -201,4 +190,4 @@ for _, v in pairs(sea.config.player.control) do
     addbind(v[1])
 end
 
-sea.success("Sea Framework v"..sea.version.." has been loaded and is ready to use!")
+sea.success("Sea Framework v"..sea.version.." is up and running!")

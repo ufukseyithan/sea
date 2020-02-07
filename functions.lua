@@ -3,8 +3,8 @@ function sea.getColor(name, category)
 end
 
 function sea.createText(text, color, prefix, prefixColor)
-    local prefix = prefix and "©"..(prefixColor or sea.getColor("default", "system"))..prefix or "" 
-    return prefix.." ©"..(color or sea.getColor("default", "system"))..text
+    local prefix = prefix and "©"..(prefixColor or sea.getColor("default", "system"))..prefix.." " or "" 
+    return prefix.."©"..(color or sea.getColor("default", "system"))..text
 end
 
 function sea.createSystemText(text, color, prefix, prefixColor)
@@ -49,10 +49,6 @@ function sea.consoleMessage(id, text)
     else
         parse("cmsg", text, id)
     end
-end
-
-function sea.notify(id, type, text)
-    sea.message(id, sea.createText(text, sea.getColor(type, "system")))
 end
 
 function sea.createArticle(title, content, imagePath)
@@ -289,6 +285,7 @@ function sea.initApp(directory)
         app.config, app.path.config = config, configPath
     end
 
+    _G[app.namespace] = {}
     local loadedScripts = 0
     if app.scripts then
         for _, path in ipairs(app.scripts) do
@@ -297,6 +294,8 @@ function sea.initApp(directory)
             end
         end
     end  
+    sea[app.namespace] = _G[app.namespace]
+    _G[app.namespace] = nil
 
     sea.app[app.namespace] = app 
 
@@ -329,13 +328,13 @@ function sea.addColor(name, color)
     local customColor = sea.config.color.custom
 
     if customColor[name] then
-        sea.error("The custom color "..name.." cannot be added, it already exists.")
+        sea.error("The color "..name.." cannot be added, it already exists.")
         return false
     end
 
     customColor[name] = color
 
-    sea.info("Added custom color: "..sea.createText(""..name, color))
+    sea.info("Added color: "..sea.createText(name, color))
 
     return true
 end
