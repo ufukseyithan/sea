@@ -2,6 +2,10 @@ function sea.getColor(name, category)
     return category and sea.config.color[category][name] or sea.config.color.custom[name]
 end
 
+function sea.getTeamColor(team)
+    return sea.game.gameMode == 1 and sea.getColor(3, "team") or (team == 3 and sea.getColor(2, "team") or sea.getColor(team, "team"))
+end
+
 function sea.createText(text, color, prefix, prefixColor)
     local prefix = prefix and "©"..(prefixColor or sea.getColor("default", "system"))..prefix.." " or "" 
     return prefix.."©"..(color or sea.getColor("default", "system"))..text
@@ -65,25 +69,25 @@ function sea.loadScript(path)
     end
 
     if not io.exists(path) then
-        sea.error("The script "..path.." cannot be loaded, it does not exist.")
+        sea.error("The script \""..path.."\" cannot be loaded, it does not exist.")
         return false
     end
 
     dofile(path)
 
-    sea.info("Loaded script: "..path)
+    sea.info("Loaded script: \""..path)
 
     return true
 end
 
 function sea.addTransferFile(path, response, update)
 	if not io.exists(path) then
-		sea.error("The file "..path.." cannot be added as a transfer file, it does not exist.")
+		sea.error("The file \""..path.."\" cannot be added as a transfer file, it does not exist.")
 		return false
     end
     
     if io.isDirectory(path) then
-        sea.error("The file "..path.." cannot be added as a transfer file, it is a directory.")
+        sea.error("The file \""..path.."\" cannot be added as a transfer file, it is a directory.")
 		return false
     end
 
@@ -95,21 +99,21 @@ function sea.addTransferFile(path, response, update)
     end
 
     if not hasUnsupportedFormat then
-        sea.error("The file "..path.." cannot be added as a transfer file, its format is not supported.")
+        sea.error("The file \""..path.."\" cannot be added as a transfer file, its format is not supported.")
         return false
     end
 
     local file = io.open(path)
     local fileSizeInKB = math.round(file:seek("end") / 1024, 2)
     if fileSizeInKB >= 250 then
-        sea.warning("The size of the file "..path.." is "..fileSizeInKB.." KB, some players may not be able to download it.")
+        sea.warning("The size of the file \""..path.."\" is "..fileSizeInKB.." KB, some players may not be able to download it.")
     end
     file:close()
 
     table.insert(sea.transferFiles, path)
     
     if response then
-        sea.success("Added transfer file: "..path)
+        sea.success("Added transfer file: \""..path.."\"")
     end
 
     if update then
@@ -130,7 +134,7 @@ function sea.updateServerTransferList(response)
 		file:write(v.."\n")
 		
 		if response then
-			sea.success("The file "..v.." has been added to the server transfer list.")
+			sea.success("The file \""..v.."\" has been added to the server transfer list.")
         end
         
         addedFiles = addedFiles + 1
@@ -149,14 +153,14 @@ function sea.initApp(directory)
     
     local mainPath = directory.."main.lua"
     if not io.exists(mainPath) then
-        sea.error("The app directory "..directory.." cannot be loaded, it does not include main.lua.")
+        sea.error("The app directory \""..directory.."\" cannot be loaded, it does not include main.lua.")
         return false
     end
 
     app = dofile(mainPath)
 
     if not app.namespace then
-        sea.error("The app directory "..directory.." cannot be loaded, namespace is not defined.")
+        sea.error("The app directory \""..directory.."\" cannot be loaded, namespace is not defined in the main.lua.")
         return false
     end
 
@@ -194,11 +198,6 @@ function sea.initApp(directory)
                         end
                     end
                 end,
-                game = function()
-                    for name, value in pairs(content) do
-                        sea.setGameOption(name, value)
-                    end
-                end,
                 player = function()
                     for k, v in pairs(content) do
                         switch(k) {
@@ -230,9 +229,9 @@ function sea.initApp(directory)
                                     end
                                 end
                             end,
-                            setting = function()
+                            option = function()
                                 for name, v in pairs(v) do
-                                    if sea.addPlayerSetting(name, v[1], v[2]) then 
+                                    if sea.addPlayerOption(name, v[1], v[2]) then 
                                         successfulConfig = successfulConfig + 1
                                     end
                                 end
@@ -310,20 +309,6 @@ end
 --     CONFIG FUNCS    --
 -------------------------
 
-function sea.setGameOption(name, value)
-    local gameOption = sea.config.game
-
-    local temp = gameOption[name]
-
-    gameOption[name] = value
-
-    sea.info("Set game option: "..name)
-
-    if temp then
-        sea.warning("The game option "..name.." was already set, setting it to a new value may occur conflicts among apps.")
-    end
-end
-
 function sea.addColor(name, color)
     local customColor = sea.config.color.custom
 
@@ -399,17 +384,17 @@ function sea.addPlayerMethod(name, func)
     return true
 end
 
-function sea.addPlayerSetting(name, defaultValue, values)
-    local playerSetting = sea.config.player.setting
+function sea.addPlayerOption(name, defaultValue, values)
+    local playerOption = sea.config.player.option
 
-    if playerSetting[name] then
-        sea.error("The player setting "..name.." cannot be added, it already exists.")
+    if playerOption[name] then
+        sea.error("The player option "..name.." cannot be added, it already exists.")
         return false
     end
 
-    playerSetting[name] = {defaultValue, values}
+    playerOption[name] = {defaultValue, values}
 
-    sea.info("Added player setting: "..name.." (default value: "..defaultValue..", has "..table.count(values).." different values)")
+    sea.info("Added player option: "..name.." (default value: "..defaultValue..", has "..table.count(values).." different values)")
 
     return true
 end

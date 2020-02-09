@@ -6,7 +6,6 @@ sea.Item = class()
 	- Server start
 	- Round start (startround hook)
 	- Play drop (drop hook)
-	- Spawnitem command
 	- Item projectile? (Check item_projectile hook)
 
 	Where items could be removed:
@@ -52,7 +51,6 @@ function sea.Item.spawn(typeID, x, y, ammoIn, ammo)
 	return item
 end
 
--- Removes from the list
 function sea.Item.remove(id)
 	sea.item[id] = nil
 end
@@ -60,8 +58,8 @@ end
 function sea.Item.get()
 	local items = {}
 
-    for _, item in pairs(sea.item) do
-        table.insert(items, item)
+    for _, id in pairs(item(0, "table")) do
+        table.insert(items, sea.item[id])
     end
 
     return items

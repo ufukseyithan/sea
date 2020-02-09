@@ -15,11 +15,10 @@ function sea.Player:constructor(id)
 		self.stat[name] = v[1]
 	end
 
-
-	self.setting = {}
-	for name, v in pairs(sea.config.player.setting) do
-		if not self.setting[name] then
-			self.setting[name] = v[1]
+	self.option = {}
+	for name, v in pairs(sea.config.player.option) do
+		if not self.option[name] then
+			self.option[name] = v[1]
 		end
 	end
 
@@ -36,19 +35,19 @@ function sea.Player:destroy()
 end
 
 function sea.Player:loadData()
-	--if self.steamID ~= "0" then
+	if self.steamID ~= "0" then
 		local data = table.load(sea.path.data..self.steamID..".lua")
 
 		if data then
-			table.merge(self, data)
+			table.merge(self, data, true)
 
 			self:notification(sea.createText("Your data has been loaded."))
 		end
-	--end
+	end
 end
 
 function sea.Player:saveData()
-	--if self.steamID ~= "0" then
+	if self.steamID ~= "0" then
 		local data = {}
 
 		local function mergeData(k)
@@ -57,7 +56,7 @@ function sea.Player:saveData()
 		end
 
 		mergeData("stat")
-		mergeData("setting")
+		mergeData("option")
 		mergeData("control")
 
 		for k, v in pairs(sea.config.player.variable) do
@@ -69,7 +68,7 @@ function sea.Player:saveData()
 		table.save(data, sea.path.data..self.steamID..".lua")
 
 		self:notification(sea.createText("Your data has been saved."))
-	--end
+	end
 end
 
 --[[
@@ -159,13 +158,13 @@ end
 function sea.Player:notification(text)
 	sea.message(self.id, text)
 
-	-- @TODO: add it to the notifications
+	table.insert(self.notifications, text)
 end
 
 function sea.Player:help(text)
 	sea.message(self.id, text)
 
-	-- @TODO: add it to the help
+	table.insert(self.help, text)
 end
 
 function sea.Player:consoleMessage(text)
@@ -217,7 +216,7 @@ function sea.Player.create(id)
 
 	sea.player[id] = player
 
-	sea.info("Created player with the ID "..id)
+	sea.info("Created player (ID: "..id..")")
 
 	return player
 end
@@ -225,7 +224,7 @@ end
 function sea.Player.remove(id)
 	sea.player[id] = nil
 
-	sea.info("Removed player with the ID "..id)
+	sea.info("Removed player (ID: "..id..")")
 end
 
 local function getPlayers(mode, specific)
@@ -268,8 +267,14 @@ function sea.Player.getLivingCounterTerrorists(specific)
     return getPlayers("team2living", specific)
 end
 
-function sea.Player.getAtRadius(x, y, radius)
-	-- Use closeplayers()
+function sea.Player.getAtRadius(x, y, radius, team)
+	local players = {}
+	
+	for _, id in pairs(closeplayers(x, y, radius, team)) do
+		table.insert(players, sea.player[id])
+	end
+	
+    return players
 end
 
 -------------------------

@@ -146,14 +146,18 @@ for name, params in pairs(hooks) do
             for k, v in pairs(sea.Player.get()) do
                 v.stat["Time Played"] = v.stat["Time Played"] + 1
             end
+        elseif name == "minute" then
+            for k, v in pairs(sea.Player.get()) do
+                v:saveData()
+            end
         elseif name == "die" then
             args[1].stat["Deaths"] = args[1].stat["Deaths"] + 1
         elseif name == "kill" then
             args[1].stat["Kills"] = args[1].stat["Kills"] + 1
-        elseif name == "say" and sea.config.game.customChat then
-            sea.message(0, sea.createText(sea.config.game.customChat(args[1], args[2])))
-            
-            return 1
+        elseif name == "objectkill" then
+            msg("object destoryed")
+        elseif name == "build" then
+            msg("built")
         end
 
         return sea.callEvent(createName("hook", name), unpack(args))

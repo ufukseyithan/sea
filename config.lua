@@ -17,20 +17,15 @@ sea.config.color = {
         default = "255255255"
     },
     
-    player = {
-        spec = "255220000",
-		ct = "050150255",
-		t = "255025000",
-		tdm = "000255000"
+    team = {
+        [0] = "255220000",
+        [1] = "255025000",
+        [2] = "050150255",
+	    [3] = "000255000"
     },
 
     custom = {}
 }
-
---[[
-    customChat (function): a function (parameters: player, text) that returns text, textColor, prefix, prefixColor (last three are optional) 
-]]
-sea.config.game = {}
 
 sea.config.player = {
     info = {
@@ -46,12 +41,15 @@ sea.config.player = {
         ["Deaths"] = {0}
     },
 
-    variable = {},
+    variable = {
+        notifications = {{}},
+        help = {{}}
+    },
 
     method = {},
 
     -- @TODO: Settings should also have descriptions, see the config.lua of citylife
-    setting = {},
+    option = {},
 
     control = {
         escape = {"escape"},
