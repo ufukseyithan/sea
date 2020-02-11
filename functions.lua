@@ -174,6 +174,8 @@ function sea.initApp(directory)
         return false
     end
 
+    app.path = app.path or {}
+    
     local transferFiles = 0
     for pathName, appCustomPath in pairs(app.path) do
         if pathName == "gfx" or pathName == "sfx" then
@@ -294,7 +296,7 @@ function sea.initApp(directory)
         end
     end  
     sea[app.namespace] = _G[app.namespace]
-    _G[app.namespace] = nil
+    --_G[app.namespace] = nil
 
     sea.app[app.namespace] = app 
 

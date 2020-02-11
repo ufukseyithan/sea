@@ -3,15 +3,15 @@ sea.Item = class()
 
 --[[
 	Where items could spawn:
-	- Server start
-	- Round start (startround hook)
-	- Play drop (drop hook)
+	- Server start (done!)
+	- Round start (startround hook) (done!)
+	- Play drop (drop hook) (done!)
 	- Item projectile? (Check item_projectile hook)
 
 	Where items could be removed:
-	- Player collect (collect hook)
+	- Player collect (collect hook) (done!)
 	- Fade out (itemfadeout hook)
-	- Round start (startround hook)
+	- Round start (startround hook) (done!)
 
 	It would be a good idea to completely clear sea.item when fresh round starts
 ]]
@@ -35,6 +35,28 @@ end
 --        CONST        --
 -------------------------
 
+function sea.Item.create(id)
+	local item = sea.Item.new(id)
+
+	sea.item[id] = item
+
+	sea.info("Created item (ID: "..id..")")
+
+	return item
+end
+
+function sea.Item.remove(id)
+	sea.item[id] = nil
+
+	sea.info("Removed item (ID: "..id..")")
+end
+
+function sea.Item.generate()
+	for _, id in pairs(item(0, "table")) do
+		sea.Item.create(id)
+	end
+end
+
 function sea.Item.getLastID()
     local itemIDs = item(0, "table")
     return itemIDs[#itemIDs]
@@ -49,10 +71,6 @@ function sea.Item.spawn(typeID, x, y, ammoIn, ammo)
 	sea.item[id] = item
 
 	return item
-end
-
-function sea.Item.remove(id)
-	sea.item[id] = nil
 end
 
 function sea.Item.get()

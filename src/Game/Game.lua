@@ -432,7 +432,7 @@ function sea.Game:setFriendlyFireAttribute(value)
     parse("sv_friendlyfire", value)
 end
 
-function sea.Game:setGmAttribute(value)
+function sea.Game:setGameModeAttribute(value)
     parse("sv_gm", value)
 end
 

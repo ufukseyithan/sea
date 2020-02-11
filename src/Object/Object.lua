@@ -3,15 +3,15 @@ sea.Object = class()
 
 --[[
 	Where items could spawn:
-	- Server start
-	- Round start (startround hook)
-    - Build
+	- Server start (done!)
+	- Round start (startround hook) (done!)
+    - Build (done!)
     - Image
     - Portal gun
 
 	Where items could be removed:
-	- Object kill (objectkill hook)
-    - Round start (startround hook) ?
+	- Object kill (objectkill hook) (done!)
+    - Round start (startround hook) (done!)
     - Freeimage
 
 	It would be a good idea to completely clear sea.item when fresh round starts
@@ -30,6 +30,28 @@ end
 --        CONST        --
 -------------------------
 
+function sea.Object.create(id)
+	local object = sea.Object.new(id)
+
+	sea.object[id] = object
+
+	sea.info("Created object (ID: "..id..")")
+
+	return object
+end
+
+function sea.Object.remove(id)
+	sea.object[id] = nil
+
+	sea.info("Removed object (ID: "..id..")")
+end
+
+function sea.Object.generate()
+	for _, id in pairs(object(0, "table")) do
+		sea.Object.create(id)
+	end
+end
+
 function sea.Object.getLastID()
     local objectIDs = object(0, "table")
     return objectIDs[#objectIDs]
@@ -44,10 +66,6 @@ function sea.Object.spawn(typeID, tileX, tileY, rotation, mode, team, pid)
 	sea.object[id] = object
 
 	return object
-end
-
-function sea.Object.remove(id)
-	sea.object[id] = nil
 end
 
 function sea.Object.get()
@@ -191,4 +209,3 @@ end
 function sea.Object:setTileyAttribute(value)
 	self:setPos(self.tilex, value)
 end
-

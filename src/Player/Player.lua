@@ -151,6 +151,10 @@ function sea.Player:strip(itemID)
 	parse("strip", self.id, itemID)
 end
 
+function sea.Player:stripKnife()
+	self:strip(50)
+end
+
 function sea.Player:message(text)
 	sea.message(self.id, text)
 end

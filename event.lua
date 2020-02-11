@@ -124,6 +124,35 @@ for name, params in pairs(hooks) do
 
         if name == "join" then
             sea.Player.create(args[1]):loadData()
+        elseif name == "objectkill" then
+            sea.Object.remove(args[1])
+        elseif name == "build" then
+            sea.Object.create(args[6])
+        elseif name == "collect" then
+            sea.Item.remove(args[2])
+        elseif name == "drop" then
+            sea.Item.create(args[2])
+        elseif name == "itemfadeout" then
+            sea.Item.remove(args[2])
+        elseif name == "startround_prespawn" then
+            -- Clearing object and item tables and regenerating them
+            for id in pairs(sea.object) do
+                sea.Object.remove(id)
+            end
+            sea.Object.generate()
+
+            for id in pairs(sea.item) do
+                sea.Item.remove(id)
+            end
+            sea.Item.generate()
+        elseif name == "second" then
+            for k, v in pairs(sea.Player.get()) do
+                v.stat["Time Played"] = v.stat["Time Played"] + 1
+            end
+        elseif name == "minute" then
+            for k, v in pairs(sea.Player.get()) do
+                v:saveData()
+            end
         end
 
         for i = 1, #args do
@@ -142,22 +171,10 @@ for name, params in pairs(hooks) do
                     return sea.callEvent(createName(args[3] == 1 and "press" or "release", k), args[1])
                 end
             end
-        elseif name == "second" then
-            for k, v in pairs(sea.Player.get()) do
-                v.stat["Time Played"] = v.stat["Time Played"] + 1
-            end
-        elseif name == "minute" then
-            for k, v in pairs(sea.Player.get()) do
-                v:saveData()
-            end
         elseif name == "die" then
             args[1].stat["Deaths"] = args[1].stat["Deaths"] + 1
         elseif name == "kill" then
             args[1].stat["Kills"] = args[1].stat["Kills"] + 1
-        elseif name == "objectkill" then
-            msg("object destoryed")
-        elseif name == "build" then
-            msg("built")
         end
 
         return sea.callEvent(createName("hook", name), unpack(args))

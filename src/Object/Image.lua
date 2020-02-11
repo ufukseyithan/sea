@@ -1,2 +1,2 @@
 sea.image = {}
-sea.Image = class()
+sea.Image = class(sea.Object)
