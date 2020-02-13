@@ -36,6 +36,11 @@ end
 -------------------------
 
 function sea.Item.create(id)
+	if sea.item[id] then
+		sea.error("Attempted to create item that already exists (ID: "..id..")")
+		return
+	end
+
 	local item = sea.Item.new(id)
 
 	sea.item[id] = item
@@ -46,9 +51,13 @@ function sea.Item.create(id)
 end
 
 function sea.Item.remove(id)
-	sea.item[id] = nil
+	if sea.item[id] then
+		sea.item[id] = nil
 
-	sea.info("Removed item (ID: "..id..")")
+		sea.info("Removed item (ID: "..id..")")
+	else
+		sea.error("Attempted to remove non-existent item (ID: "..id..")")
+	end
 end
 
 function sea.Item.generate()
@@ -65,12 +74,7 @@ end
 function sea.Item.spawn(typeID, x, y, ammoIn, ammo)
 	parse("spawnitem", typeID, x, y, ammoIn, ammo)
 
-	local id = sea.Item.getLastID()
-	local item = sea.Item.new(id)
-
-	sea.item[id] = item
-
-	return item
+	return sea.Item.create(sea.Item.getLastID())
 end
 
 function sea.Item.get()
@@ -173,9 +177,9 @@ function sea.Item:setAmmoAttribute(value)
 end
 
 function sea.Item:setXAttribute(value)
-	self:setPos(value, self.y)
+	self:setPosition(value, self.y)
 end
 
 function sea.Item:setYAttribute(value)
-	self:setPos(self.x, value)
+	self:setPosition(self.x, value)
 end

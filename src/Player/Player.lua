@@ -216,6 +216,11 @@ end
 -------------------------
 
 function sea.Player.create(id)
+	if sea.player[id] then
+		sea.error("Attempted to create player that already exists (ID: "..id..")")
+		return
+	end
+
 	local player = sea.Player.new(id)
 
 	sea.player[id] = player
@@ -226,9 +231,13 @@ function sea.Player.create(id)
 end
 
 function sea.Player.remove(id)
-	sea.player[id] = nil
+	if sea.player[id] then
+		sea.player[id] = nil
 
-	sea.info("Removed player (ID: "..id..")")
+		sea.info("Removed player (ID: "..id..")")
+	else
+		sea.error("Attempted to remove non-existent player (ID: "..id..")")
+	end
 end
 
 local function getPlayers(mode, specific)

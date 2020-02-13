@@ -6,13 +6,14 @@ sea.Object = class()
 	- Server start (done!)
 	- Round start (startround hook) (done!)
     - Build (done!)
-    - Image
+    - Image (done!)
     - Portal gun
 
 	Where items could be removed:
 	- Object kill (objectkill hook) (done!)
     - Round start (startround hook) (done!)
-    - Freeimage
+	- Freeimage (done!)
+	- Portal gun
 
 	It would be a good idea to completely clear sea.item when fresh round starts
 ]]
@@ -22,8 +23,8 @@ function sea.Object:constructor(id)
 end
 
 function sea.Object:destroy()
+	-- No need to remove the object from sea.object because killobject command automatically triggers the objectkill hook
 	parse("killobject", self.id)
-	sea.Object.remove(self.id)
 end
 
 -------------------------
@@ -31,6 +32,11 @@ end
 -------------------------
 
 function sea.Object.create(id)
+	if sea.object[id] then
+		sea.error("Attempted to create object that already exists (ID: "..id..")")
+		return
+	end
+
 	local object = sea.Object.new(id)
 
 	sea.object[id] = object
@@ -41,9 +47,13 @@ function sea.Object.create(id)
 end
 
 function sea.Object.remove(id)
-	sea.object[id] = nil
+	if sea.object[id] then
+		sea.object[id] = nil
 
-	sea.info("Removed object (ID: "..id..")")
+		sea.info("Removed object (ID: "..id..")")
+	else
+		sea.error("Attempted to remove non-existent object (ID: "..id..")")
+	end
 end
 
 function sea.Object.generate()
@@ -182,11 +192,11 @@ function sea.Object:getEntityAttribute()
 	return object(self.id, "entity")
 end
 
-function sea.Object:getEntityxAttribute()
+function sea.Object:getEntityXAttribute()
 	return object(self.id, "entityx")
 end
 
-function sea.Object:getEntityyAttribute()
+function sea.Object:getEntityYAttribute()
 	return object(self.id, "entityy")
 end
 
@@ -194,18 +204,18 @@ end
 --       SETTERS       --
 -------------------------
 
-function sea.Object:setXAttribute(value)
-	self:setPos(value, self.y)
+--[[function sea.Object:setXAttribute(value)
+	self:setPosition(value, self.y)
 end
 
 function sea.Object:setYAttribute(value)
-	self:setPos(self.x, value)
+	self:setPosition(self.x, value)
 end
 
-function sea.Object:setTilexAttribute(value)
-	self:setPos(value, self.tiley)
+function sea.Object:setTileXAttribute(value)
+	self:setPosition(value, self.tiley)
 end
 
-function sea.Object:setTileyAttribute(value)
-	self:setPos(self.tilex, value)
-end
+function sea.Object:setTileYAttribute(value)
+	self:setPosition(self.tilex, value)
+end]]

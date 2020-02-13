@@ -32,7 +32,7 @@ local hooks = {
     key = {"player", true, true},
     kill = {"player", "player", "itemType", true, true, "object", "player"},
     leave = {"player", true},
-    log = {true},
+    --log = {true},
     mapchange = {true},
     menu = {"player", true, true},
     minute = {},
@@ -45,7 +45,7 @@ local hooks = {
     objectupgrade = {"object", "player", true, true},
     parse = {true},
     projectile = {"player", "itemType", true, true},
-    projectile_impact = {"player", "itemType", true, true, true, "projectile"},
+    projectile_impact = {"player", "itemType", true, true, true, true},
     radio = {"player", true},
     rcon = {true, "player", true, true},
     reload = {"player", true},
@@ -135,7 +135,7 @@ for name, params in pairs(hooks) do
         elseif name == "itemfadeout" then
             sea.Item.remove(args[2])
         elseif name == "startround_prespawn" then
-            -- Clearing object and item tables and regenerating them
+            -- Clearing object and item tables and regenerating them as they are removed at each round start
             for id in pairs(sea.object) do
                 sea.Object.remove(id)
             end
