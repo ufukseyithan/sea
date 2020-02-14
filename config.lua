@@ -43,7 +43,8 @@ sea.config.player = {
 
     variable = {
         notifications = {{}},
-        help = {{}}
+        help = {{}},
+        menu = {false}
     },
 
     method = {},
@@ -80,11 +81,21 @@ sea.config.mainMenuTabs = {
     ["Map"] = {
         
     },
-    ["Brief"] = { -- Notifications, helps
+    ["Brief"] = { -- Notifications, help
+        ["Notifications"] = {function(player)
 
+        end, "Display the notifications you have received in this session."},
+        ["Help"] = {function(player)
+
+        end, "Display the help messages you have received in this session."},
     },
     ["Player"] = { -- Info, stats
+        ["Info"] = {function(player)
+            
+        end, "Display player info."},
+        ["Statistics"] = {function(player)
 
+        end, "Display player statistics."},
     },
     ["Server"] = { -- Server info, news, administration stuff for admins
 

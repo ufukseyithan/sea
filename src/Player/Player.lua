@@ -90,6 +90,12 @@ function Player:getInfo(name, ...)
 	return sea.config.player.info[name](self, ...)
 end
 
+function Player:displayMenu(menu, page)
+	menu:show(self, page)
+
+	self.menu = menu
+end
+
 function Player:kick(reason)
 	parse("kick", self.id, reason)
 end
