@@ -1,12 +1,12 @@
 sea.projectile = {}
-sea.Projectile = class()
+local Projectile = class()
 
 --[[
     WARNING: Since CS2D does not have a hook or something like that where it would be possible to get the ID of the project that is needed
     to create a projectile class, this class is not yet usable. If CS2D gets a related update, this can have a use.
 ]]
 
-function sea.Projectile:constructor(listID, id)
+function Projectile:constructor(listID, id)
     self.listID = id
     self.id = id
 end
@@ -15,13 +15,13 @@ end
 --        CONST        --
 -------------------------
 
-function sea.Projectile.create(listID, id)
+function Projectile.create(listID, id)
     if sea.projectile[id] then
 		sea.error("Attempted to create projectile that already exists (ID: "..id..")")
 		return
     end
     
-	local projectile = sea.Projectile.new(listID, id)
+	local projectile = Projectile.new(listID, id)
 
     table.insert2D(sea.projectile, listID, id, projectile)
 
@@ -30,7 +30,7 @@ function sea.Projectile.create(listID, id)
 	return projectile
 end
 
-function sea.Projectile.remove(listID, id)
+function Projectile.remove(listID, id)
     if sea.item[listID][id] then
         sea.item[listID][id] = nil
 
@@ -43,53 +43,55 @@ end
 --[[
     @mode (number) : can be either 0 (flying objects) or 1 (ground projectiles)
 ]]
-function sea.Projectile.getLastID(mode, listID)
+function Projectile.getLastID(mode, listID)
     local projectileIDs = projectile(mode, listID, "table")
     return projectileIDs[#projectileIDs]
 end
 
-function sea.Projectile.spawn(listID, itemTypeID, x, y, range, direction)
+function Projectile.spawn(listID, itemTypeID, x, y, range, direction)
     parse("spawnprojectile", listID, itemTypeID, x, y, range, direction)
 
-    return sea.Projectile.create(listID, sea.Projectile.getLastID(0, listID))
+    return Projectile.create(listID, Projectile.getLastID(0, listID))
 end
 
 -------------------------
 --       GETTERS       --
 -------------------------
 
-function sea.Projectile:getExistsAttribute()
+function Projectile:getExistsAttribute()
     return projectile(self.id, self.listID, "exists")
 end
 
-function sea.Projectile:getItemTypeIDAttribute()
+function Projectile:getItemTypeIDAttribute()
     return projectile(self.id, self.listID, "type")
 end
 
-function sea.Projectile:getItemTypeAttribute()
+function Projectile:getItemTypeAttribute()
     return sea.itemType[self.itemTypeID]
 end
 
-function sea.Projectile:getXAttribute()
+function Projectile:getXAttribute()
     return projectile(self.id, self.listID, "x")
 end
 
-function sea.Projectile:getYAttribute()
+function Projectile:getYAttribute()
     return projectile(self.id, self.listID, "y")
 end
 
-function sea.Projectile:getDirectionAttribute()
+function Projectile:getDirectionAttribute()
     return projectile(self.id, self.listID, "dir")
 end
 
-function sea.Projectile:getRotationAttribute()
+function Projectile:getRotationAttribute()
     return projectile(self.id, self.listID, "rotation")
 end
 
-function sea.Projectile:getFlyDistanceAttribute()
+function Projectile:getFlyDistanceAttribute()
     return projectile(self.id, self.listID, "flydist")
 end
 
-function sea.Projectile:getTimeAttribute()
+function Projectile:getTimeAttribute()
     return projectile(self.id, self.listID, "time")
 end
+
+return Projectile

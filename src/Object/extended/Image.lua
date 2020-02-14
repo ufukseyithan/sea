@@ -1,57 +1,54 @@
--- @TODO: Inherit from the Object class
-sea.Image = class()
+local Image = class(sea.Object)
 
-function sea.Image:constructor(path, x, y, mode)
+function Image:constructor(path, x, y, mode)
     self.id = image(path, x, y, mode)
 
 	sea.Object.create(self.id)
 end
 
-function sea.Image:destroy()
+function Image:destroy()
 	freeimage(self.id)
 
 	sea.Object.remove(self.id)
 end
 
-function sea.Image:scale(x, y)
+function Image:scale(x, y)
 	imagescale(self.id, x, y)
 end
 
-function sea.Image:hitZone(mode, xOffset, yOffset, width, height)
+function Image:hitZone(mode, xOffset, yOffset, width, height)
 	imagehitzone(self.id, mode, xOffset, yOffset, width, height)
 end
 
--- @TODO: Maybe a better tween functioning? First consider how would you like to use tween functions in code
-
-function sea.Image:tweenAlpha(time, alpha)
+function Image:tweenAlpha(time, alpha)
 	tween_alpha(self.id, time, alpha)
 end
 
-function sea.Image:tweenAnimate(speed, mode)
+function Image:tweenAnimate(speed, mode)
 	tween_animate(self.id, speed, mode)
 end
 
-function sea.Image:tweenColor(time, r, g, b)
+function Image:tweenColor(time, r, g, b)
 	tween_color(self.id, time, r, g, b)
 end
 
-function sea.Image:tweenFrame(time, frame)
+function Image:tweenFrame(time, frame)
 	tween_frame(self.id, time, frame)
 end
 
-function sea.Image:tweenMove(time, x, y, rotation)
+function Image:tweenMove(time, x, y, rotation)
 	tween_move(self.id, time, x, y, rotation)
 end
 
-function sea.Image:tweenRotate(time, rotation)
+function Image:tweenRotate(time, rotation)
 	tween_rotate(self.id, time, rotation)
 end
 
-function sea.Image:tweenRotateConstantly(speed)
+function Image:tweenRotateConstantly(speed)
 	tween_rotateconstantly(self.id, speed)
 end
 
-function sea.Image:tweenScale(time, x, y)
+function Image:tweenScale(time, x, y)
 	tween_scale(self.id, time, x, y)
 end
 
@@ -59,39 +56,39 @@ end
 --       GETTERS       --
 -------------------------
 
-function sea.Image:getXAttribute()
+function Image:getXAttribute()
 	return imageparam(self.id, "x")
 end
 
-function sea.Image:getYAttribute()
+function Image:getYAttribute()
 	return imageparam(self.id, "y")
 end
 
-function sea.Image:getRotationAttribute()
+function Image:getRotationAttribute()
 	return imageparam(self.id, "rot")
 end
 
-function sea.Image:getAlphaAttribute()
+function Image:getAlphaAttribute()
 	return imageparam(self.id, "alpha")
 end
 
-function sea.Image:getPathAttribute()
+function Image:getPathAttribute()
 	return imageparam(self.id, "path")
 end
 
-function sea.Image:getFrameAttribute()
+function Image:getFrameAttribute()
 	return imageparam(self.id, "frame")
 end
 
-function sea.Image:getWidthAttribute()
+function Image:getWidthAttribute()
 	return imageparam(self.id, "width")
 end
 
-function sea.Image:getHeightAttribute()
+function Image:getHeightAttribute()
 	return imageparam(self.id, "height")
 end
 
-function sea.Image:getFrameCountAttribute()
+function Image:getFrameCountAttribute()
 	return imageparam(self.id, "framecount")
 end
 
@@ -99,30 +96,32 @@ end
 --       SETTERS       --
 -------------------------
 
-function sea.Image:setAlphaAttribute(value)
+function Image:setAlphaAttribute(value)
 	imagealpha(self.id, value)
 end
 
-function sea.Image:setBlendModeAttribute(value)
+function Image:setBlendModeAttribute(value)
 	imageblend(self.id, value)
 end
 
-function sea.Image:setColorAttribute(value)
+function Image:setColorAttribute(value)
 	imagecolor(self.id, value[1], value[2], value[3])
 end
 
-function sea.Image:setFrameAttribute(value)
+function Image:setFrameAttribute(value)
 	imageframe(self.id, value)
 end
 
-function sea.Image:setXAttribute(value)
+function Image:setXAttribute(value)
 	imagepos(self.id, value, self.y, self.rotation)
 end
 
-function sea.Image:setYAttribute(value)
+function Image:setYAttribute(value)
 	imagepos(self.id, self.x, value, self.rotation)
 end
 
-function sea.Image:setRotationAttribute(value)
+function Image:setRotationAttribute(value)
 	imagepos(self.id, self.x, self.y, value)
 end
+
+return Image

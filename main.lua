@@ -21,8 +21,8 @@ function table.mergeValues(tbl, tbl2)
     end
 end
 
--- This can be removed if io.isdir gets updated
 function io.isDirectory(path)
+    -- This can be removed if io.isdir gets updated
     path = (path:sub(-1) == "/" or path:sub(-1) == "\\") and path:sub(1, -2) or path
     return io.isdir(path)
 end
@@ -104,59 +104,46 @@ print("[Sea] Library has been loaded.")
 --         CORE        --
 -------------------------
 
-print("[Sea] Loading core scripts...")
+print("[Sea] Loading core...")
 
-dofile(sea.path.lua.."command.lua")
-dofile(sea.path.lua.."functions.lua")
+require(sea.path.lua.."command")
+require(sea.path.lua.."functions")
 
 sea.path.config = sea.path.lua.."config.lua"
 dofile(sea.path.config)
 
-dofile(sea.path.lua.."event.lua")
-
---[[
-    sea.game
-    sea.Game
-
-    sea.item
-    sea.Item
-    sea.itemType
-    sea.ItemType
-    sea.projectile
-    sea.Projectile
-
-    sea.entity
-    sea.Entity
-    sea.map
-    sea.Map
-    sea.tile
-    sea.Tile
-
-    sea.image
-    sea.Image
-    sea.object
-    sea.Object
-    sea.objectType
-    sea.ObjectType
-
-    sea.player
-    sea.Player
-]]
+require(sea.path.lua.."event")
 
 sea.path.src = sea.path.lua.."src/"
 sea.path.data = sea.path.lua.."data/"
-dofileDirectory(sea.path.src, ".lua", true)
+
+local function initClass(directoryPath)
+    for file in io.enumdir(directoryPath) do
+        if file:sub(-4) == '.lua' then
+            local name = file:sub(1, -5)
+            sea[name] = require(directoryPath..name)
+        end
+    end
+end
+
+for _, srcDirectoryPath in pairs(io.getDirectoryPaths(sea.path.src)) do
+    initClass(srcDirectoryPath)
+
+    initClass(srcDirectoryPath.."extended/")
+end
+--dofileDirectory(sea.path.src, ".lua", true)
+
+sea.success("Core has been loaded.")
+
+-------------------------
+--         INIT        --
+-------------------------
 
 sea.game = sea.Game.new()
 sea.map = sea.Map.new()
 
-sea.success("Core scripts have been loaded.")
-
--------------------------
---         APPS        --
--------------------------
-
 sea.info("Checking app directories...")
+
 sea.path.app = sea.path.lua.."app/"
 local appDirectoryPaths = io.getDirectoryPaths(sea.path.app)
 
@@ -172,10 +159,6 @@ if not table.isEmpty(appDirectoryPaths) then
 else
     sea.info("No app directories have been found to initialize.")
 end
-
--------------------------
---         INIT        --
--------------------------
 
 sea.info("Putting the final touches...")
 

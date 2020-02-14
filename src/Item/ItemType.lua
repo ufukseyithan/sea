@@ -1,59 +1,59 @@
 sea.itemType = {}
-sea.ItemType = class()
+local ItemType = class()
 
-function sea.ItemType:constructor(id)
+function ItemType:constructor(id)
     self.id = id
 end
 
-function sea.ItemType:getNameAttribute()
+function ItemType:getNameAttribute()
 	return itemtype(self.id, "name")
 end
 
-function sea.ItemType:getDamageAttribute()
+function ItemType:getDamageAttribute()
 	return itemtype(self.id, "dmg")
 end
 
-function sea.ItemType:getDamageZoom1Attribute()
+function ItemType:getDamageZoom1Attribute()
 	return itemtype(self.id, "dmg_z1")
 end
 
-function sea.ItemType:getDamageZoom2Attribute()
+function ItemType:getDamageZoom2Attribute()
 	return itemtype(self.id, "dmg_z2")
 end
 
-function sea.ItemType:getRateAttribute()
+function ItemType:getRateAttribute()
 	return itemtype(self.id, "rate")
 end
 
-function sea.ItemType:getReloadAttribute()
+function ItemType:getReloadAttribute()
 	return itemtype(self.id, "reload")
 end
 
-function sea.ItemType:getAmmoAttribute()
+function ItemType:getAmmoAttribute()
 	return itemtype(self.id, "ammo")
 end
 
-function sea.ItemType:getAmmoInAttribute()
+function ItemType:getAmmoInAttribute()
 	return itemtype(self.id, "ammoin")
 end
 
-function sea.ItemType:getPriceAttribute()
+function ItemType:getPriceAttribute()
 	return itemtype(self.id, "price")
 end
 
-function sea.ItemType:getRangeAttribute()
+function ItemType:getRangeAttribute()
 	return itemtype(self.id, "range")
 end
 
-function sea.ItemType:getDispersionAttribute()
+function ItemType:getDispersionAttribute()
 	return itemtype(self.id, "dispersion")
 end
 
-function sea.ItemType:getSlotAttribute()
+function ItemType:getSlotAttribute()
 	return itemtype(self.id, "slot")
 end
 
-function sea.ItemType:getRecoilAttribute()
+function ItemType:getRecoilAttribute()
 	return itemtype(self.id, "recoil")
 end
 
@@ -69,5 +69,7 @@ local typeIDs = {
 }
 
 for _, typeID in pairs(typeIDs) do
-    sea.itemType[typeID] = sea.ItemType.new(typeID)
+    sea.itemType[typeID] = ItemType.new(typeID)
 end
+
+return ItemType

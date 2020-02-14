@@ -153,24 +153,24 @@ function sea.initApp(directory)
     
     local mainPath = directory.."main.lua"
     if not io.exists(mainPath) then
-        sea.error("The app directory \""..directory.."\" cannot be loaded, it does not include main.lua.")
+        sea.error("The app directory \""..directory.."\" cannot be initialized, it does not include main.lua.")
         return false
     end
 
     app = dofile(mainPath)
 
     if not app.namespace then
-        sea.error("The app directory \""..directory.."\" cannot be loaded, namespace is not defined in the main.lua.")
+        sea.error("The app directory \""..directory.."\" cannot be initialized, namespace is not defined in the main.lua.")
         return false
     end
 
     if app.disabled then
-        sea.info("The app "..app.name.." is not loaded as it is disabled.")
+        sea.warning("The app "..app.name.." is not initialized as it is disabled.")
         return false
     end
 
     if sea.app[app.namespace] then
-        sea.error("The app with the namespace "..app.namespace.." cannot be loaded, it already exists.")
+        sea.error("The app with the namespace "..app.namespace.." cannot be initialized, it already exists.")
         return false
     end
 

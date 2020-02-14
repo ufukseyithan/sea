@@ -1,5 +1,5 @@
 sea.object = {}
-sea.Object = class()
+local Object = class()
 
 --[[
 	Where items could spawn:
@@ -14,15 +14,13 @@ sea.Object = class()
     - Round start (startround hook) (done!)
 	- Freeimage (done!)
 	- Portal gun
-
-	It would be a good idea to completely clear sea.item when fresh round starts
 ]]
 
-function sea.Object:constructor(id)
+function Object:constructor(id)
     self.id = id
 end
 
-function sea.Object:destroy()
+function Object:destroy()
 	-- No need to remove the object from sea.object because killobject command automatically triggers the objectkill hook
 	parse("killobject", self.id)
 end
@@ -31,13 +29,13 @@ end
 --        CONST        --
 -------------------------
 
-function sea.Object.create(id)
+function Object.create(id)
 	if sea.object[id] then
 		sea.error("Attempted to create object that already exists (ID: "..id..")")
 		return
 	end
 
-	local object = sea.Object.new(id)
+	local object = Object.new(id)
 
 	sea.object[id] = object
 
@@ -46,7 +44,7 @@ function sea.Object.create(id)
 	return object
 end
 
-function sea.Object.remove(id)
+function Object.remove(id)
 	if sea.object[id] then
 		sea.object[id] = nil
 
@@ -56,29 +54,24 @@ function sea.Object.remove(id)
 	end
 end
 
-function sea.Object.generate()
+function Object.generate()
 	for _, id in pairs(object(0, "table")) do
-		sea.Object.create(id)
+		Object.create(id)
 	end
 end
 
-function sea.Object.getLastID()
+function Object.getLastID()
     local objectIDs = object(0, "table")
     return objectIDs[#objectIDs]
 end
 
-function sea.Object.spawn(typeID, tileX, tileY, rotation, mode, team, pid)
+function Object.spawn(typeID, tileX, tileY, rotation, mode, team, pid)
 	parse("spawnobject", typeID, tileX, tileY, rotation, mode, team, pid)
 
-	local id = sea.Object.getLastID()
-	local object = sea.Object.new(id)
-
-	sea.object[id] = object
-
-	return object
+	return Object.create(Object.getLastID())
 end
 
-function sea.Object.get()
+function Object.get()
 	local objects = {}
 
     for _, id in pairs(object(0, "table")) do
@@ -88,7 +81,7 @@ function sea.Object.get()
     return objects
 end
 
-function sea.Object.getAt(x, y, typeID)
+function Object.getAt(x, y, typeID)
 	local objects = {}
 	
 	for _, id in pairs(objectat(x, y, typeID)) do
@@ -98,7 +91,7 @@ function sea.Object.getAt(x, y, typeID)
     return objects
 end
 
-function sea.Object.getAtRadius(x, y, radius, typeID)
+function Object.getAtRadius(x, y, radius, typeID)
 	local objects = {}
 	
 	for _, id in pairs(closeobjects(x, y, radius, typeID)) do
@@ -112,91 +105,87 @@ end
 --       GETTERS       --
 -------------------------
 
-function sea.Object:getExistsAttribute()
+function Object:getExistsAttribute()
 	return object(self.id, "exists")
 end
 
-function sea.Object:getTypenameAttribute()
+function Object:getTypeNameAttribute()
 	return object(self.id, "typename")
 end
 
-function sea.Object:getTypeIdAttribute()
+function Object:getTypeIDAttribute()
 	return object(self.id, "type")
 end
 
-function sea.Object:getHealthAttribute()
+function Object:getHealthAttribute()
 	return object(self.id, "health")
 end
 
-function sea.Object:getModeAttribute()
+function Object:getModeAttribute()
 	return object(self.id, "mode")
 end
 
-function sea.Object:getTeamAttribute()
+function Object:getTeamAttribute()
 	return object(self.id, "team")
 end
 
-function sea.Object:getPlayerIdAttribute()
-	return object(self.id, "id")
-end
-
-function sea.Object:getUserIdAttribute()
+function Object:getPlayerIDAttribute()
     return object(self.id, "player")
 end
 
-function sea.Object:getXAttribute()
+function Object:getXAttribute()
 	return object(self.id, "x")
 end
 
-function sea.Object:getYAttribute()
+function Object:getYAttribute()
 	return object(self.id, "y")
 end
 
-function sea.Object:getRotAttribute()
+function Object:getRotationAttribute()
 	return object(self.id, "rot")
 end
 
-function sea.Object:getTilexAttribute()
+function Object:getTileXAttribute()
 	return object(self.id, "tilex")
 end
 
-function sea.Object:getTileyAttribute()
+function Object:getTileYAttribute()
 	return object(self.id, "tiley")
 end
 
-function sea.Object:getCountdownAttribute()
+function Object:getCountdownAttribute()
 	return object(self.id, "countdown")
 end
 
-function sea.Object:getRootrotAttribute()
+function Object:getRootRotationAttribute()
 	return object(self.id, "rootrot")
 end
 
-function sea.Object:getIdleAttribute()
+function Object:getIdleAttribute()
 	return object(self.id, "idle")
 end
 
-function sea.Object:getRotvarAttribute()
+function Object:getRotationVariableAttribute()
 	return object(self.id, "rotvar")
 end
 
-function sea.Object:getTargetAttribute()
+function Object:getTargetAttribute()
 	return object(self.id, "target")
 end
 
-function sea.Object:getUpgradeAttribute()
+function Object:getUpgradeAttribute()
 	return object(self.id, "upgrade")
 end
 
-function sea.Object:getEntityAttribute()
+function Object:getEntityAttribute()
 	return object(self.id, "entity")
 end
 
-function sea.Object:getEntityXAttribute()
+function Object:getEntityXAttribute()
 	return object(self.id, "entityx")
 end
 
-function sea.Object:getEntityYAttribute()
+function Object:getEntityYAttribute()
 	return object(self.id, "entityy")
 end
 
@@ -204,18 +193,20 @@ end
 --       SETTERS       --
 -------------------------
 
---[[function sea.Object:setXAttribute(value)
+--[[function Object:setXAttribute(value)
 	self:setPosition(value, self.y)
 end
 
-function sea.Object:setYAttribute(value)
+function Object:setYAttribute(value)
 	self:setPosition(self.x, value)
 end
 
-function sea.Object:setTileXAttribute(value)
+function Object:setTileXAttribute(value)
 	self:setPosition(value, self.tiley)
 end
 
-function sea.Object:setTileYAttribute(value)
+function Object:setTileYAttribute(value)
 	self:setPosition(self.tilex, value)
 end]]
+
+return Object

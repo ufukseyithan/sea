@@ -1,7 +1,7 @@
 sea.objectType = {}
-sea.ObjectType = class()
+local ObjectType = class()
 
-function sea.ObjectType:constructor(id)
+function ObjectType:constructor(id)
     self.id = id
 end
 
@@ -9,43 +9,43 @@ end
 --       GETTERS       --
 -------------------------
 
-function sea.ObjectType:getNameAttribute()
+function ObjectType:getNameAttribute()
 	return objecttype(self.id, "name")
 end
 
-function sea.ObjectType:getInternalnameAttribute()
+function ObjectType:getInternalnameAttribute()
 	return objecttype(self.id, "internalname")
 end
 
-function sea.ObjectType:getTypeAttribute()
+function ObjectType:getTypeAttribute()
 	return objecttype(self.id, "type")
 end
 
-function sea.ObjectType:getPriceAttribute()
+function ObjectType:getPriceAttribute()
 	return objecttype(self.id, "price")
 end
 
-function sea.ObjectType:getHealthAttribute()
+function ObjectType:getHealthAttribute()
 	return objecttype(self.id, "health")
 end
 
-function sea.ObjectType:getKillmoneyAttribute()
+function ObjectType:getKillmoneyAttribute()
 	return objecttype(self.id, "killmoney")
 end
 
-function sea.ObjectType:getLimitAttribute()
+function ObjectType:getLimitAttribute()
 	return objecttype(self.id, "limit")
 end
 
-function sea.ObjectType:getUpgradepointsAttribute()
+function ObjectType:getUpgradepointsAttribute()
 	return objecttype(self.id, "upgradepoints")
 end
 
-function sea.ObjectType:getUpgradepriceAttribute()
+function ObjectType:getUpgradepriceAttribute()
 	return objecttype(self.id, "upgradeprice")
 end
 
-function sea.ObjectType:getUpgradetoAttribute()
+function ObjectType:getUpgradetoAttribute()
 	return objecttype(self.id, "upgradeto")
 end
 
@@ -53,15 +53,15 @@ end
 --       SETTERS       --
 -------------------------
 
-function sea.ObjectType:setHealthAttribute(value)
+function ObjectType:setHealthAttribute(value)
 	parse("mp_building_health", self.name, value)
 end
 
-function sea.ObjectType:setPriceAttribute(value)
+function ObjectType:setPriceAttribute(value)
 	parse("mp_building_price", self.name, value)
 end
 
-function sea.ObjectType:setLimitAttribute(value)
+function ObjectType:setLimitAttribute(value)
 	parse("mp_building_limit", self.name, value)
 end
 
@@ -77,5 +77,7 @@ local typeIDs = {
 }
 
 for _, typeID in pairs(typeIDs) do
-    sea.objectType[typeID] = sea.ObjectType.new(typeID)
+    sea.objectType[typeID] = ObjectType.new(typeID)
 end
+
+return ObjectType

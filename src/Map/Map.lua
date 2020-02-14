@@ -1,13 +1,13 @@
-sea.Map = class()
+local Map = class()
 
-function sea.Map:constructor()
+function Map:constructor()
 	self.tile = sea.tile
 	self.entity = sea.entity
 
 	self:generate()
 end
 
-function sea.Map:generate()
+function Map:generate()
     for x = 0, self.xSize - 1 do
         for y = 0, self.ySize - 1 do
             local tile = sea.Tile.new(x, y)
@@ -23,11 +23,11 @@ function sea.Map:generate()
 	end
 end
 
-function sea.Map:getTile(x, y)
+function Map:getTile(x, y)
     return self.tile[x][y]
 end
 
-function sea.Map:getEntity(x, y)
+function Map:getEntity(x, y)
     return self.entity[x][y]
 end
 
@@ -35,94 +35,96 @@ end
 --       GETTERS       --
 -------------------------
 
-function sea.Map:getNameAttribute()
+function Map:getNameAttribute()
 	return map("name")
 end
 
-function sea.Map:getXSizeAttribute()
+function Map:getXSizeAttribute()
 	return map("xsize")
 end
 
-function sea.Map:getYSizeAttribute()
+function Map:getYSizeAttribute()
 	return map("ysize")
 end
 
-function sea.Map:getTilesetAttribute()
+function Map:getTilesetAttribute()
 	return map("tileset")
 end
 
-function sea.Map:getTileCountAttribute()
+function Map:getTileCountAttribute()
 	return map("tilecount")
 end
 
-function sea.Map:getBackgroundImageAttribute()
+function Map:getBackgroundImageAttribute()
 	return map("back_img")
 end
 
-function sea.Map:getBackgroundScrollXAttribute()
+function Map:getBackgroundScrollXAttribute()
 	return map("back_scrollx")
 end
 
-function sea.Map:getBackgroundScrollYAttribute()
+function Map:getBackgroundScrollYAttribute()
 	return map("back_scrolly")
 end
 
-function sea.Map:getBackgroundScrollTileAttribute()
+function Map:getBackgroundScrollTileAttribute()
 	return map("back_scrolltile")
 end
 
-function sea.Map:getBackgroundRAttribute()
+function Map:getBackgroundRAttribute()
 	return map("back_r")
 end
 
-function sea.Map:getBackgroundGAttribute()
+function Map:getBackgroundGAttribute()
 	return map("back_g")
 end
 
-function sea.Map:getBackgroundBAttribute()
+function Map:getBackgroundBAttribute()
 	return map("back_b")
 end
 
-function sea.Map:getStormXAttribute()
+function Map:getStormXAttribute()
 	return map("storm_x")
 end
 
-function sea.Map:getStormYAttribute()
+function Map:getStormYAttribute()
 	return map("storm_y")
 end
 
-function sea.Map:getVipSpawnsAttribute()
+function Map:getVipSpawnsAttribute()
 	return map("mission_vips")
 end
 
-function sea.Map:getHostagesAttribute()
+function Map:getHostagesAttribute()
 	return map("mission_hostages")
 end
 
-function sea.Map:getBombSpotsAttribute()
+function Map:getBombSpotsAttribute()
 	return map("mission_bombspots")
 end
 
-function sea.Map:getCtfFlagsAttribute()
+function Map:getCtfFlagsAttribute()
 	return map("mission_ctfflags")
 end
 
-function sea.Map:getDomPointsAttribute()
+function Map:getDomPointsAttribute()
 	return map("mission_dompoints")
 end
 
-function sea.Map:getNoBuyingAttribute()
+function Map:getNoBuyingAttribute()
 	return map("nobuying")
 end
 
-function sea.Map:getNoWeaponsAttribute()
+function Map:getNoWeaponsAttribute()
 	return map("noweapons")
 end
 
-function sea.Map:getTeleportersAttribute()
+function Map:getTeleportersAttribute()
 	return map("teleporters")
 end
 
-function sea.Map:getBotNodesAttribute()
+function Map:getBotNodesAttribute()
 	return map("botnodes")
 end
+
+return Map

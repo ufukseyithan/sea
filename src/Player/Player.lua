@@ -1,7 +1,7 @@
 sea.player = {}
-sea.Player = class()
+local Player = class()
 
-function sea.Player:constructor(id)
+function Player:constructor(id)
     self.id = id
 
 	for name, v in pairs(sea.config.player.variable) do
@@ -30,11 +30,11 @@ function sea.Player:constructor(id)
 	end
 end
 
-function sea.Player:destroy()
-	sea.Player.remove(self.id)
+function Player:destroy()
+	Player.remove(self.id)
 end
 
-function sea.Player:loadData()
+function Player:loadData()
 	if self.steamID ~= "0" then
 		local data = table.load(sea.path.data..self.steamID..".lua")
 
@@ -46,7 +46,7 @@ function sea.Player:loadData()
 	end
 end
 
-function sea.Player:saveData()
+function Player:saveData()
 	if self.steamID ~= "0" then
 		local data = {}
 
@@ -76,7 +76,7 @@ end
 	This gotta be updated once an update for addbind is released, see: http://www.unrealsoftware.de/forum_posts.php?post=327522&start=3100#post426954
 	Until then this needs a workaround
 ]]
-function sea.Player:reassignControl(name, key)
+function Player:reassignControl(name, key)
 	if not addbind(key) then
 		return false
 	end
@@ -86,96 +86,96 @@ function sea.Player:reassignControl(name, key)
 	return true
 end
 
-function sea.Player:getInfo(name, ...)
+function Player:getInfo(name, ...)
 	return sea.config.player.info[name](self, ...)
 end
 
-function sea.Player:kick(reason)
+function Player:kick(reason)
 	parse("kick", self.id, reason)
 end
 
-function sea.Player:banIP(duration, reason)
+function Player:banIP(duration, reason)
 	parse("banip", self.ip, duration, reason)
 end
 
-function sea.Player:banName(duration, reason)
+function Player:banName(duration, reason)
 	parse("banname", self.name, duration, reason)
 end
 
-function sea.Player:banSteam(duration, reason)
+function Player:banSteam(duration, reason)
 	parse("bansteam", self.steamID, duration, reason)
 end
 
-function sea.Player:banUSGN(duration, reason)
+function Player:banUSGN(duration, reason)
 	parse("banusgn", self.usgn, duration, reason)
 end
 
-function sea.Player:kill()
+function Player:kill()
 	parse("killplayer", self.id)
 end
 
-function sea.Player:killBy(killer, itemID)
+function Player:killBy(killer, itemID)
 	parse("customkill", killer, itemID, self.id)
 end
 
-function sea.Player:slap()
+function Player:slap()
 	parse("slap", self.id)
 end
 
-function sea.Player:setPosition(x, y)
+function Player:setPosition(x, y)
 	parse("setpos", self.id, x, y)
 end
 
-function sea.Player:spawn(x, y)
+function Player:spawn(x, y)
 	parse("spawnplayer", self.id, x, y)
 end
 
-function sea.Player:equip(itemID)
+function Player:equip(itemID)
 	parse("equip", self.id, itemID)
 end
 
-function sea.Player:equipAndSet(itemID)
+function Player:equipAndSet(itemID)
 	self:equip(itemID)
 	self.weapon = itemID
 end
 
-function sea.Player:reroute(address)
+function Player:reroute(address)
 	parse("reroute", self.id, address)
 end
 
-function sea.Player:shake(power)
+function Player:shake(power)
 	parse("shake", self.id, power)
 end
 
-function sea.Player:strip(itemID)
+function Player:strip(itemID)
 	parse("strip", self.id, itemID)
 end
 
-function sea.Player:stripKnife()
+function Player:stripKnife()
 	self:strip(50)
 end
 
-function sea.Player:message(text)
+function Player:message(text)
 	sea.message(self.id, text)
 end
 
-function sea.Player:notification(text)
+function Player:notification(text)
 	sea.message(self.id, text)
 
 	table.insert(self.notifications, text)
 end
 
-function sea.Player:help(text)
+function Player:help(text)
 	sea.message(self.id, text)
 
 	table.insert(self.help, text)
 end
 
-function sea.Player:consoleMessage(text)
+function Player:consoleMessage(text)
 	sea.consoleMessage(self.id, text)
 end
 
-function sea.Player:getItems()
+function Player:getItems()
 	local itemTypes = {}
 
 	for _, id in pairs(playerweapons(self.id)) do
@@ -188,11 +188,11 @@ end
 --[[
 	@param radius (number) Radius in tiles. 
 ]]
-function sea.Player:getCloseItems(radius)
+function Player:getCloseItems(radius)
 	return sea.Item.getCloseToPlayer(self, radius)
 end
 
-function sea.Player:hasItem(itemID)
+function Player:hasItem(itemID)
 	for _, id in pairs(playerweapons(self.id)) do
 		if id == itemID then
 			return true
@@ -202,7 +202,7 @@ function sea.Player:hasItem(itemID)
 	return false
 end
 
-function sea.Player:getAmmo(itemID)
+function Player:getAmmo(itemID)
 	local ammoIn, ammo = playerammo(self.id, itemID)
 
 	return {
@@ -215,13 +215,13 @@ end
 --        CONST        --
 -------------------------
 
-function sea.Player.create(id)
+function Player.create(id)
 	if sea.player[id] then
 		sea.error("Attempted to create player that already exists (ID: "..id..")")
 		return
 	end
 
-	local player = sea.Player.new(id)
+	local player = Player.new(id)
 
 	sea.player[id] = player
 
@@ -230,7 +230,7 @@ function sea.Player.create(id)
 	return player
 end
 
-function sea.Player.remove(id)
+function Player.remove(id)
 	if sea.player[id] then
 		sea.player[id] = nil
 
@@ -256,31 +256,31 @@ local function getPlayers(mode, specific)
     return players
 end
 
-function sea.Player.get(specific)
+function Player.get(specific)
     return getPlayers("table", specific)
 end
 
-function sea.Player.getLiving(specific)
+function Player.getLiving(specific)
     return getPlayers("tableliving", specific)
 end
 
-function sea.Player.getTerrorists(specific)
+function Player.getTerrorists(specific)
     return getPlayers("team1", specific)
 end
 
-function sea.Player.getCounterTerrorists(specific)
+function Player.getCounterTerrorists(specific)
     return getPlayers("team2", specific)
 end
 
-function sea.Player.getLivingTerrorists(specific)
+function Player.getLivingTerrorists(specific)
     return getPlayers("team1living", specific)
 end
 
-function sea.Player.getLivingCounterTerrorists(specific)
+function Player.getLivingCounterTerrorists(specific)
     return getPlayers("team2living", specific)
 end
 
-function sea.Player.getAtRadius(x, y, radius, team)
+function Player.getAtRadius(x, y, radius, team)
 	local players = {}
 	
 	for _, id in pairs(closeplayers(x, y, radius, team)) do
@@ -294,203 +294,203 @@ end
 --       GETTERS       --
 -------------------------
 
-function sea.Player:getExistsAttribute()
+function Player:getExistsAttribute()
 	return player(self.id, "exists")
 end
 
-function sea.Player:getNameAttribute()
+function Player:getNameAttribute()
 	return player(self.id, "name")
 end
 
-function sea.Player:getIpAttribute()
+function Player:getIpAttribute()
 	return player(self.id, "ip")
 end
 
-function sea.Player:getPortAttribute()
+function Player:getPortAttribute()
 	return player(self.id, "port")
 end
 
-function sea.Player:getUsgnAttribute()
+function Player:getUsgnAttribute()
 	return player(self.id, "usgn")
 end
 
-function sea.Player:getUsgnNameAttribute()
+function Player:getUsgnNameAttribute()
 	return player(self.id, "usgnname")
 end
 
-function sea.Player:getSteamIDAttribute()
+function Player:getSteamIDAttribute()
 	return player(self.id, "steamid")
 end
 
-function sea.Player:getSteamNameAttribute()
+function Player:getSteamNameAttribute()
 	return player(self.id, "steamname")
 end
 
-function sea.Player:getPingAttribute()
+function Player:getPingAttribute()
 	return player(self.id, "ping")
 end
 
-function sea.Player:getIdleAttribute()
+function Player:getIdleAttribute()
 	return player(self.id, "idle")
 end
 
-function sea.Player:getBotAttribute()
+function Player:getBotAttribute()
 	return player(self.id, "bot")
 end
 
-function sea.Player:getTeamAttribute()
+function Player:getTeamAttribute()
 	return player(self.id, "team")
 end
 
-function sea.Player:getLookAttribute()
+function Player:getLookAttribute()
 	return player(self.id, "look")
 end
 
-function sea.Player:getXAttribute()
+function Player:getXAttribute()
 	return math.round(player(self.id, "x"), 2)
 end
 
-function sea.Player:getYAttribute()
+function Player:getYAttribute()
 	return math.round(player(self.id, "y"), 2)
 end
 
-function sea.Player:getRotationAttribute()
+function Player:getRotationAttribute()
 	return player(self.id, "rot")
 end
 
-function sea.Player:getTileXAttribute()
+function Player:getTileXAttribute()
 	return player(self.id, "tilex")
 end
 
-function sea.Player:getTileYAttribute()
+function Player:getTileYAttribute()
 	return player(self.id, "tiley")
 end
 
-function sea.Player:getHealthAttribute()
+function Player:getHealthAttribute()
 	return player(self.id, "health")
 end
 
-function sea.Player:getArmorAttribute()
+function Player:getArmorAttribute()
 	return player(self.id, "armor")
 end
 
-function sea.Player:getMoneyAttribute()
+function Player:getMoneyAttribute()
 	return player(self.id, "money")
 end
 
-function sea.Player:getScoreAttribute()
+function Player:getScoreAttribute()
 	return player(self.id, "score")
 end
 
-function sea.Player:getDeathsAttribute()
+function Player:getDeathsAttribute()
 	return player(self.id, "deaths")
 end
 
-function sea.Player:getTeamKillsAttribute()
+function Player:getTeamKillsAttribute()
 	return player(self.id, "teamkills")
 end
 
-function sea.Player:getHostageKillsAttribute()
+function Player:getHostageKillsAttribute()
 	return player(self.id, "hostagekills")
 end
 
-function sea.Player:getTeamBuildingKillsAttribute()
+function Player:getTeamBuildingKillsAttribute()
 	return player(self.id, "teambuildingkills")
 end
 
-function sea.Player:getWeaponAttribute()
+function Player:getWeaponAttribute()
 	return player(self.id, "weapontype")
 end
 
-function sea.Player:getNightvisionAttribute()
+function Player:getNightvisionAttribute()
 	return player(self.id, "nightvision")
 end
 
-function sea.Player:getDefusekitAttribute()
+function Player:getDefusekitAttribute()
 	return player(self.id, "defusekit")
 end
 
-function sea.Player:getGasmaskAttribute()
+function Player:getGasmaskAttribute()
 	return player(self.id, "gasmask")
 end
 
-function sea.Player:getBombAttribute()
+function Player:getBombAttribute()
 	return player(self.id, "bomb")
 end
 
-function sea.Player:getFlagAttribute()
+function Player:getFlagAttribute()
 	return player(self.id, "flag")
 end
 
-function sea.Player:getReloadingAttribute()
+function Player:getReloadingAttribute()
 	return player(self.id, "reloading")
 end
 
-function sea.Player:getProcessAttribute()
+function Player:getProcessAttribute()
 	return player(self.id, "process")
 end
 
-function sea.Player:getSprayNameAttribute()
+function Player:getSprayNameAttribute()
 	return player(self.id, "sprayname")
 end
 
-function sea.Player:getSprayColorAttribute()
+function Player:getSprayColorAttribute()
 	return player(self.id, "spraycolor")
 end
 
-function sea.Player:getVoteKickAttribute()
+function Player:getVoteKickAttribute()
 	return player(self.id, "votekick")
 end
 
-function sea.Player:getVoteMapAttribute()
+function Player:getVoteMapAttribute()
 	return player(self.id, "votemap")
 end
 
-function sea.Player:getFavteamAttribute()
+function Player:getFavteamAttribute()
 	return player(self.id, "favteam")
 end
 
-function sea.Player:getSpectatingAttribute()
+function Player:getSpectatingAttribute()
 	return player(self.id, "spectating")
 end
 
-function sea.Player:getSpeedAttribute()
+function Player:getSpeedAttribute()
 	return player(self.id, "speedmod")
 end
 
-function sea.Player:getMaxhealthAttribute()
+function Player:getMaxhealthAttribute()
 	return player(self.id, "maxhealth")
 end
 
-function sea.Player:getRconAttribute()
+function Player:getRconAttribute()
 	return player(self.id, "rcon")
 end
 
-function sea.Player:getAi_flashAttribute()
+function Player:getAi_flashAttribute()
 	return player(self.id, "ai_flash")
 end
 
-function sea.Player:getScreenWidthAttribute()
+function Player:getScreenWidthAttribute()
 	return player(self.id, "screenw")
 end
 
-function sea.Player:getScreenHeightAttribute()
+function Player:getScreenHeightAttribute()
 	return player(self.id, "screenh")
 end
 
-function sea.Player:getMouseXAttribute()
+function Player:getMouseXAttribute()
 	return player(self.id, "mousex")
 end
 
-function sea.Player:getMouseYAttribute()
+function Player:getMouseYAttribute()
 	return player(self.id, "mousey")
 end
 
-function sea.Player:getMouseMapXAttribute()
+function Player:getMouseMapXAttribute()
 	return player(self.id, "mousemapx")
 end
 
-function sea.Player:getMouseMapYAttribute()
+function Player:getMouseMapYAttribute()
 	return player(self.id, "mousemapy")
 end
 
@@ -498,15 +498,15 @@ end
 --       SETTERS       --
 -------------------------
 
-function sea.Player:setNameAttribute(value)
+function Player:setNameAttribute(value)
 	parse("setname", self.id, value, 1)
 end
 
-function sea.Player:setName2Attribute(value) -- server message while changing
+function Player:setName2Attribute(value) -- server message while changing
 	parse("setname", self.id, value, 0)
 end
 
-function sea.Player:setTeamAttribute(value)
+function Player:setTeamAttribute(value)
 	if value == 1 then
 		parse("maket", self.id)
 	elseif value == 2 then
@@ -516,50 +516,52 @@ function sea.Player:setTeamAttribute(value)
 	end
 end
 
-function sea.Player:setXAttribute(value)
+function Player:setXAttribute(value)
 	parse("setpos", self.id, value, self.y)
 end
 
-function sea.Player:setYAttribute(value)
+function Player:setYAttribute(value)
 	parse("setpos", self.id, self.x, value)
 end
 
-function sea.Player:setTileXAttribute(value)
+function Player:setTileXAttribute(value)
 	parse("setpos", self.id, tileToPixel(value), self.y)
 end
 
-function sea.Player:setTileYAttribute(value)
+function Player:setTileYAttribute(value)
 	parse("setpos", self.id, self.x, tileToPixel(value))
 end
 
-function sea.Player:setHealthAttribute(value)
+function Player:setHealthAttribute(value)
 	parse("sethealth", self.id, value)
 end
 
-function sea.Player:setArmorAttribute(value)
+function Player:setArmorAttribute(value)
 	parse("setarmor", self.id, value)
 end
 
-function sea.Player:setMoneyAttribute(value)
+function Player:setMoneyAttribute(value)
 	parse("setmoney", self.id, value)
 end
 
-function sea.Player:setScoreAttribute(value)
+function Player:setScoreAttribute(value)
 	parse("setscore", self.id, value)
 end
 
-function sea.Player:setDeathsAttribute(value)
+function Player:setDeathsAttribute(value)
 	parse("setdeaths", self.id, value)
 end
 
-function sea.Player:setWeaponAttribute(value)
+function Player:setWeaponAttribute(value)
 	parse("setweapon", self.id, value)
 end
 
-function sea.Player:setSpeedAttribute(value)
+function Player:setSpeedAttribute(value)
 	parse("speedmod", self.id, value)
 end
 
-function sea.Player:setMaxhealthAttribute(value)
+function Player:setMaxhealthAttribute(value)
 	parse("setmaxhealth", self.id, value)
 end
+
+return Player

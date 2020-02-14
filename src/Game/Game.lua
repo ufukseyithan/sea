@@ -1,410 +1,410 @@
-sea.Game = class()
+local Game = class()
 
 -------------------------
 --       GETTERS       --
 -------------------------
 
-function sea.Game:getCheckUSGNLoginAttribute()
+function Game:getCheckUSGNLoginAttribute()
     return game("sv_checkusgnlogin")
 end
 
-function sea.Game:getDaylightTimeAttribute()
+function Game:getDaylightTimeAttribute()
     return game("sv_daylighttime")
 end
 
-function sea.Game:getForceLightAttribute()
+function Game:getForceLightAttribute()
     return game("sv_forcelight")
 end
 
-function sea.Game:getFowAttribute()
+function Game:getFowAttribute()
     return game("sv_fow")
 end
 
-function sea.Game:getFriendlyFireAttribute()
+function Game:getFriendlyFireAttribute()
     return game("sv_friendlyfire")
 end
 
-function sea.Game:getGameModeAttribute()
+function Game:getGameModeAttribute()
     return game("sv_gamemode")
 end
 
-function sea.Game:getHostPortAttribute()
+function Game:getHostPortAttribute()
     return game("sv_hostport")
 end
 
-function sea.Game:getLanAttribute()
+function Game:getLanAttribute()
     return game("sv_lan")
 end
 
-function sea.Game:getMapAttribute()
+function Game:getMapAttribute()
     return game("sv_map")
 end
 
-function sea.Game:getMapTransferAttribute()
+function Game:getMapTransferAttribute()
     return game("sv_maptransfer")
 end
 
-function sea.Game:getMaxPlayersAttribute()
+function Game:getMaxPlayersAttribute()
     return game("sv_maxplayers")
 end
 
-function sea.Game:getNameAttribute()
+function Game:getNameAttribute()
     return game("sv_name")
 end
 
-function sea.Game:getOffScreenDamageAttribute()
+function Game:getOffScreenDamageAttribute()
     return game("sv_offscreendamage")
 end
 
-function sea.Game:getPasswordAttribute()
+function Game:getPasswordAttribute()
     return game("sv_password")
 end
 
-function sea.Game:getRconAttribute()
+function Game:getRconAttribute()
     return game("sv_rcon")
 end
 
-function sea.Game:getRconUsersAttribute()
+function Game:getRconUsersAttribute()
     return game("sv_rconusers")
 end
 
-function sea.Game:getSpecModeAttribute()
+function Game:getSpecModeAttribute()
     return game("sv_specmode")
 end
 
-function sea.Game:getSprayTransferAttribute()
+function Game:getSprayTransferAttribute()
     return game("sv_spraytransfer")
 end
 
-function sea.Game:getUsgnOnlyAttribute()
+function Game:getUsgnOnlyAttribute()
     return game("sv_usgnonly")
 end
 
-function sea.Game:getAntispeederAttribute()
+function Game:getAntispeederAttribute()
     return game("mp_antispeeder")
 end
 
-function sea.Game:getAutoGameModeAttribute()
+function Game:getAutoGameModeAttribute()
     return game("mp_autogamemode")
 end
 
-function sea.Game:getAutoTeamBalanceAttribute()
+function Game:getAutoTeamBalanceAttribute()
     return game("mp_autogamemode")
 end
 
-function sea.Game:getBuyMenuAttribute()
+function Game:getBuyMenuAttribute()
     return game("mp_buymenu")
 end
 
-function sea.Game:getBuyTimeAttribute()
+function Game:getBuyTimeAttribute()
     return game("mp_buytime")
 end
 
-function sea.Game:getC4TimerAttribute()
+function Game:getC4TimerAttribute()
     return game("mp_c4timer")
 end
 
-function sea.Game:getConnectionLimitAttribute()
+function Game:getConnectionLimitAttribute()
     return game("mp_connectionlimit")
 end
 
-function sea.Game:getCurtailedExplosionsAttribute()
+function Game:getCurtailedExplosionsAttribute()
     return game("mp_curtailedexplosions")
 end
 
-function sea.Game:getDamageFactorAttribute()
+function Game:getDamageFactorAttribute()
     return game("mp_damagefactor")
 end
 
-function sea.Game:getDeathDropAttribute()
+function Game:getDeathDropAttribute()
     return game("mp_deathdrop")
 end
 
-function sea.Game:getDeatmatchSpawnMoneyAttribute()
+function Game:getDeatmatchSpawnMoneyAttribute()
     return game("mp_dmspawnmoney")
 end
 
-function sea.Game:getDropGrenadesAttribute()
+function Game:getDropGrenadesAttribute()
     return game("mp_dropgrenades")
 end
 
-function sea.Game:getFlashlightAttribute()
+function Game:getFlashlightAttribute()
     return game("mp_flashlight")
 end
 
-function sea.Game:getFloodProtAttribute()
+function Game:getFloodProtAttribute()
     return game("mp_floodprot")
 end
 
-function sea.Game:getFloodProtIgnoreTimeAttribute()
+function Game:getFloodProtIgnoreTimeAttribute()
     return game("mp_floodprotignoretime")
 end
 
-function sea.Game:getFreezeTimeAttribute()
+function Game:getFreezeTimeAttribute()
 	return game("mp_freezetime")
 end
 
-function sea.Game:getGrenadeRebuyAttribute()
+function Game:getGrenadeRebuyAttribute()
 	return game("mp_grenaderebuy")
 end
 
-function sea.Game:getHostagePenaltyAttribute()
+function Game:getHostagePenaltyAttribute()
 	 return game("mp_hostagepenalty")
 end
 
-function sea.Game:getHoverTextAttribute()
+function Game:getHoverTextAttribute()
 	 return game("mp_hovertext")
 end
 
-function sea.Game:getHudAttribute()
+function Game:getHudAttribute()
 	return game("mp_hud")
 end
 
-function sea.Game:getHudScaleAttribute()
+function Game:getHudScaleAttribute()
 	return game("mp_hudscale")
 end
 
-function sea.Game:getIdleActionAttribute()
+function Game:getIdleActionAttribute()
 	return game("mp_idleaction")
 end
 
-function sea.Game:getIdleKickAttribute()
+function Game:getIdleKickAttribute()
 	return game("mp_idlekick")
 end
 
-function sea.Game:getIdleTimeAttribute()
+function Game:getIdleTimeAttribute()
 	return game("mp_idletime")
 end
 
-function sea.Game:getInfiniteAmmoAttribute()
+function Game:getInfiniteAmmoAttribute()
 	return game("mp_infammo")
 end
 
-function sea.Game:getKevlarAttribute()
+function Game:getKevlarAttribute()
 	return game("mp_kevlar")
 end
 
-function sea.Game:getKickPerCentAttribute()
+function Game:getKickPerCentAttribute()
 	return game("mp_kickpercent")
 end
 
-function sea.Game:getKillBuildingMoneyAttribute()
+function Game:getKillBuildingMoneyAttribute()
 	return game("mp_killbuildingmoney")
 end
 
-function sea.Game:getKillBuildingsAttribute()
+function Game:getKillBuildingsAttribute()
 	return game("mp_killbuildings")
 end
 
-function sea.Game:getKillInfoAttribute()
+function Game:getKillInfoAttribute()
 	return game("mp_killinfo")
 end
 
-function sea.Game:getKillTeamBuildingsAttribute()
+function Game:getKillTeamBuildingsAttribute()
 	return game("mp_killteambuildings")
 end
 
-function sea.Game:getLagCompensationAttribute()
+function Game:getLagCompensationAttribute()
 	return game("mp_lagcompensation")
 end
 
-function sea.Game:getLagCompensationDivisorAttribute()
+function Game:getLagCompensationDivisorAttribute()
 	return game("mp_lagcompensationdivisor")
 end
 
-function sea.Game:getLocalRConOutputAttribute()
+function Game:getLocalRConOutputAttribute()
 	return game("mp_localrconoutput")
 end
 
-function sea.Game:getLuaMapAttribute()
+function Game:getLuaMapAttribute()
 	return game("mp_luamap")
 end
 
-function sea.Game:getLuaServerAttribute()
+function Game:getLuaServerAttribute()
 	return game("mp_luaserver")
 end
 
-function sea.Game:getMapGoalScoreAttribute()
+function Game:getMapGoalScoreAttribute()
 	return game("mp_mapgoalscore")
 end
 
-function sea.Game:getMapVoteRatioAttribute()
+function Game:getMapVoteRatioAttribute()
 	return game("mp_mapvoteratio")
 end
 
-function sea.Game:getMaxClientsIPAttribute()
+function Game:getMaxClientsIPAttribute()
 	return game("mp_maxclientsip")
 end
 
-function sea.Game:getMaxRConFailsAttribute()
+function Game:getMaxRConFailsAttribute()
 	return game("mp_maxrconfails")
 end
 
-function sea.Game:getNatHolePunchingAttribute()
+function Game:getNatHolePunchingAttribute()
 	return game("mp_natholepunching")
 end
 
-function sea.Game:getPingLimitAttribute()
+function Game:getPingLimitAttribute()
 	return game("mp_pinglimit")
 end
 
-function sea.Game:getPostSpawnAttribute()
+function Game:getPostSpawnAttribute()
 	return game("mp_postspawn")
 end
 
-function sea.Game:getRadarAttribute()
+function Game:getRadarAttribute()
 	return game("mp_radar")
 end
 
-function sea.Game:getRandomSpawnAttribute()
+function Game:getRandomSpawnAttribute()
 	return game("mp_randomspawn")
 end
 
-function sea.Game:getRecoilAttribute()
+function Game:getRecoilAttribute()
 	return game("mp_recoil")
 end
 
-function sea.Game:getReservationsAttribute()
+function Game:getReservationsAttribute()
 	return game("mp_reservations")
 end
 
-function sea.Game:getRespawnDelayAttribute()
+function Game:getRespawnDelayAttribute()
 	return game("mp_respawndelay")
 end
 
-function sea.Game:getRoundLimitAttribute()
+function Game:getRoundLimitAttribute()
 	return game("mp_roundlimit")
 end
 
-function sea.Game:getRoundTimeAttribute()
+function Game:getRoundTimeAttribute()
 	return game("mp_roundtime")
 end
 
-function sea.Game:getShotWeakeningAttribute()
+function Game:getShotWeakeningAttribute()
 	return game("mp_shotweakening")
 end
 
-function sea.Game:getSmokeBlockAttribute()
+function Game:getSmokeBlockAttribute()
 	return game("mp_smokeblock")
 end
 
-function sea.Game:getStartMoneyAttribute()
+function Game:getStartMoneyAttribute()
 	return game("mp_startmoney")
 end
 
-function sea.Game:getSupplyItemsAttribute()
+function Game:getSupplyItemsAttribute()
 	return game("mp_supply_items")
 end
 
-function sea.Game:getTeamkillPenaltyAttribute()
+function Game:getTeamkillPenaltyAttribute()
 	return game("mp_teamkillpenalty")
 end
 
-function sea.Game:getTeleportReloadAttribute()
+function Game:getTeleportReloadAttribute()
 	return game("mp_teleportreload")
 end
 
-function sea.Game:getTempBanTimeAttribute()
+function Game:getTempBanTimeAttribute()
 	return game("mp_tempbantime")
 end
 
-function sea.Game:getTimeLimitAttribute()
+function Game:getTimeLimitAttribute()
 	return game("mp_timelimit")
 end
 
-function sea.Game:getTkPunishAttribute()
+function Game:getTkPunishAttribute()
 	return game("mp_tkpunish")
 end
 
-function sea.Game:getTraceAttribute()
+function Game:getTraceAttribute()
 	return game("mp_trace")
 end
 
-function sea.Game:getTurretDamageAttribute()
+function Game:getTurretDamageAttribute()
 	return game("mp_turretdamage")
 end
 
-function sea.Game:getUnbuildableAttribute()
+function Game:getUnbuildableAttribute()
 	return game("mp_unbuildable")
 end
 
-function sea.Game:getUnbuyableAttribute()
+function Game:getUnbuyableAttribute()
 	return game("mp_unbuyable")
 end
 
-function sea.Game:getVulnerableHostagesAttribute()
+function Game:getVulnerableHostagesAttribute()
 	return game("mp_vulnerablehostages")
 end
 
-function sea.Game:getWinLimitAttribute()
+function Game:getWinLimitAttribute()
 	return game("mp_winlimit")
 end
 
-function sea.Game:getZombieDamageAttribute()
+function Game:getZombieDamageAttribute()
 	return game("mp_zombiedmg")
 end
 
-function sea.Game:getZombieKillEquipAttribute()
+function Game:getZombieKillEquipAttribute()
 	return game("mp_zombiekillequip")
 end
 
-function sea.Game:getZombieKillScoreAttribute()
+function Game:getZombieKillScoreAttribute()
 	return game("mp_zombiekillscore")
 end
 
-function sea.Game:getZombieRecoverAttribute()
+function Game:getZombieRecoverAttribute()
 	return game("mp_zombierecover")
 end
 
-function sea.Game:getZombieSpeedAttribute()
+function Game:getZombieSpeedAttribute()
 	return game("mp_zombiespeedmod")
 end
 
-function sea.Game:getVersionAttribute()
+function Game:getVersionAttribute()
 	return game("version")
 end
 
-function sea.Game:getDedicatedAttribute()
+function Game:getDedicatedAttribute()
 	return game("dedicated")
 end
 
-function sea.Game:getPhaseAttribute()
+function Game:getPhaseAttribute()
 	return game("phase")
 end
 
-function sea.Game:getRoundAttribute()
+function Game:getRoundAttribute()
 	return game("round")
 end
 
-function sea.Game:getTScoreAttribute()
+function Game:getTScoreAttribute()
 	return game("score_t")
 end
 
-function sea.Game:getCtScoreAttribute()
+function Game:getCtScoreAttribute()
 	return game("score_ct")
 end
 
-function sea.Game:getTWinRowAttribute()
+function Game:getTWinRowAttribute()
 	return game("winrow_t")
 end
 
-function sea.Game:getCtWinRowAttribute()
+function Game:getCtWinRowAttribute()
 	return game("winrow_ct")
 end
 
-function sea.Game:getNextMapAttribute()
+function Game:getNextMapAttribute()
 	return game("nextmap")
 end
 
-function sea.Game:getPortAttribute()
+function Game:getPortAttribute()
 	return game("port")
 end
 
-function sea.Game:getBombPlantedAttribute()
+function Game:getBombPlantedAttribute()
 	return game("bombplanted")
 end
 
-function sea.Game:getSysFolderAttribute()
+function Game:getSysFolderAttribute()
 	return game("sysfolder")
 end
 
@@ -412,358 +412,360 @@ end
 --       SETTERS       --
 -------------------------
 
-function sea.Game:setCheckUSGNLoginAttribute(value)
+function Game:setCheckUSGNLoginAttribute(value)
     parse("sv_checkusgnlogin", value)
 end
 
-function sea.Game:setDaylightTimeAttribute(value)
+function Game:setDaylightTimeAttribute(value)
     parse("sv_daylighttime", value)
 end
 
-function sea.Game:setForceLightAttribute(value)
+function Game:setForceLightAttribute(value)
     parse("sv_forcelight", value)
 end
 
-function sea.Game:setFowAttribute(value)
+function Game:setFowAttribute(value)
     parse("sv_fow", value)
 end
 
-function sea.Game:setFriendlyFireAttribute(value)
+function Game:setFriendlyFireAttribute(value)
     parse("sv_friendlyfire", value)
 end
 
-function sea.Game:setGameModeAttribute(value)
+function Game:setGameModeAttribute(value)
     parse("sv_gm", value)
 end
 
-function sea.Game:setHostPortAttribute(value)
+function Game:setHostPortAttribute(value)
     parse("sv_hostport", value)
 end
 
-function sea.Game:setLanAttribute(value)
+function Game:setLanAttribute(value)
     parse("sv_lan", value)
 end
 
-function sea.Game:setMapAttribute(value)
+function Game:setMapAttribute(value)
     parse("sv_map", value)
 end
 
-function sea.Game:setMapTransferAttribute(value)
+function Game:setMapTransferAttribute(value)
     parse("sv_maptransfer", value)
 end
 
-function sea.Game:setMaxPlayersAttribute(value)
+function Game:setMaxPlayersAttribute(value)
     parse("sv_maxplayers", value)
 end
 
-function sea.Game:setNameAttribute(value)
+function Game:setNameAttribute(value)
     parse("sv_name", value)
 end
 
-function sea.Game:setOffScreenDamageAttribute(value)
+function Game:setOffScreenDamageAttribute(value)
     parse("sv_offscreendamage", value)
 end
 
-function sea.Game:setPasswordAttribute(value)
+function Game:setPasswordAttribute(value)
     parse("sv_password", value)
 end
 
-function sea.Game:setRconAttribute(value)
+function Game:setRconAttribute(value)
     parse("sv_rcon", value)
 end
 
-function sea.Game:setRconUsersAttribute(value)
+function Game:setRconUsersAttribute(value)
     parse("sv_rconusers", value)
 end
 
-function sea.Game:setSpecModeAttribute(value)
+function Game:setSpecModeAttribute(value)
     parse("sv_specmode", value)
 end
 
-function sea.Game:setSprayTransferAttribute(value)
+function Game:setSprayTransferAttribute(value)
     parse("sv_spraytransfer", value)
 end
 
-function sea.Game:setUsgnOnlyAttribute(value)
+function Game:setUsgnOnlyAttribute(value)
     parse("sv_usgnonly", value)
 end
 
-function sea.Game:setAntispeederAttribute(value)
+function Game:setAntispeederAttribute(value)
     parse("mp_antispeeder", value)
 end
 
-function sea.Game:setAutoGameModeAttribute(value)
+function Game:setAutoGameModeAttribute(value)
     parse("mp_autogamemode", value)
 end
 
-function sea.Game:setAutoTeamBalanceAttribute(value)
+function Game:setAutoTeamBalanceAttribute(value)
     parse("mp_autoteambalance", value)
 end
 
-function sea.Game:setBuyMenuAttribute(value)
+function Game:setBuyMenuAttribute(value)
     parse("mp_buymenu", value)
 end
 
-function sea.Game:setBuyTimeAttribute(value)
+function Game:setBuyTimeAttribute(value)
     parse("mp_buytime", value)
 end
 
-function sea.Game:setC4TimerAttribute(value)
+function Game:setC4TimerAttribute(value)
     parse("mp_c4timer", value)
 end
 
-function sea.Game:setConnectionLimitAttribute(value)
+function Game:setConnectionLimitAttribute(value)
     parse("mp_connectionlimit", value)
 end
 
-function sea.Game:setCurtailedExplosionsAttribute(value)
+function Game:setCurtailedExplosionsAttribute(value)
     parse("mp_curtailedexplosions", value)
 end
 
-function sea.Game:setDamageFactorAttribute(value)
+function Game:setDamageFactorAttribute(value)
     parse("mp_damagefactor", value)
 end
 
-function sea.Game:setDeathDropAttribute(value)
+function Game:setDeathDropAttribute(value)
     parse("mp_deathdrop", value)
 end
 
-function sea.Game:setDeatmatchSpawnMoneyAttribute(value)
+function Game:setDeatmatchSpawnMoneyAttribute(value)
     parse("mp_dmspawnmoney", value)
 end
 
-function sea.Game:setDropGrenadesAttribute(value)
+function Game:setDropGrenadesAttribute(value)
     parse("mp_dropgrenades", value)
 end
 
-function sea.Game:setFlaslightAttribute(value)
+function Game:setFlaslightAttribute(value)
     parse("mp_flashlight", value)
 end
 
-function sea.Game:setFloodProtAttribute(value)
+function Game:setFloodProtAttribute(value)
     parse("mp_floodprot", value)
 end
 
-function sea.Game:setFloodProtIgnoreTimeAttribute(value)
+function Game:setFloodProtIgnoreTimeAttribute(value)
     parse("mp_floodprotignoretime", value)
 end
 
-function sea.Game:setFreezeTimeAttribute(value)
+function Game:setFreezeTimeAttribute(value)
     parse("mp_freezetime", value)
 end
 
-function sea.Game:setGrenadeRebuyAttribute(value)
+function Game:setGrenadeRebuyAttribute(value)
     parse("mp_grenaderebuy", value)
 end
 
-function sea.Game:setHostagePenaltyAttribute(value)
+function Game:setHostagePenaltyAttribute(value)
     parse("mp_hostagepenalty", value)
 end
 
-function sea.Game:setHoverTextAttribute(value)
+function Game:setHoverTextAttribute(value)
     parse("mp_hovertext", value)
 end
 
-function sea.Game:setHudAttribute(value)
+function Game:setHudAttribute(value)
     parse("mp_hud", value)
 end
 
-function sea.Game:setHudScaleAttribute(value)
+function Game:setHudScaleAttribute(value)
     parse("mp_hudscale", value)
 end
 
-function sea.Game:setIdleActionAttribute(value)
+function Game:setIdleActionAttribute(value)
     parse("mp_idleaction", value)
 end
 
-function sea.Game:setIdleKickAttribute(value)
+function Game:setIdleKickAttribute(value)
     parse("mp_idlekick", value)
 end
 
-function sea.Game:setIdleTimeAttribute(value)
+function Game:setIdleTimeAttribute(value)
     parse("mp_idletime", value)
 end
 
-function sea.Game:setInfiniteAmmoAttribute(value)
+function Game:setInfiniteAmmoAttribute(value)
     parse("mp_infammo", value)
 end
 
-function sea.Game:setKevlarAttribute(value)
+function Game:setKevlarAttribute(value)
     parse("mp_kevlar", value)
 end
 
-function sea.Game:setKickPerCentAttribute(value)
+function Game:setKickPerCentAttribute(value)
     parse("mp_kickpercent", value)
 end
 
-function sea.Game:setKillBuildingMoneyAttribute(value)
+function Game:setKillBuildingMoneyAttribute(value)
     parse("mp_killbuildingmoney", value)
 end
 
-function sea.Game:setKillBuildingsAttribute(value)
+function Game:setKillBuildingsAttribute(value)
     parse("mp_killbuildings", value)
 end
 
-function sea.Game:setKillInfoAttribute(value)
+function Game:setKillInfoAttribute(value)
     parse("mp_killinfo", value)
 end
 
-function sea.Game:setKillTeamBuildingsAttribute(value)
+function Game:setKillTeamBuildingsAttribute(value)
     parse("mp_killteambuildings", value)
 end
 
-function sea.Game:setLagCompensationAttribute(value)
+function Game:setLagCompensationAttribute(value)
     parse("mp_lagcompensation", value)
 end
 
-function sea.Game:setLagCompensationDivisorAttribute(value)
+function Game:setLagCompensationDivisorAttribute(value)
     parse("mp_lagcompensationdivisor", value)
 end
 
-function sea.Game:setLocalRConOutputAttribute(value)
+function Game:setLocalRConOutputAttribute(value)
     parse("mp_localrconoutput", value)
 end
 
-function sea.Game:setLuaMapAttribute(value)
+function Game:setLuaMapAttribute(value)
     parse("mp_luamap", value)
 end
 
-function sea.Game:setLuaServerAttribute(value)
+function Game:setLuaServerAttribute(value)
     parse("mp_luaserver", value)
 end
 
-function sea.Game:setMapGoalScoreAttribute(value)
+function Game:setMapGoalScoreAttribute(value)
     parse("mp_mapgoalscore", value)
 end
 
-function sea.Game:setMapVoteRatioAttribute(value)
+function Game:setMapVoteRatioAttribute(value)
     parse("mp_mapvoteratio", value)
 end
 
-function sea.Game:setMaxClientsIPAttribute(value)
+function Game:setMaxClientsIPAttribute(value)
     parse("mp_maxclientsip", value)
 end
 
-function sea.Game:setMaxRConFailsAttribute(value)
+function Game:setMaxRConFailsAttribute(value)
     parsed("mp_maxrconfails", value)
 end
 
-function sea.Game:setNatHolePunchingAttribute(value)
+function Game:setNatHolePunchingAttribute(value)
     parse("mp_natholepunching", value)
 end
 
-function sea.Game:setPingLimitAttribute(value)
+function Game:setPingLimitAttribute(value)
     parse("mp_pinglimit", value)
 end
 
-function sea.Game:setPostSpawnAttribute(value)
+function Game:setPostSpawnAttribute(value)
     parse("mp_postspawn", value)
 end
 
-function sea.Game:setRadarAttribute(value)
+function Game:setRadarAttribute(value)
     parse("mp_radar", value)
 end
 
-function sea.Game:setRandomSpawnAttribute(value)
+function Game:setRandomSpawnAttribute(value)
     parse("mp_randomspawn", value)
 end
 
-function sea.Game:setRecoilAttribute(value)
+function Game:setRecoilAttribute(value)
     parse("mp_recoil", value)
 end
 
-function sea.Game:setReservationsAttribute(value)
+function Game:setReservationsAttribute(value)
     parse("mp_reservations", value)
 end
 
-function sea.Game:setRespawnDelayAttribute(value)
+function Game:setRespawnDelayAttribute(value)
     parse("mp_respawndelay", value)
 end
 
-function sea.Game:setRoundLimitAttribute(value)
+function Game:setRoundLimitAttribute(value)
     parse("mp_roundlimit", value)
 end
 
-function sea.Game:setRoundTimeAttribute(value)
+function Game:setRoundTimeAttribute(value)
     parse("mp_roundtime", value)
 end
 
-function sea.Game:setShotWeakeningAttribute(value)
+function Game:setShotWeakeningAttribute(value)
     parse("mp_shotweakening", value)
 end
 
-function sea.Game:setSmokeBlockAttribute(value)
+function Game:setSmokeBlockAttribute(value)
     parse("mp_smokeblock", value)
 end
 
-function sea.Game:setStartMoneyAttribute(value)
+function Game:setStartMoneyAttribute(value)
     parse("mp_startmoney", value)
 end
 
-function sea.Game:setSupplyItemsAttribute(value)
+function Game:setSupplyItemsAttribute(value)
     parse("mp_supply_items", value)
 end
 
-function sea.Game:setTeamkillPenaltyAttribute(value)
+function Game:setTeamkillPenaltyAttribute(value)
     parse("mp_teamkillpenalty", value)
 end
 
-function sea.Game:setTeleportReloadAttribute(value)
+function Game:setTeleportReloadAttribute(value)
     parse("mp_teleportreload", value)
 end
 
-function sea.Game:setTempBanTimeAttribute(value)
+function Game:setTempBanTimeAttribute(value)
     parse("mp_tempbantime", value)
 end
 
-function sea.Game:setTimeLimitAttribute(value)
+function Game:setTimeLimitAttribute(value)
     parse("mp_timelimit", value)
 end
 
-function sea.Game:setTkPunishAttribute(value)
+function Game:setTkPunishAttribute(value)
     parse("mp_tkpunish", value)
 end
 
-function sea.Game:setTraceAttribute(value)
+function Game:setTraceAttribute(value)
     parse("mp_trace", value)
 end
 
-function sea.Game:setTurretDamageAttribute(value)
+function Game:setTurretDamageAttribute(value)
     parse("mp_turretdamage", value)
 end
 
-function sea.Game:setUnbuildableAttribute(value)
+function Game:setUnbuildableAttribute(value)
     parse("mp_unbuildable", value)
 end
 
-function sea.Game:setUnbuyableAttribute(value)
+function Game:setUnbuyableAttribute(value)
     parse("mp_unbuyable", value)
 end
 
-function sea.Game:setVulnerableHostagesAttribute(value)
+function Game:setVulnerableHostagesAttribute(value)
     parse("mp_vulnerablehostages", value)
 end
 
-function sea.Game:setWinLimitAttribute(value)
+function Game:setWinLimitAttribute(value)
     parse("mp_winlimit", value)
 end
 
-function sea.Game:setZombieDamageAttribute(value)
+function Game:setZombieDamageAttribute(value)
     parse("mp_zombiedmg", value)
 end
 
-function sea.Game:setZombieKillEquipAttribute(value)
+function Game:setZombieKillEquipAttribute(value)
     parse("mp_zombiekillequip", value)
 end
 
-function sea.Game:setZombieKillScoreAttribute(value)
+function Game:setZombieKillScoreAttribute(value)
     parse("mp_zombiekillscore", value)
 end
 
-function sea.Game:setZombieRecoverAttribute(value)
+function Game:setZombieRecoverAttribute(value)
     parse("mp_zombierecover", value)
 end
 
-function sea.Game:setZombieSpeedAttribute(value)
+function Game:setZombieSpeedAttribute(value)
     parse("mp_zombiespeedmod", value)
 end
+
+return Game

@@ -1,12 +1,12 @@
 sea.entity = {}
-sea.Entity = class()
+local Entity = class()
 
-function sea.Entity:constructor(x, y)
+function Entity:constructor(x, y)
     self.x = x
     self.y = y
 end
 
-function sea.Entity:trigger()
+function Entity:trigger()
     if self.name then
         parse("trigger", self.name)
     else
@@ -14,38 +14,40 @@ function sea.Entity:trigger()
     end
 end
 
-function sea.Entity:getExistsAttribute()
+function Entity:getExistsAttribute()
     return entity(self.x, self.y, "exists")
 end
 
-function sea.Entity:getTypeNameAttribute()
+function Entity:getTypeNameAttribute()
     return entity(self.x, self.y, "typename")
 end
 
-function sea.Entity:getTypeIDAttribute()
+function Entity:getTypeIDAttribute()
     return entity(self.x, self.y, "type")
 end
 
-function sea.Entity:getNameFieldAttribute()
+function Entity:getNameFieldAttribute()
     return entity(self.x, self.y, "name")
 end
 
-function sea.Entity:getTriggerFieldAttribute()
+function Entity:getTriggerFieldAttribute()
     return entity(self.x, self.y, "trigger")
 end
 
-function sea.Entity:getStateAttribute()
+function Entity:getStateAttribute()
     return entity(self.x, self.y, "state")
 end
 
-function sea.Entity:getInt0Attribute()
+function Entity:getInt0Attribute()
     return entity(self.x, self.y, "int0")
 end
 
-function sea.Entity:getStr0Attribute()
+function Entity:getStr0Attribute()
     return entity(self.x, self.y, "str0")
 end
 
-function sea.Entity:getAistateAttribute()
+function Entity:getAistateAttribute()
     return entity(self.x, self.y, "aistate")
 end
+
+return Entity

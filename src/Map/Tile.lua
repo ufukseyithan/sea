@@ -1,7 +1,7 @@
 sea.tile = {}
-sea.Tile = class()
+local Tile = class()
 
-function sea.Tile:constructor(x, y)
+function Tile:constructor(x, y)
     self.x = x
     self.y = y
 end
@@ -10,55 +10,55 @@ end
 --       GETTERS       --
 -------------------------
 
-function sea.Tile:getFrameAttribute()
+function Tile:getFrameAttribute()
 	return tile(self.x, self.y, "frame")
 end
 
-function sea.Tile:getPropertyIDAttribute()
+function Tile:getPropertyIDAttribute()
 	return tile(self.x, self.y, "property")
 end
 
-function sea.Tile:getWalkableAttribute()
+function Tile:getWalkableAttribute()
 	return tile(self.x, self.y, "walkable")
 end
 
-function sea.Tile:getEntityAttribute()
+function Tile:getEntityAttribute()
 	return tile(self.x, self.y, "entity")
 end
 
-function sea.Tile:getHasCustomFrameAttribute()
+function Tile:getHasCustomFrameAttribute()
 	return tile(self.x, self.y, "hascustomframe")
 end
 
-function sea.Tile:getOriginalFrameAttribute()
+function Tile:getOriginalFrameAttribute()
 	return tile(self.x, self.y, "originalframe")
 end
 
-function sea.Tile:getRotationAttribute()
+function Tile:getRotationAttribute()
 	return tile(self.x, self.y, "rot")
 end
 
-function sea.Tile:getBlendAttribute()
+function Tile:getBlendAttribute()
 	return tile(self.x, self.y, "blend")
 end
 
-function sea.Tile:getColorAttribute()
+function Tile:getColorAttribute()
 	return tile(self.x, self.y, "color")
 end
 
-function sea.Tile:getBrightnessAttribute()
+function Tile:getBrightnessAttribute()
 	return tile(self.x, self.y, "brightness")
 end
 
-function sea.Tile:getWallAttribute()
+function Tile:getWallAttribute()
     return tile(self.x, self.y, "wall")
 end
 
-function sea.Tile:getObstacleAttribute()
+function Tile:getObstacleAttribute()
     return tile(self.x, self.y, "obstacle")
 end
 
-function sea.Tile:getDeadlyAttribute()
+function Tile:getDeadlyAttribute()
     return tile(self.x, self.y, "deadly")
 end
 
@@ -66,6 +66,8 @@ end
 --       SETTERS       --
 -------------------------
 
-function sea.Tile:setFrameAttribute(frame)
+function Tile:setFrameAttribute(frame)
 	parse("settile", self.x, self.y, frame)
 end
+
+return Tile
