@@ -13,7 +13,7 @@ function ObjectType:getNameAttribute()
 	return objecttype(self.id, "name")
 end
 
-function ObjectType:getInternalnameAttribute()
+function ObjectType:getInternalNameAttribute()
 	return objecttype(self.id, "internalname")
 end
 
@@ -29,7 +29,7 @@ function ObjectType:getHealthAttribute()
 	return objecttype(self.id, "health")
 end
 
-function ObjectType:getKillmoneyAttribute()
+function ObjectType:getKillMoneyAttribute()
 	return objecttype(self.id, "killmoney")
 end
 
@@ -37,15 +37,15 @@ function ObjectType:getLimitAttribute()
 	return objecttype(self.id, "limit")
 end
 
-function ObjectType:getUpgradepointsAttribute()
+function ObjectType:getUpgradePointsAttribute()
 	return objecttype(self.id, "upgradepoints")
 end
 
-function ObjectType:getUpgradepriceAttribute()
+function ObjectType:getUpgradePriceAttribute()
 	return objecttype(self.id, "upgradeprice")
 end
 
-function ObjectType:getUpgradetoAttribute()
+function ObjectType:getUpgradeToAttribute()
 	return objecttype(self.id, "upgradeto")
 end
 
@@ -72,8 +72,8 @@ end
 local typeIDs = {
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
     20, 21, 22, 23, 
-    30,
-    40
+    30, -- NPC
+    40 -- Dynamic Image
 }
 
 for _, typeID in pairs(typeIDs) do

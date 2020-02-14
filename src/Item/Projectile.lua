@@ -94,4 +94,8 @@ function Projectile:getTimeAttribute()
     return projectile(self.id, self.listID, "time")
 end
 
+-------------------------
+--        INIT         --
+-------------------------
+
 return Projectile

@@ -124,4 +124,8 @@ function Image:setRotationAttribute(value)
 	imagepos(self.id, self.x, self.y, value)
 end
 
+-------------------------
+--        INIT         --
+-------------------------
+
 return Image

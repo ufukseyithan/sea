@@ -10,25 +10,15 @@ end
 function Map:generate()
     for x = 0, self.xSize - 1 do
         for y = 0, self.ySize - 1 do
-            local tile = sea.Tile.new(x, y)
-
-            table.insert2D(self.tile, x, y, tile)
+            table.insert2D(self.tile, x, y, sea.Tile.new(x, y))
         end
 	end
 
 	for _, e in pairs(entitylist()) do
-		local entity = sea.Entity.new(e.x, e.y)
+		local x, y = e.x, e.y
 	
-		table.insert2D(self.entity, e.x, e.y, entity)
+		table.insert2D(self.entity, x, y, sea.Entity.new(x, y))
 	end
-end
-
-function Map:getTile(x, y)
-    return self.tile[x][y]
-end
-
-function Map:getEntity(x, y)
-    return self.entity[x][y]
 end
 
 -------------------------
@@ -126,5 +116,9 @@ end
 function Map:getBotNodesAttribute()
 	return map("botnodes")
 end
+
+-------------------------
+--        INIT         --
+-------------------------
 
 return Map

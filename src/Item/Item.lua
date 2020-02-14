@@ -182,4 +182,8 @@ function Item:setYAttribute(value)
 	self:setPosition(self.x, value)
 end
 
+-------------------------
+--        INIT         --
+-------------------------
+
 return Item

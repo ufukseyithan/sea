@@ -70,4 +70,8 @@ function Tile:setFrameAttribute(frame)
 	parse("settile", self.x, self.y, frame)
 end
 
+-------------------------
+--        INIT         --
+-------------------------
+
 return Tile

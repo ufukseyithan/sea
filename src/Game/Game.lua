@@ -768,4 +768,8 @@ function Game:setZombieSpeedAttribute(value)
     parse("mp_zombiespeedmod", value)
 end
 
+-------------------------
+--        INIT         --
+-------------------------
+
 return Game

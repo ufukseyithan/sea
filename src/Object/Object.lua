@@ -65,8 +65,8 @@ function Object.getLastID()
     return objectIDs[#objectIDs]
 end
 
-function Object.spawn(typeID, tileX, tileY, rotation, mode, team, pid)
-	parse("spawnobject", typeID, tileX, tileY, rotation, mode, team, pid)
+function Object.spawn(typeID, tileX, tileY, rotation, mode, team, playerID)
+	parse("spawnobject", typeID, tileX, tileY, rotation, mode, team, playerID)
 
 	return Object.create(Object.getLastID())
 end
@@ -208,5 +208,9 @@ end
 function Object:setTileYAttribute(value)
 	self:setPosition(self.tilex, value)
 end]]
+
+-------------------------
+--        INIT         --
+-------------------------
 
 return Object

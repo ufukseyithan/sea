@@ -50,4 +50,8 @@ function Entity:getAistateAttribute()
     return entity(self.x, self.y, "aistate")
 end
 
+-------------------------
+--        INIT         --
+-------------------------
+
 return Entity
