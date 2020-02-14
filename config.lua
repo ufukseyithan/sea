@@ -48,7 +48,6 @@ sea.config.player = {
 
     method = {},
 
-    -- @TODO: Settings should also have descriptions, see the config.lua of citylife
     option = {},
 
     control = {
@@ -78,19 +77,19 @@ sea.config.ui = {
 }
 
 sea.config.mainMenuTabs = {
-    ["MAP"] = {
+    ["Map"] = {
         
     },
-    ["BRIEF"] = { -- Notifications, helps
+    ["Brief"] = { -- Notifications, helps
 
     },
-    ["PLAYER"] = { -- Info, stats
+    ["Player"] = { -- Info, stats
 
     },
-    ["SERVER"] = { -- Server info, news, administration stuff for admins
+    ["Server"] = { -- Server info, news, administration stuff for admins
 
     },
-    ["SETTINGS"] = { -- Controls and maybe some other preferences
+    ["Settings"] = { -- Controls and player options
 
     }
 }
