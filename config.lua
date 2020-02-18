@@ -11,19 +11,19 @@ sea.config.welcomeMessage = true
 -- Do not touch these, use sea.addColor function instead
 sea.config.color = {
     system = {
-        error = "255025054",
-        warning = "255155000",
-        info = "155255255",
-        success = "155255155",
+        error = sea.Color.new(255, 25, 54),
+        warning = sea.Color.new(255, 155, 54),
+        info = sea.Color.new(155, 255, 255),
+        success = sea.Color.new(155, 255, 155),
 
-        default = "255255255"
+        default = sea.Color.white
     },
     
     team = {
-        [0] = "255220000",
-        [1] = "255025000",
-        [2] = "050150255",
-	    [3] = "000255000"
+        [0] = sea.Color.new(255, 220, 0),
+        [1] = sea.Color.new(255, 25, 0),
+        [2] = sea.Color.new(50, 150, 255),
+	    [3] = sea.Color.new(0, 255, 0)
     },
 
     custom = {}
@@ -43,11 +43,7 @@ sea.config.player = {
         ["Deaths"] = {0}
     },
 
-    variable = {
-        notifications = {{}},
-        hints = {{}},
-        menu = {false}
-    },
+    variable = {},
 
     method = {},
 

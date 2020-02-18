@@ -1,5 +1,5 @@
 function sea.getColor(name, category)
-    return category and sea.config.color[category][name] or sea.config.color.custom[name]
+    return tostring(category and sea.config.color[category][name] or sea.config.color.custom[name])
 end
 
 function sea.getTeamColor(team)
@@ -7,7 +7,7 @@ function sea.getTeamColor(team)
 end
 
 function sea.createText(text, color, prefix, prefixColor)
-    local prefix = prefix and "©"..(prefixColor or sea.getColor("default", "system"))..prefix.." " or "" 
+    local prefix = prefix and sea.createText(prefix, prefixColor).." " or ""
     return prefix.."©"..(color or sea.getColor("default", "system"))..text
 end
 

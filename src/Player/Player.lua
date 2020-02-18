@@ -2,7 +2,13 @@ sea.player = {}
 local Player = class()
 
 function Player:constructor(id)
-    self.id = id
+	self.id = id
+
+	self.notifications = {}
+	self.hints = {}
+	self.currentMenu = {}
+	self.hudTexts = {}
+	self.panels = {}
 
 	for name, v in pairs(sea.config.player.variable) do
 		if not self[name] then
@@ -98,6 +104,10 @@ function Player:displayMenu(menu, page)
 	self.currentMenu = {menu, page}
 end
 
+function Player:viewsMenu()
+	return self.currentMenu[1] and true or false
+end
+
 function Player:kick(reason)
 	parse("kick", self.id, reason)
 end
@@ -184,7 +194,7 @@ function Player:hint(text)
 end
 
 function Player:alert(text)
-	self:message(sea.createText(text.."@C", "255000000"))
+	self:message(sea.createText(text.."@C", tostring(sea.Color.red)))
 end
 
 function Player:consoleMessage(text)

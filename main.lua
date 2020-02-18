@@ -106,16 +106,9 @@ print("[Sea] Library has been loaded.")
 
 print("[Sea] Loading core...")
 
-require(sea.path.lua.."command")
-require(sea.path.lua.."functions")
-
-sea.path.config = sea.path.lua.."config.lua"
-dofile(sea.path.config)
-
-require(sea.path.lua.."event")
-
-sea.path.src = sea.path.lua.."src/"
 sea.path.data = sea.path.lua.."data/"
+
+require(sea.path.lua.."functions")
 
 local function initClass(directoryPath)
     for file in io.enumdir(directoryPath) do
@@ -126,12 +119,17 @@ local function initClass(directoryPath)
     end
 end
 
+sea.path.src = sea.path.lua.."src/"
 for _, srcDirectoryPath in pairs(io.getDirectoryPaths(sea.path.src)) do
     initClass(srcDirectoryPath)
 
     initClass(srcDirectoryPath.."extended/")
 end
---dofileDirectory(sea.path.src, ".lua", true)
+
+sea.path.config = sea.path.lua.."config.lua"
+dofile(sea.path.config)
+
+require(sea.path.lua.."event")
 
 sea.success("Core has been loaded.")
 
@@ -162,6 +160,8 @@ end
 
 sea.info("Putting the final touches...")
 
+-- @TODO: Add sea-framework gfx and sfx to the server transfer list
+
 sea.updateServerTransferList()
 
 -- Adding custom player methods
@@ -184,7 +184,7 @@ sea.addEvent("onHookServeraction", function(player, action)
 end, -100)
 
 sea.addEvent("onPressMouseScrollUp", function(player)
-    if player.currentMenu then
+    if player:viewsMenu() then
         if player.currentMenu[2] > 1 then 
             player:displayMenu(player.currentMenu[1], player.currentMenu[2] - 1)
         end
@@ -192,7 +192,7 @@ sea.addEvent("onPressMouseScrollUp", function(player)
 end, -100)
 
 sea.addEvent("onPressMouseScrollDown", function(player)
-    if player.currentMenu then
+    if player:viewsMenu() then
         if player.currentMenu[2] < player.currentMenu[1].totalPage then
             player:displayMenu(player.currentMenu[1], player.currentMenu[2] + 1)
         end

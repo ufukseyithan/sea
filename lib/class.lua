@@ -1,16 +1,16 @@
 local function useAttributes(class)
     function class:__index(key)
-        local attribute_key = "get"..string.camelCaseToPascalCase(key).."Attribute"
-        if class[attribute_key] then
-            return class[attribute_key](self)
+        local attributeKey = "get"..string.camelCaseToPascalCase(key).."Attribute"
+        if class[attributeKey] then
+            return class[attributeKey](self)
         end
         return rawget(class, key)
     end
 
     function class:__newindex(key, value)
-        local attribute_key = "set"..string.camelCaseToPascalCase(key).."Attribute"
-        if class[attribute_key] then
-            class[attribute_key](self, value)
+        local attributeKey = "set"..string.camelCaseToPascalCase(key).."Attribute"
+        if class[attributeKey] then
+            class[attributeKey](self, value)
         else
             rawset(self, key, value)
         end

@@ -1,7 +1,7 @@
 local Image = class(sea.Object)
 
 function Image:constructor(path, x, y, mode)
-    self.id = image(path, x, y, mode)
+	self.id = image(path, x, y, mode)
 
 	sea.Object.create(self.id)
 end
@@ -28,8 +28,8 @@ function Image:tweenAnimate(speed, mode)
 	tween_animate(self.id, speed, mode)
 end
 
-function Image:tweenColor(time, r, g, b)
-	tween_color(self.id, time, r, g, b)
+function Image:tweenColor(time, color)
+	tween_color(self.id, time, color.red, color.green, color.blue)
 end
 
 function Image:tweenFrame(time, frame)
@@ -105,7 +105,7 @@ function Image:setBlendModeAttribute(value)
 end
 
 function Image:setColorAttribute(value)
-	imagecolor(self.id, value[1], value[2], value[3])
+	imagecolor(self.id, value.red, value.green, value.blue)
 end
 
 function Image:setFrameAttribute(value)

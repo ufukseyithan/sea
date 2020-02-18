@@ -1,5 +1,7 @@
 local Menu = class()
 
+--local function 
+
 function Menu:constructor(name, mode)
     self.name = name
     self.mode = mode
@@ -18,8 +20,6 @@ function Menu:show(player, page)
     page = page or 1
 
     self.totalPage = math.ceil(table.count(self.buttons) / 9)
-
-    --local function 
 
     local buttons = {}
     for i = 1, 9 do
@@ -63,7 +63,7 @@ end
 
 function Menu:interact(player, index)
     if index == 0 then
-        player.currentMenu = nil
+        player.currentMenu = {}
         return
     end
 
