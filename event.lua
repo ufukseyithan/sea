@@ -111,8 +111,8 @@ end
 
 -- Adding player control events
 for name, key in pairs(sea.config.player.control) do
-    sea.event[createName("press", name)] = {} 
-    sea.event[createName("release", name)] = {} 
+    sea.event[createName("press", name:toPascalCase(" "))] = {} 
+    sea.event[createName("release", name:toPascalCase(" "))] = {} 
 end
 
 sea.hook = {}
@@ -161,16 +161,22 @@ for name, params in pairs(hooks) do
             end
         end
 
-        if name == "leave" then
+        if name == "join" then
+            if sea.config.welcomeMessage then
+                args[1]:message(sea.createText("Welcome to "..sea.game.name..", "..args[1].name.."!@C", "000255000"))
+            end
+        elseif name == "leave" then
             args[1]:saveData()
 
             args[1]:destroy()
         elseif name == "key" then
             for k, v in pairs(args[1].control) do
                 if v == args[2] then                  
-                    return sea.callEvent(createName(args[3] == 1 and "press" or "release", k), args[1])
+                    return sea.callEvent(createName(args[3] == 1 and "press" or "release", k:toPascalCase(" ")), args[1])
                 end
             end
+        elseif name == "menu" then
+            args[1].currentMenu[1]:interact(args[1], args[3])
         elseif name == "die" then
             args[1].stat["Deaths"] = args[1].stat["Deaths"] + 1
         elseif name == "kill" then

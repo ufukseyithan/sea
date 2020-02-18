@@ -16,7 +16,7 @@ end
 
 function string:toPascalCase(delimiter)
     local tab = {}
-    self:gsub( '([^'.. delimiter..']+)', function(c)
+    self:gsub("([^".. delimiter.."]+)", function(c)
         table.insert(tab, c:upperFirst())
     end)
     return table.concat(tab)
@@ -89,6 +89,16 @@ function table.contains(tab, value)
     for _, v in pairs(tab) do
         if (v == value) then
             return true
+        end
+    end
+
+    return false
+end
+
+function table.getKeyOf(tab, value)
+    for k, v in pairs(tab) do
+        if (v == value) then
+            return k
         end
     end
 

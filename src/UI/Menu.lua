@@ -7,8 +7,6 @@ function Menu:constructor(name, mode)
 end
 
 function Menu:addButton(name, func, description)
-    description = description or (type(func) == "table" and ">")
-
     table.insert(self.buttons, {
         name = name,
         func = func,
@@ -16,22 +14,12 @@ function Menu:addButton(name, func, description)
     })
 end
 
-function Menu:interact(player, index)
-    local button = self.buttons[index]
-    
-    if button then
-        if type(button.func) == "table" then
-            button.func:show(player)
-        else
-            button.func(player)
-        end
-    end
-end
-
 function Menu:show(player, page)
     page = page or 1
 
-    local totalPage = math.ceil(table.count(self.buttons) / 9)
+    self.totalPage = math.ceil(table.count(self.buttons) / 9)
+
+    --local function 
 
     local buttons = {}
     for i = 1, 9 do
@@ -65,7 +53,61 @@ function Menu:show(player, page)
         mode = "@i"
     end
 
-    menu(player.id, self.name.." ("..page.." of "..totalPage..")"..mode..","..table.concat(buttons, ","))
+    local pageLabel = ""
+    if self.totalPage > 1 then
+        pageLabel = " ("..page.." of "..self.totalPage..")"
+    end
+
+    menu(player.id, self.name..pageLabel..mode..","..table.concat(buttons, ","))
 end
+
+function Menu:interact(player, index)
+    if index == 0 then
+        player.currentMenu = nil
+        return
+    end
+
+    local button = self.buttons[((player.currentMenu[2] - 1) * 9) + index]
+    
+    if button then
+        if type(button.func) == "table" then
+            player:displayMenu(button.func)
+        else
+            if button.func(player) == true then
+                player:displayMenu(player.currentMenu[1])
+            end
+        end
+    end
+end
+
+-------------------------
+--        CONST        --
+-------------------------
+
+function Menu.construct(structure, parent) 
+    local menu = Menu.new(structure.name, "big")
+
+    for _, button in ipairs(type(structure.content) == "function" and structure.content() or structure.content) do
+        if button.structure then
+            menu:addButton(button.name, Menu.construct(button.structure, menu), button.description or ">")
+        else
+            menu:addButton(button.name, button.func, button.description)
+        end
+    end
+
+    if parent then
+        menu.name = parent.name.." / "..menu.name
+
+        menu:addButton("Back", function(player)
+            player:displayMenu(parent) 
+        end, "<")
+    end
+
+    return menu
+end
+
+-------------------------
+--        INIT         --
+-------------------------
 
 return Menu

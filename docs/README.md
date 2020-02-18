@@ -2,8 +2,9 @@
 
 ## Installation
 ### Prerequisites
-- Requires this .zip that contains necessarry GFX files to be extracted into the CS2D directory
-- Requires `servertransfer.ls` to be entirely empty (including comments)
+- This .zip that contains necessarry assets to be extracted into the CS2D directory
+- `servertransfer.lst` to be entirely empty (including comments)
+- *stats* (located at Create Server > More Settings) to be set to 0
 
 Put all the files into `sys/lua/sea-framework/` and done!
 
@@ -36,7 +37,7 @@ This framework replaces `addhook` function with `sea.addEvent` which is not only
 * The function you want to tie to the event
 * Priority
 
-Event names might be different than you think. If you want to add a hook, you would basically go such as "onHookStartround", "onHookJoin", "onHookKill" and so on. Or, to tie a event to a key upon press; "onPressSpace", "onPressMycontrol", or upon release; "onReleaseSpace", "onReleaseOmg". However, in order key controls to work, the player controls should be configured accordingly.
+Event names might be different than you think. If you want to add a hook, you would basically go such as "onHookStartround", "onHookJoin", "onHookKill" and so on. Or, to tie a event to a key upon press; "onPressSpace", "onPressMyControl", or upon release; "onReleaseSpace", "onReleaseControlName". However, in order key controls to work, the player controls should be configured accordingly.
 
 ## Apps
 ### Creating app

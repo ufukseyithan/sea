@@ -15,10 +15,10 @@ function Player:constructor(id)
 		self.stat[name] = v[1]
 	end
 
-	self.option = {}
-	for name, v in pairs(sea.config.player.option) do
-		if not self.option[name] then
-			self.option[name] = v[1]
+	self.preference = {}
+	for name, v in pairs(sea.config.player.preference) do
+		if not self.preference[name] then
+			self.preference[name] = v[1]
 		end
 	end
 
@@ -56,7 +56,7 @@ function Player:saveData()
 		end
 
 		mergeData("stat")
-		mergeData("option")
+		mergeData("preference")
 		mergeData("control")
 
 		for k, v in pairs(sea.config.player.variable) do
@@ -91,9 +91,11 @@ function Player:getInfo(name, ...)
 end
 
 function Player:displayMenu(menu, page)
+	page = page or 1
+
 	menu:show(self, page)
 
-	self.menu = menu
+	self.currentMenu = {menu, page}
 end
 
 function Player:kick(reason)
@@ -161,20 +163,28 @@ function Player:stripKnife()
 	self:strip(50)
 end
 
+function Player:stripAll()
+	self:strip(0)
+end
+
 function Player:message(text)
 	sea.message(self.id, text)
 end
 
 function Player:notification(text)
-	sea.message(self.id, text)
+	self:message(text)
 
 	table.insert(self.notifications, text)
 end
 
-function Player:help(text)
-	sea.message(self.id, text)
+function Player:hint(text)
+	self:message(text)
 
-	table.insert(self.help, text)
+	table.insert(self.hints, text)
+end
+
+function Player:alert(text)
+	self:message(sea.createText(text.."@C", "255000000"))
 end
 
 function Player:consoleMessage(text)
@@ -569,5 +579,9 @@ end
 function Player:setMaxhealthAttribute(value)
 	parse("setmaxhealth", self.id, value)
 end
+
+-------------------------
+--        INIT         --
+-------------------------
 
 return Player

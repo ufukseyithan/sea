@@ -175,20 +175,27 @@ for _, v in pairs(sea.config.player.control) do
 end
 
 -- Creating main menu
-sea.mainMenu = sea.Menu.new("Main Menu", "big")
-
-for tab, content in pairs(sea.config.mainMenuTabs) do
-    local submenu = sea.Menu.new(tab, "big")
-    for name, func in pairs(content) do
-        submenu:addButton(name, func)
-    end
-
-    sea.mainMenu:addButton(tab, submenu)
-end
+sea.mainMenu = sea.Menu.construct(sea.config.mainMenuStructure)
 
 sea.addEvent("onHookServeraction", function(player, action)
     if action == 1 then
         player:displayMenu(sea.mainMenu)
+    end
+end, -100)
+
+sea.addEvent("onPressMouseScrollUp", function(player)
+    if player.currentMenu then
+        if player.currentMenu[2] > 1 then 
+            player:displayMenu(player.currentMenu[1], player.currentMenu[2] - 1)
+        end
+    end
+end, -100)
+
+sea.addEvent("onPressMouseScrollDown", function(player)
+    if player.currentMenu then
+        if player.currentMenu[2] < player.currentMenu[1].totalPage then
+            player:displayMenu(player.currentMenu[1], player.currentMenu[2] + 1)
+        end
     end
 end, -100)
 

@@ -231,9 +231,9 @@ function sea.initApp(directory)
                                     end
                                 end
                             end,
-                            option = function()
+                            preference = function()
                                 for name, v in pairs(v) do
-                                    if sea.addPlayerOption(name, v[1], v[2]) then 
+                                    if sea.addPlayerPreference(name, v[1], v[2], v[3]) then 
                                         successfulConfig = successfulConfig + 1
                                     end
                                 end
@@ -273,11 +273,11 @@ function sea.initApp(directory)
                         }
                     end
                 end,
-                mainMenuTabs = function()
-                    for name, buttons in pairs(content) do
-                        if sea.addMainMenuTab(name, buttons) then
-                            successfulConfig = successfulConfig + 1
-                        end
+                mainMenuButtons = function()
+                    for _, button in pairs(content) do
+                        sea.addMainMenuButton(button)
+                            
+                        successfulConfig = successfulConfig + 1
                     end
                 end
             }
@@ -386,17 +386,17 @@ function sea.addPlayerMethod(name, func)
     return true
 end
 
-function sea.addPlayerOption(name, defaultValue, values)
-    local playerOption = sea.config.player.option
+function sea.addPlayerPreference(name, defaultValue, values, description)
+    local playerPreference = sea.config.player.preference
 
-    if playerOption[name] then
-        sea.error("The player option "..name.." cannot be added, it already exists.")
+    if playerPreference[name] then
+        sea.error("The player preference "..name.." cannot be added, it already exists.")
         return false
     end
 
-    playerOption[name] = {defaultValue, values}
+    playerPreference[name] = {defaultValue, values, description}
 
-    sea.info("Added player option: "..name.." (default value: "..defaultValue..", has "..table.count(values).." different values)")
+    sea.info("Added player preference: "..name.." (default value: "..defaultValue..", has "..table.count(values).." different values)")
 
     return true
 end
@@ -444,17 +444,13 @@ function sea.setServerSetting(setting, value)
     return true
 end
 
-function sea.addMainMenuTab(name, buttons)
-    local mainMenuTabs = sea.config.mainMenuTabs
+function sea.addMainMenuButton(button)
+    table.insert(sea.config.mainMenuStructure.content, {
+        name = button.name,
+        func = button.func,
+        structure = button.structure,
+        description = button.description
+    })
 
-    if mainMenuTabs[name] then
-        sea.error("The main menu tab "..name.." cannot be added, it already exist.")
-        return false
-    end
-    
-    mainMenuTabs[name] = buttons
-
-    sea.info("Added main menu tab: "..name)
-
-    return true
+    sea.info("Added main menu button: "..button.name)
 end
