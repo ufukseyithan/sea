@@ -1,10 +1,13 @@
 local Element = class()
 
-function Element:constructor(player, x, y, style)
-    self.player = player
+function Element:constructor(ui, x, y, style)
+    self.id = ui:requestElementID(self.type)
+    self.ui = ui
     self.x = x
     self.y = y
     self.style = style or sea.Style.new()
+
+    ui[self.type][self.id] = self
 
     self:update()
 end
@@ -26,6 +29,11 @@ function Element:setPosition(x, y)
     self.y = y
 
     self:update()
+end
+
+function Element:remove()
+    self:destroy()
+    self.ui[self.type][self.id] = nil 
 end
 
 -------------------------

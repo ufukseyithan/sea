@@ -1,5 +1,5 @@
 function sea.getColor(name, category)
-    return tostring(category and sea.config.color[category][name] or sea.config.color.custom[name])
+    return category and sea.config.color[category][name] or sea.config.color.custom[name]
 end
 
 function sea.getTeamColor(team)
@@ -8,7 +8,7 @@ end
 
 function sea.createText(text, color, prefix, prefixColor)
     local prefix = prefix and sea.createText(prefix, prefixColor).." " or ""
-    return prefix.."©"..(color or sea.getColor("default", "system"))..text
+    return prefix.."©"..tostring(color or sea.getColor("default", "system"))..text
 end
 
 function sea.createSystemText(text, color, prefix, prefixColor)
@@ -174,6 +174,8 @@ function sea.initApp(directory)
         return false
     end
 
+    _G[app.namespace] = {}
+
     app.path = app.path or {}
     
     local transferFiles = 0
@@ -191,102 +193,105 @@ function sea.initApp(directory)
     if io.exists(configPath) then
         local config = dofile(configPath)
 
-        for category, content in pairs(config) do
-            switch (category) {
-                color = function()
-                    for name, color in pairs(content) do
-                        if sea.addColor(name, color) then
+        if config then
+            for category, content in pairs(config) do
+                switch (category) {
+                    color = function()
+                        for name, color in pairs(content) do
+                            if sea.addColor(name, color) then
+                                successfulConfig = successfulConfig + 1
+                            end
+                        end
+                    end,
+                    player = function()
+                        for k, v in pairs(content) do
+                            switch(k) {
+                                info = function()
+                                    for name, func in pairs(v) do
+                                        if sea.addPlayerInfo(name, func) then
+                                            successfulConfig = successfulConfig + 1
+                                        end
+                                    end
+                                end,
+                                stat = function()
+                                    for name, v in pairs(v) do
+                                        if sea.addPlayerStat(name, v[1], v[2]) then
+                                            successfulConfig = successfulConfig + 1
+                                        end
+                                    end
+                                end,
+                                variable = function()
+                                    for name, v in pairs(v) do
+                                        if sea.addPlayerVariable(name, v[1], v[2]) then
+                                            successfulConfig = successfulConfig + 1
+                                        end
+                                    end
+                                end,
+                                method = function()
+                                    for name, func in pairs(v) do
+                                        if sea.addPlayerMethod(name, func) then
+                                            successfulConfig = successfulConfig + 1
+                                        end
+                                    end
+                                end,
+                                preference = function()
+                                    for name, v in pairs(v) do
+                                        if sea.addPlayerPreference(name, v[1], v[2], v[3]) then 
+                                            successfulConfig = successfulConfig + 1
+                                        end
+                                    end
+                                end,
+                                control = function()
+                                    for name, v in pairs(v) do
+                                        if sea.addPlayerControl(name, v[1], v[2]) then
+                                            successfulConfig = successfulConfig + 1
+                                        end
+                                    end
+                                end
+                            }
+                        end
+                    end,
+                    server = function()
+                        for k, v in pairs(content) do
+                            switch (k) {
+                                info = function()
+                                    sea.setServerInfo(v)
+        
+                                    successfulConfig = successfulConfig + 1
+                                end,
+                                news = function()
+                                    for _, article in pairs(v) do
+                                        sea.addServerNews(article)
+            
+                                        successfulConfig = successfulConfig + 1
+                                    end
+                                end,
+                                setting = function()
+                                    for setting, value in pairs(v) do
+                                        if sea.setServerSetting(setting, value) then
+                                            successfulConfig = successfulConfig + 1
+                                        end
+                                    end
+                                end
+                            }
+                        end
+                    end,
+                    mainMenuButtons = function()
+                        for _, button in pairs(content) do
+                            sea.addMainMenuButton(button)
+                                
                             successfulConfig = successfulConfig + 1
                         end
                     end
-                end,
-                player = function()
-                    for k, v in pairs(content) do
-                        switch(k) {
-                            info = function()
-                                for name, func in pairs(v) do
-                                    if sea.addPlayerInfo(name, func) then
-                                        successfulConfig = successfulConfig + 1
-                                    end
-                                end
-                            end,
-                            stat = function()
-                                for name, v in pairs(v) do
-                                    if sea.addPlayerStat(name, v[1], v[2]) then
-                                        successfulConfig = successfulConfig + 1
-                                    end
-                                end
-                            end,
-                            variable = function()
-                                for name, v in pairs(v) do
-                                    if sea.addPlayerVariable(name, v[1], v[2]) then
-                                        successfulConfig = successfulConfig + 1
-                                    end
-                                end
-                            end,
-                            method = function()
-                                for name, func in pairs(v) do
-                                    if sea.addPlayerMethod(name, func) then
-                                        successfulConfig = successfulConfig + 1
-                                    end
-                                end
-                            end,
-                            preference = function()
-                                for name, v in pairs(v) do
-                                    if sea.addPlayerPreference(name, v[1], v[2], v[3]) then 
-                                        successfulConfig = successfulConfig + 1
-                                    end
-                                end
-                            end,
-                            control = function()
-                                for name, v in pairs(v) do
-                                    if sea.addPlayerControl(name, v[1], v[2]) then
-                                        successfulConfig = successfulConfig + 1
-                                    end
-                                end
-                            end
-                        }
-                    end
-                end,
-                server = function()
-                    for k, v in pairs(content) do
-                        switch (k) {
-                            info = function()
-                                sea.setServerInfo(v)
-    
-                                successfulConfig = successfulConfig + 1
-                            end,
-                            news = function()
-                                for _, article in pairs(v) do
-                                    sea.addServerNews(article)
-        
-                                    successfulConfig = successfulConfig + 1
-                                end
-                            end,
-                            setting = function()
-                                for setting, value in pairs(v) do
-                                    if sea.setServerSetting(setting, value) then
-                                        successfulConfig = successfulConfig + 1
-                                    end
-                                end
-                            end
-                        }
-                    end
-                end,
-                mainMenuButtons = function()
-                    for _, button in pairs(content) do
-                        sea.addMainMenuButton(button)
-                            
-                        successfulConfig = successfulConfig + 1
-                    end
-                end
-            }
+                }
+            end
+
+            app.config = config
         end
 
-        app.config, app.path.config = config, configPath
+        app.path.config = config
     end
 
-    _G[app.namespace] = {}
     local loadedScripts = 0
     if app.scripts then
         for _, path in ipairs(app.scripts) do
@@ -296,7 +301,6 @@ function sea.initApp(directory)
         end
     end  
     sea[app.namespace] = _G[app.namespace]
-    --_G[app.namespace] = nil
 
     sea.app[app.namespace] = app 
 

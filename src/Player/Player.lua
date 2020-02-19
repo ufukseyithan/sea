@@ -7,8 +7,7 @@ function Player:constructor(id)
 	self.notifications = {}
 	self.hints = {}
 	self.currentMenu = {}
-	self.hudTexts = {}
-	self.panels = {}
+	self.ui = sea.UI.new(self)
 
 	for name, v in pairs(sea.config.player.variable) do
 		if not self[name] then
@@ -94,18 +93,6 @@ end
 
 function Player:getInfo(name, ...)
 	return sea.config.player.info[name](self, ...)
-end
-
-function Player:displayMenu(menu, page)
-	page = page or 1
-
-	menu:show(self, page)
-
-	self.currentMenu = {menu, page}
-end
-
-function Player:viewsMenu()
-	return self.currentMenu[1] and true or false
 end
 
 function Player:kick(reason)
@@ -194,11 +181,23 @@ function Player:hint(text)
 end
 
 function Player:alert(text)
-	self:message(sea.createText(text.."@C", tostring(sea.Color.red)))
+	self:message(text.."@C")
 end
 
 function Player:consoleMessage(text)
 	sea.consoleMessage(self.id, text)
+end
+
+function Player:displayMenu(menu, page)
+	page = page or 1
+
+	menu:show(self, page)
+
+	self.currentMenu = {menu, page}
+end
+
+function Player:viewsMenu()
+	return self.currentMenu[1] and true or false
 end
 
 function Player:getItems()

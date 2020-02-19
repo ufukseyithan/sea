@@ -175,12 +175,18 @@ for name, params in pairs(hooks) do
                     return sea.callEvent(createName(args[3] == 1 and "press" or "release", k:toPascalCase(" ")), args[1])
                 end
             end
+        elseif name == "serveraction" then
+            if args[2] == 1 then
+                args[1]:displayMenu(sea.mainMenu)
+            end
         elseif name == "menu" then
             args[1].currentMenu[1]:interact(args[1], args[3])
         elseif name == "die" then
             args[1].stat["Deaths"] = args[1].stat["Deaths"] + 1
         elseif name == "kill" then
             args[1].stat["Kills"] = args[1].stat["Kills"] + 1
+        elseif name == "assist" then
+            args[1].stat["Assists"] = args[1].stat["Assists"] + 1
         end
 
         return sea.callEvent(createName("hook", name), unpack(args))

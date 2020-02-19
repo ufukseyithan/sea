@@ -177,12 +177,6 @@ end
 -- Creating main menu
 sea.mainMenu = sea.Menu.construct(sea.config.mainMenuStructure)
 
-sea.addEvent("onHookServeraction", function(player, action)
-    if action == 1 then
-        player:displayMenu(sea.mainMenu)
-    end
-end, -100)
-
 sea.addEvent("onPressMouseScrollUp", function(player)
     if player:viewsMenu() then
         if player.currentMenu[2] > 1 then 
@@ -198,5 +192,8 @@ sea.addEvent("onPressMouseScrollDown", function(player)
         end
     end
 end, -100)
+
+sea.Item.generate()
+sea.Object.generate()
 
 sea.success("Sea Framework v"..sea.version.." is up and running!")

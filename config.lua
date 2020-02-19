@@ -40,7 +40,8 @@ sea.config.player = {
     stat = { -- Get illuminated: http://www.cs2d.com/help.php?luacat=player&luacmd=player#cmd, http://www.cs2d.com/help.php?luacat=player&luacmd=stats#cmd & http://www.cs2d.com/help.php?luacat=player&luacmd=steamstats#cmd
         ["Time Played"] = {0, function(value) return value.." (in seconds)" end},
         ["Kills"] = {0},
-        ["Deaths"] = {0}
+        ["Deaths"] = {0},
+        ["Assists"] = {0} 
     },
 
     variable = {},
