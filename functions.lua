@@ -3,7 +3,7 @@ function sea.getColor(name, category)
 end
 
 function sea.getTeamColor(team)
-    return sea.game.gameMode == 1 and sea.getColor(3, "team") or (team == 3 and sea.getColor(2, "team") or sea.getColor(team, "team"))
+    return sea.game.gameMode == 1 and sea.getColor(3, "team") or sea.getColor(team, "team")
 end
 
 function sea.createText(text, color, prefix, prefixColor)
@@ -75,22 +75,12 @@ function sea.loadScript(path)
 
     dofile(path)
 
-    sea.info("Loaded script: \""..path)
+    sea.success("Loaded script: \""..path)
 
     return true
 end
 
 function sea.addTransferFile(path, response, update)
-	if not io.exists(path) then
-		sea.error("The file \""..path.."\" cannot be added as a transfer file, it does not exist.")
-		return false
-    end
-    
-    if io.isDirectory(path) then
-        sea.error("The file \""..path.."\" cannot be added as a transfer file, it is a directory.")
-		return false
-    end
-
     local hasUnsupportedFormat
     for _, format in pairs(sea.config.supportedTransferFileFormats) do
         if path:find(format) then
@@ -103,6 +93,7 @@ function sea.addTransferFile(path, response, update)
         return false
     end
 
+    -- Gettinh the size of the file
     local file = io.open(path)
     local fileSizeInKB = math.round(file:seek("end") / 1024, 2)
     if fileSizeInKB >= 250 then
@@ -127,24 +118,24 @@ function sea.updateServerTransferList(response)
     local serverTransferListPath = sea.path.sys.."servertransfer.lst"
 
     io.toTable(serverTransferListPath, sea.transferFiles)
+
+    sea.transferFiles = table.removeDuplicates(sea.transferFiles)
     
     local addedFiles = 0
     local file = io.open(serverTransferListPath, "w+") or io.tmpfile()
 	for k, v in pairs(sea.transferFiles) do
 		file:write(v.."\n")
 		
-		if response then
-			sea.success("The file \""..v.."\" has been added to the server transfer list.")
-        end
-        
         addedFiles = addedFiles + 1
+
+        if response then
+			sea.info("The file \""..v.."\" has been added to the server transfer list.")
+        end
 	end
     file:close()
-    
-    sea.transferFiles = table.removeDuplicates(sea.transferFiles)
 
     if addedFiles > 0 then
-		sea.info("The server transfer list has been updated. You may need to restart the server in order to get use of it.")
+		sea.info("The server transfer list has been updated with "..addedFiles.." entries. You may need to restart the server in order to get use of it.")
 	end
 end
 
@@ -174,8 +165,6 @@ function sea.initApp(directory)
         return false
     end
 
-    _G[app.namespace] = {}
-
     app.path = app.path or {}
     
     local transferFiles = 0
@@ -188,6 +177,8 @@ function sea.initApp(directory)
             end
         end
     end
+
+    _G[app.namespace] = {}
 
     local configPath, successfulConfig = directory.."config.lua", 0
     if io.exists(configPath) then
@@ -223,13 +214,6 @@ function sea.initApp(directory)
                                 variable = function()
                                     for name, v in pairs(v) do
                                         if sea.addPlayerVariable(name, v[1], v[2]) then
-                                            successfulConfig = successfulConfig + 1
-                                        end
-                                    end
-                                end,
-                                method = function()
-                                    for name, func in pairs(v) do
-                                        if sea.addPlayerMethod(name, func) then
                                             successfulConfig = successfulConfig + 1
                                         end
                                     end
@@ -325,7 +309,7 @@ function sea.addColor(name, color)
 
     customColor[name] = color
 
-    sea.info("Added color: "..sea.createText(name, color))
+    sea.success("Added color: "..sea.createText(name, color))
 
     return true
 end
@@ -340,7 +324,7 @@ function sea.addPlayerInfo(name, func)
 
     playerInfo[name] = func
 
-    sea.info("Added player info: "..name)
+    sea.success("Added player info: "..name)
 
     return true
 end
@@ -355,7 +339,7 @@ function sea.addPlayerStat(name, defaultValue, customDisplay)
 
     playerStat[name] = {defaultValue, customDisplay}
 
-    sea.info("Added player stat: "..name.." (default value: "..defaultValue..(customDisplay and ", has custom display" or "")..")")
+    sea.success("Added player stat: "..name.." (default value: "..tostring(defaultValue)..(customDisplay and ", has custom display" or "")..")")
 
     return true
 end
@@ -370,22 +354,7 @@ function sea.addPlayerVariable(name, defaultValue, isData)
 
     playerVariable[name] = {defaultValue, isData}
 
-    sea.info("Added player variable: "..name.." (default value: "..defaultValue..(isData and ", data" or "")..")")
-
-    return true
-end
-
-function sea.addPlayerMethod(name, func)
-    local playerMethod = sea.config.player.method
-
-    if playerMethod[name] then
-        sea.error("The player method "..name.." cannot be added, it already exists.")
-        return false
-    end
-
-    playerMethod[name] = func
-
-    sea.info("Added player method: "..name)
+    sea.success("Added player variable: "..name.." (default value: "..tostring(defaultValue)..(isData and ", data" or "")..")")
 
     return true
 end
@@ -400,7 +369,7 @@ function sea.addPlayerPreference(name, defaultValue, values, description)
 
     playerPreference[name] = {defaultValue, values, description}
 
-    sea.info("Added player preference: "..name.." (default value: "..defaultValue..", has "..table.count(values).." different values)")
+    sea.success("Added player preference: "..name.." (default value: "..tostring(defaultValue)..", has "..table.count(values).." different values)")
 
     return true
 end
@@ -415,7 +384,7 @@ function sea.addPlayerControl(name, defaultKey, isReassignable)
 
     playerControl[name] = {defaultKey, isReassignable}
 
-    sea.info("Added player control: "..name.." "..isReassignable and "(reassignable)" or "")
+    sea.success("Added player control: "..name.." "..isReassignable and "(reassignable)" or "")
 
     return true
 end

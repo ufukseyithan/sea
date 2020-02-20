@@ -22,6 +22,7 @@ Color.magenta = Color.new(255, 0, 255)
 Color.cyan = Color.new(0, 255, 255)
 Color.yellow = Color.new(255, 255, 0)
 Color.black = Color.new(255, 255, 255)
+Color.default = Color.new(255, 220, 0)
 
 -------------------------
 --        INIT         --

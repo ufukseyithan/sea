@@ -119,8 +119,8 @@ function Player:kill()
 	parse("killplayer", self.id)
 end
 
-function Player:killBy(killer, itemID)
-	parse("customkill", killer, itemID, self.id)
+function Player:killBy(killer, weapon)
+	parse("customkill", killer, weapon, self.id)
 end
 
 function Player:slap()
@@ -162,6 +162,14 @@ end
 
 function Player:stripAll()
 	self:strip(0)
+end
+
+function Player:isEnemyTo(player)
+	if self.team == 0 or player.team == 0 then -- Checks if either one of the players is a spectator
+		return false
+	end
+
+	return sea.Game.gameMode == 1 and true or (self.team ~= player.team)
 end
 
 function Player:message(text)
@@ -364,7 +372,19 @@ function Player:getBotAttribute()
 end
 
 function Player:getTeamAttribute()
-	return player(self.id, "team")
+	if sea.Game.gameMode == 1 then
+		return 3
+	end
+
+	local team = player(self.id, "team")
+
+	team = team == 3 and 2 or team
+
+	return team
+end
+
+function Player:getVipAttribute()
+	return player(self.id, "team") == 3 and true or false
 end
 
 function Player:getLookAttribute()
@@ -389,6 +409,10 @@ end
 
 function Player:getTileYAttribute()
 	return player(self.id, "tiley")
+end
+
+function Player:getTileAttribute()
+	return sea.tile[self.tileX][self.tileY]
 end
 
 function Player:getHealthAttribute()
@@ -431,7 +455,7 @@ function Player:getNightvisionAttribute()
 	return player(self.id, "nightvision")
 end
 
-function Player:getDefusekitAttribute()
+function Player:getDefuseKitAttribute()
 	return player(self.id, "defusekit")
 end
 
@@ -483,15 +507,15 @@ function Player:getSpeedAttribute()
 	return player(self.id, "speedmod")
 end
 
-function Player:getMaxhealthAttribute()
+function Player:getMaxHealthAttribute()
 	return player(self.id, "maxhealth")
 end
 
-function Player:getRconAttribute()
+function Player:getRConAttribute()
 	return player(self.id, "rcon")
 end
 
-function Player:getAi_flashAttribute()
+function Player:getAiFlashAttribute()
 	return player(self.id, "ai_flash")
 end
 
@@ -585,7 +609,7 @@ function Player:setSpeedAttribute(value)
 	parse("speedmod", self.id, value)
 end
 
-function Player:setMaxhealthAttribute(value)
+function Player:setMaxHealthAttribute(value)
 	parse("setmaxhealth", self.id, value)
 end
 

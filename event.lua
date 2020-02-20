@@ -157,13 +157,13 @@ for name, params in pairs(hooks) do
 
         for i = 1, #args do
             if type(params[i]) == "string" and args[i] > 0 then
-                args[i] = sea[params[i]][args[i]]
+                args[i] = sea[params[i]][args[i]] or args[i]
             end
         end
 
         if name == "join" then
             if sea.config.welcomeMessage then
-                args[1]:message(sea.createText("Welcome to "..sea.game.name..", "..args[1].name.."!@C", "000255000"))
+                args[1]:message("Welcome to "..sea.game.name..", "..args[1].name.."!@C", "000255000")
             end
         elseif name == "leave" then
             args[1]:saveData()

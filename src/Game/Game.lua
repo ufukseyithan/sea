@@ -24,7 +24,7 @@ function Game:getFriendlyFireAttribute()
     return game("sv_friendlyfire")
 end
 
-function Game:getGameModeAttribute()
+function Game:getModeAttribute()
     return game("sv_gamemode")
 end
 
@@ -68,7 +68,7 @@ function Game:getRconUsersAttribute()
     return game("sv_rconusers")
 end
 
-function Game:getSpecModeAttribute()
+function Game:getSpectatingModeAttribute()
     return game("sv_specmode")
 end
 
@@ -84,12 +84,12 @@ function Game:getAntispeederAttribute()
     return game("mp_antispeeder")
 end
 
-function Game:getAutoGameModeAttribute()
+function Game:getAutoModeAttribute()
     return game("mp_autogamemode")
 end
 
 function Game:getAutoTeamBalanceAttribute()
-    return game("mp_autogamemode")
+    return game("mp_autoteambalance")
 end
 
 function Game:getBuyMenuAttribute()
@@ -432,7 +432,7 @@ function Game:setFriendlyFireAttribute(value)
     parse("sv_friendlyfire", value)
 end
 
-function Game:setGameModeAttribute(value)
+function Game:setModeAttribute(value)
     parse("sv_gm", value)
 end
 
@@ -492,7 +492,7 @@ function Game:setAntispeederAttribute(value)
     parse("mp_antispeeder", value)
 end
 
-function Game:setAutoGameModeAttribute(value)
+function Game:setAutoModeAttribute(value)
     parse("mp_autogamemode", value)
 end
 

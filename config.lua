@@ -46,8 +46,6 @@ sea.config.player = {
 
     variable = {},
 
-    method = {},
-
     preference = {},
 
     control = {
@@ -66,16 +64,7 @@ sea.config.server = {
         sea.createArticle("This Is an Example News Title", "This is an example news description. Let's see if it works!")
     },
     
-    setting = {
-        
-    }
-}
-
-sea.config.ui = {
-    soundPath = {
-        click = "",
-        hover = ""
-    }
+    setting = {}
 }
 
 sea.config.mainMenuStructure = {
@@ -90,7 +79,7 @@ sea.config.mainMenuStructure = {
                         name = "Notifications",
                         func = function(player)
                             if not table.isEmpty(player.notifications) then
-                                player:message(sea.createText("The notifications of the current session have been sent to your console."))
+                                player:message("The notifications of the current session have been sent to your console.")
                 
                                 for _, notification in ipairs(player.notifications) do
                                     player:consoleMessage(notification)
@@ -105,7 +94,7 @@ sea.config.mainMenuStructure = {
                         name = "Hints",
                         func = function(player)
                             if not table.isEmpty(player.hints) then
-                                player:message(sea.createText("The hints of the current session have been sent to your console."))
+                                player:message("The hints of the current session have been sent to your console.")
                 
                                 for _, hint in ipairs(player.hints) do
                                     player:consoleMessage(hint)

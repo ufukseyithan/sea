@@ -164,11 +164,6 @@ sea.info("Putting the final touches...")
 
 sea.updateServerTransferList()
 
--- Adding custom player methods
-for name, func in pairs(sea.config.player.method) do
-    sea.Player[name] = func
-end
-
 -- Adding default control key bindings
 for _, v in pairs(sea.config.player.control) do
     addbind(v[1])
