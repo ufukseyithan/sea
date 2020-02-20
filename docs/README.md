@@ -1,4 +1,4 @@
-**Warning:** This repository may not have the common structure most repositories have. Meaning it would be rational not to treat this repository in a typical way. While the root contains the main code for the framework to initialize, `src` folder contains the classes.
+**Warning:** This repository may not have the common structure most repositories have. Meaning it would be rational not to treat this repository in a typical way. For example, while the root contains the main code for the framework to initialize, `src` folder contains the necessary classes.
 
 ## Installation
 ### Prerequisites
