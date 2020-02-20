@@ -1,12 +1,11 @@
-**Warning:** This repository may not have the common structure most repositories have. While the root contains the main code for the framework to initialize, `src` folder contains the classes.
+**Warning:** This repository may not have the common structure most repositories have. Meaning it would be rational not to treat this repository in a typical way. While the root contains the main code for the framework to initialize, `src` folder contains the classes.
 
 ## Installation
 ### Prerequisites
-- This .zip that contains necessarry assets to be extracted into the CS2D directory
-- `servertransfer.lst` to be entirely empty (including comments)
+- [This .rar file](https://drive.google.com/file/d/1EMIctNNLyLCj5evG6EyggphmpHiX0gT3/view?usp=sharing) that contains necessarry assets to be extracted into the CS2D directory
 - *stats* (located at Create Server > More Settings) to be set to 0
 
-Put all the files into `sys/lua/sea-framework/` and done!
+After performing the prerequisites above, put all the files in the repository into `sys/lua/sea-framework/` and done!
 
 ## Configuration
 This part is kind of a big one. You can configure lots of things and not only small things.
