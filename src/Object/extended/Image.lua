@@ -1,11 +1,12 @@
 local Image = class(sea.Object)
 
-function Image:constructor(path, x, y, mode)
-	self.id = image(path, x, y, mode)
+function Image:constructor(path, x, y, mode, player)
+	self.id = image(path, x, y, mode, player and player.id)
 
 	sea.Object.create(self.id)
 end
 
+-- @TODO: Learn the difference between killobject and freeimage. If there is no difference at all, you can remove this function.
 function Image:destroy()
 	freeimage(self.id)
 

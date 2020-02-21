@@ -1,6 +1,6 @@
 local Menu = class()
 
---local function 
+--local function - function and function() or name
 
 function Menu:constructor(name, mode)
     self.name = name

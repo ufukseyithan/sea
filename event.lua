@@ -163,16 +163,18 @@ for name, params in pairs(hooks) do
 
         if name == "join" then
             if sea.config.welcomeMessage then
-                args[1]:message("Welcome to "..sea.game.name..", "..args[1].name.."!@C", "000255000")
+                args[1]:message("Welcome to "..sea.game.name..", "..args[1].name.."!@C")
             end
         elseif name == "leave" then
             args[1]:saveData()
 
             args[1]:destroy()
         elseif name == "key" then
-            for k, v in pairs(args[1].control) do
-                if v == args[2] then                  
-                    return sea.callEvent(createName(args[3] == 1 and "press" or "release", k:toPascalCase(" ")), args[1])
+            if type(args[1]) == "table" then -- This gotta be here
+                for k, v in pairs(args[1].control) do
+                    if v == args[2] then                  
+                        return sea.callEvent(createName(args[3] == 1 and "press" or "release", k:toPascalCase(" ")), args[1])
+                    end
                 end
             end
         elseif name == "serveraction" then

@@ -1,13 +1,11 @@
 local Element = class()
 
-function Element:constructor(ui, x, y, style)
-    self.id = ui:requestElementID(self.type)
+function Element:constructor(ui, x, y, width, height, style)
     self.ui = ui
-    self.x = x
-    self.y = y
+    self.x, self.y = x, y
+    self.width, self.height = width or 0, height or 0
     self.style = style or sea.Style.new()
-
-    ui[self.type][self.id] = self
+    self.hidden = false
 
     self:update()
 end
@@ -18,12 +16,6 @@ end
     end
 end]]
 
-function Element:setStyle(style)
-    self.style = style
-
-    self:update()
-end
-
 function Element:setPosition(x, y)
     self.x = x
     self.y = y
@@ -31,9 +23,18 @@ function Element:setPosition(x, y)
     self:update()
 end
 
-function Element:remove()
-    self:destroy()
-    self.ui[self.type][self.id] = nil 
+function Element:setStyle(style)
+    self.style = style
+
+    self:update()
+end
+
+function Element:show()
+    if self.hidden then
+        self.hidden = false
+
+        self:update()
+    end
 end
 
 -------------------------
