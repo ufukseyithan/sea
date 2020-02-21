@@ -76,7 +76,7 @@ class = function(inheritsFrom)
         return instance
     end
 
-    useAttributes(class)
+    useAttributes(inheritsFrom or class)
 
     -- Returns the class.
     return class

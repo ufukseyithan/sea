@@ -14,6 +14,10 @@ function Entity:trigger()
     end
 end
 
+-------------------------
+--       GETTERS       --
+-------------------------
+
 function Entity:getExistsAttribute()
     return entity(self.x, self.y, "exists")
 end

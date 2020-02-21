@@ -2,7 +2,7 @@ sea.projectile = {}
 local Projectile = class()
 
 --[[
-    WARNING: Since CS2D does not have a hook or something like that where it would be possible to get the ID of the project that is needed
+    ***WARNING:*** Since CS2D does not have a hook or something like that where it would be possible to get the ID of the project that is needed
     to create a projectile class, this class is not yet usable. If CS2D gets a related update, this can have a use.
 ]]
 

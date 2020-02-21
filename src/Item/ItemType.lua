@@ -5,6 +5,10 @@ function ItemType:constructor(id)
     self.id = id
 end
 
+-------------------------
+--       GETTERS       --
+-------------------------
+
 function ItemType:getNameAttribute()
 	return itemtype(self.id, "name")
 end

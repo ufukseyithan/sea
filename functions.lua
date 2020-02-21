@@ -75,7 +75,7 @@ function sea.loadScript(path)
 
     dofile(path)
 
-    sea.success("Loaded script: \""..path)
+    sea.success("Loaded script: \""..path.."\"")
 
     return true
 end
@@ -344,7 +344,7 @@ function sea.addPlayerStat(name, defaultValue, customDisplay)
     return true
 end
 
-function sea.addPlayerVariable(name, defaultValue, isData)
+function sea.addPlayerVariable(name, defaultValue, data)
     local playerVariable = sea.config.player.variable
 
     if playerVariable[name] then
@@ -352,9 +352,9 @@ function sea.addPlayerVariable(name, defaultValue, isData)
         return false
     end
 
-    playerVariable[name] = {defaultValue, isData}
+    playerVariable[name] = {defaultValue, data}
 
-    sea.success("Added player variable: "..name.." (default value: "..tostring(defaultValue)..(isData and ", data" or "")..")")
+    sea.success("Added player variable: "..name.." (default value: "..tostring(defaultValue)..(data and ", data" or "")..")")
 
     return true
 end

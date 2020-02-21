@@ -1,16 +1,8 @@
 imageFont = { fontTable = {} }
 
 -- /// Misc Func /// --
-function imageFont.fileExists(file)
-	local f = io.open(file, "rb")
-	if f then
-		f:close()
-	end
-	return(f ~= nil)
-end
-
 function imageFont.linesFromFile(file)
-	if not imageFont.fileExists(file) then
+	if not io.exists(file) then
 		return({})
 	end
 	local lines = {}
