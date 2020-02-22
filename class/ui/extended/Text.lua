@@ -41,7 +41,7 @@ end
 function Text:destroy()
     parse("hudtxt2", self.ui.player.id, self.textID)
 
-    self.ui.hudText[textID] = nil
+    self.ui.hudText[self.textID] = nil
 end
 
 -------------------------

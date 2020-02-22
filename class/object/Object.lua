@@ -2,14 +2,14 @@ sea.object = {}
 local Object = class()
 
 --[[
-	Where items could spawn:
+	Where objects could spawn:
 	- Server start (done!)
 	- Round start (startround hook) (done!)
     - Build (done!)
     - Image (done!)
     - Portal gun
 
-	Where items could be removed:
+	Where objects could be removed:
 	- Object kill (objectkill hook) (done!)
     - Round start (startround hook) (done!)
 	- Freeimage (done!)
@@ -32,26 +32,29 @@ end
 function Object.create(id)
 	if sea.object[id] then
 		sea.error("Attempted to create object that already exists (ID: "..id..")")
-		return
+		return false
 	end
 
 	local object = Object.new(id)
 
 	sea.object[id] = object
 
-	sea.info("Created object (ID: "..id..")")
+	sea.success("Created object (ID: "..id..")")
 
 	return object
 end
 
 function Object.remove(id)
-	if sea.object[id] then
-		sea.object[id] = nil
-
-		sea.info("Removed object (ID: "..id..")")
-	else
+	if not sea.object[id] then
 		sea.error("Attempted to remove non-existent object (ID: "..id..")")
+		return false
 	end
+
+	sea.object[id] = nil
+
+	sea.success("Removed object (ID: "..id..")")
+
+	return true
 end
 
 function Object.generate()

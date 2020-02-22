@@ -36,26 +36,29 @@ end
 function Item.create(id)
 	if sea.item[id] then
 		sea.error("Attempted to create item that already exists (ID: "..id..")")
-		return
+		return false
 	end
 
 	local item = Item.new(id)
 
 	sea.item[id] = item
 
-	sea.info("Created item (ID: "..id..")")
+	sea.success("Created item (ID: "..id..")")
 
 	return item
 end
 
 function Item.remove(id)
-	if sea.item[id] then
-		sea.item[id] = nil
-
-		sea.info("Removed item (ID: "..id..")")
-	else
+	if not sea.item[id] then
 		sea.error("Attempted to remove non-existent item (ID: "..id..")")
+		return false
 	end
+
+	sea.item[id] = nil
+
+	sea.success("Removed item (ID: "..id..")")
+
+	return true
 end
 
 function Item.generate()
@@ -96,18 +99,6 @@ function Item.getCloseToPlayer(player, radius)
 	end
 
 	return items
-end
-
-function Item.getAt(x, y)
-	local items = {}
-
-	for _, item in pairs(sea.item) do
-		if item.x == x and item.y == y then
-			table.insert(items, item)
-		end
-    end
-
-    return items
 end
 
 -------------------------

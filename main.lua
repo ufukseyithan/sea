@@ -119,11 +119,11 @@ local function initClass(directoryPath)
     end
 end
 
-sea.path.src = sea.path.lua.."src/"
-for _, srcDirectoryPath in pairs(io.getDirectoryPaths(sea.path.src)) do
-    initClass(srcDirectoryPath)
+sea.path.class = sea.path.lua.."class/"
+for _, classDirectoryPath in pairs(io.getDirectoryPaths(sea.path.class)) do
+    initClass(classDirectoryPath)
 
-    initClass(srcDirectoryPath.."extended/")
+    initClass(classDirectoryPath.."extended/")
 end
 
 sea.path.config = sea.path.lua.."config.lua"

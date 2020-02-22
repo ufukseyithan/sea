@@ -18,26 +18,29 @@ end
 function Projectile.create(listID, id)
     if sea.projectile[id] then
 		sea.error("Attempted to create projectile that already exists (ID: "..id..")")
-		return
+		return false
     end
     
 	local projectile = Projectile.new(listID, id)
 
     table.insert2D(sea.projectile, listID, id, projectile)
 
-	sea.info("Created projectile (ID: "..id.." for the list "..listID..")")
+	sea.success("Created projectile (ID: "..id.." for the list "..listID..")")
 
 	return projectile
 end
 
 function Projectile.remove(listID, id)
-    if sea.item[listID][id] then
-        sea.item[listID][id] = nil
-
-        sea.info("Removed projectile (ID: "..id.." from the list "..listID..")")
-    else
+    if not sea.projectile[listID][id] then
         sea.error("Attempted to remove non-existent projectile (ID: "..id..")")
+        return false
     end
+
+    sea.projectile[listID][id] = nil
+
+    sea.success("Removed projectile (ID: "..id.." from the list "..listID..")")
+        
+    return true
 end
 
 --[[

@@ -12,18 +12,20 @@ function UI:requestHUDTextID()
 end
 
 function UI:createElement(object)
-    local id = #self.element + 1
+    local element = self.element
+    local id = #element + 1
 
-    self.element[id] = object
+    element[id] = object
 
     if self.hidden then
         object:hide()
     end
 
-    function object:remove()
-        object:destroy()
+    local temp = object.destroy
+    function object:destroy()
+        temp(object)
 
-        self.element[id] = nil
+        element[id] = nil
     end
 
     return object
@@ -55,7 +57,7 @@ end
 
 function UI:destroy()
     for _, element in pairs(self.element) do
-        element:remove()
+        element:destroy()
     end
 end
 

@@ -1,4 +1,4 @@
-**Warning:** This repository may not have the common structure most repositories have. Meaning it would be rational not to treat this repository in a typical way. For example, while the root contains the main code for the framework to initialize, `src` folder contains the necessary classes.
+**Warning:** This repository may not have the common structure most repositories have. Meaning it would be rational not to treat this repository in a typical way.
 
 ## Installation
 ### Prerequisites
@@ -62,3 +62,43 @@ Event names might be different than you think. If you want to add a hook, you wo
 #### Creating main.lua
 
 #### Creating config.lua
+
+## Functions
+This framework contains lots of functions, from familiar ones to completely new ones that would assist you in nearly every usually scenario. 
+
+### Library Functions
+These are the most common functions, the ones that you must have probably encountered and even used before. While some of them are only extensions to the `string`, `table` and `io` Lua libraries, the others consist of "utility functions" such as `getDirection()`, `deepcopy()`, `getDistance()`, and even a better `parse()`, you name it.
+
+### General Functions
+These are the ones Sea Framework provides. They are included in the namespace `sea`. You may not use these directly in your scripts, generally the system uses them for its own usage.
+
+## Classes
+This framework contains numerous classes to make OOP possible. All of them are in the namespace `sea`.
+
+### Data
+#### ItemType
+#### ObjectType
+
+### Entity
+#### Item
+#### Player
+#### Object
+#### Image
+#### Projectile (not used)
+
+### UI Related
+#### UI
+#### Menu
+#### Element
+#### Panel
+#### Text
+
+### Other
+#### Map
+#### Game
+
+### Misc
+#### Color
+
+
+

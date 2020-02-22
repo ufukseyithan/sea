@@ -16,12 +16,16 @@ function getDirection(x1, y1, x2, y2)
     return direction
 end
 
-function lengthdirX(direction, length)
+function extendX(direction, length)
 	return math.cos(math.rad(direction - 90)) * length
 end
 
-function lengthdirY(direction, length)
+function extendY(direction, length)
 	return math.sin(math.rad(direction - 90)) * length
+end
+
+function extendPosition(x, y, direction, length)
+    return x + extendX(direction, length), y + extendY(direction, length)
 end
 
 function isInside(x, y, x1, y1, x2, y2)

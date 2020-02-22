@@ -208,6 +208,10 @@ function Player:viewsMenu()
 	return self.currentMenu[1] and true or false
 end
 
+function Player:isVIP()
+	return player(self.id, "team") == 3 and true or false
+end
+
 function Player:getItems()
 	local itemTypes = {}
 
@@ -236,11 +240,11 @@ function Player:hasItem(itemID)
 end
 
 function Player:getAmmo(itemID)
-	local ammoIn, ammo = playerammo(self.id, itemID)
+	local loaded, spare = playerammo(self.id, itemID)
 
 	return {
-		["in"] = ammoIn,
-		spare = ammo
+		loaded = loaded,
+		spare = spare
 	}
 end
 
@@ -251,26 +255,29 @@ end
 function Player.create(id)
 	if sea.player[id] then
 		sea.error("Attempted to create player that already exists (ID: "..id..")")
-		return
+		return false
 	end
 
 	local player = Player.new(id)
 
 	sea.player[id] = player
 
-	sea.info("Created player (ID: "..id..")")
+	sea.success("Created player (ID: "..id..")")
 
 	return player
 end
 
 function Player.remove(id)
-	if sea.player[id] then
-		sea.player[id] = nil
-
-		sea.info("Removed player (ID: "..id..")")
-	else
+	if not sea.player[id] then
 		sea.error("Attempted to remove non-existent player (ID: "..id..")")
-	end
+		return false
+	end 
+
+	sea.player[id] = nil
+
+	sea.success("Removed player (ID: "..id..")")
+
+	return true
 end
 
 local function getPlayers(mode, specific)
@@ -372,7 +379,7 @@ function Player:getBotAttribute()
 end
 
 function Player:getTeamAttribute()
-	if sea.Game.gameMode == 1 then
+	if sea.Game.mode == 1 then
 		return 3
 	end
 
@@ -381,10 +388,6 @@ function Player:getTeamAttribute()
 	team = team == 3 and 2 or team
 
 	return team
-end
-
-function Player:getVipAttribute()
-	return player(self.id, "team") == 3 and true or false
 end
 
 function Player:getLookAttribute()
