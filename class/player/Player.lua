@@ -248,23 +248,25 @@ function Player:getAmmo(itemID)
 	}
 end
 
+function Player:setAmmo(itemID, loaded, spare)
+	parse("setammo", self.id, itemID, loaded, spare)
+end
+
 -------------------------
 --        CONST        --
 -------------------------
 
-function Player.create(id)
+function Player.create(id, object)
 	if sea.player[id] then
 		sea.error("Attempted to create player that already exists (ID: "..id..")")
 		return false
 	end
 
-	local player = Player.new(id)
-
-	sea.player[id] = player
+	sea.player[id] = object or Player.new(id)
 
 	sea.success("Created player (ID: "..id..")")
 
-	return player
+	return sea.player[id]
 end
 
 function Player.remove(id)

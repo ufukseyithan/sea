@@ -5,7 +5,7 @@ function Image:constructor(path, x, y, mode, player)
 
 	self.id = id
 
-	sea.Object.create(id)
+	sea.Object.create(id, self)
 end
 
 -- @TODO: Learn the difference between killobject and freeimage. If there is no difference at all, you can remove this function.

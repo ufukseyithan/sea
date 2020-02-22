@@ -16,7 +16,7 @@ sea.config.color = {
         info = sea.Color.new(155, 255, 255),
         success = sea.Color.new(155, 255, 155),
 
-        default = sea.Color.white
+        default = sea.Color.default
     },
     
     team = {
@@ -65,6 +65,10 @@ sea.config.server = {
     },
     
     setting = {}
+}
+
+sea.config.ui = {
+    margin = 0
 }
 
 sea.config.mainMenuStructure = {

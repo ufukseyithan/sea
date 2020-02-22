@@ -4,6 +4,7 @@ function Panel:constructor(ui, imagePath, x, y, style)
     local image = sea.Image.new(imagePath, x, y, 2, ui.player)
 
     self.image = image
+    self.imagePath = imagePath -- This needs to be saved for later use when recreating UI images upon round start
 
     self:super(ui, x, y, image.width, image.height, style)
 end

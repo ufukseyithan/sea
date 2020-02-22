@@ -21,7 +21,7 @@ function Object:constructor(id)
 end
 
 function Object:destroy()
-	-- No need to remove the object from sea.object because killobject command automatically triggers the objectkill hook
+	-- No need to remove the object from sea.object afterwards because killobject command automatically triggers the objectkill hook
 	parse("killobject", self.id)
 end
 
@@ -29,19 +29,17 @@ end
 --        CONST        --
 -------------------------
 
-function Object.create(id)
+function Object.create(id, object)
 	if sea.object[id] then
 		sea.error("Attempted to create object that already exists (ID: "..id..")")
 		return false
 	end
 
-	local object = Object.new(id)
-
-	sea.object[id] = object
+	sea.object[id] = object or Object.new(id)
 
 	sea.success("Created object (ID: "..id..")")
 
-	return object
+	return sea.object[id]
 end
 
 function Object.remove(id)
@@ -72,6 +70,10 @@ function Object.spawn(typeID, tileX, tileY, rotation, mode, team, playerID)
 	parse("spawnobject", typeID, tileX, tileY, rotation, mode, team, playerID)
 
 	return Object.create(Object.getLastID())
+end
+
+function Object.spawnNPC(type, x, y, rotation)
+	return Object.spawn(30, x, y, rotation, 0, 0, type)
 end
 
 function Object.get()

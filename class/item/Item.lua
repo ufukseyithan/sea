@@ -23,8 +23,8 @@ function Item:destroy()
 	Item.remove(self.id)
 end
 
-function Item:setPosition(x, y)
-    local temp = {self.typeID, x, y, self.ammoIn, self.ammo}
+function Item:setPosition(tileX, tileY)
+    local temp = {self.typeID, tileX, tileY, self.loadedAmmo, self.spareAmmo}
     self:destroy()
     Item.spawn(unpack(temp))
 end
@@ -33,19 +33,17 @@ end
 --        CONST        --
 -------------------------
 
-function Item.create(id)
+function Item.create(id, object)
 	if sea.item[id] then
 		sea.error("Attempted to create item that already exists (ID: "..id..")")
 		return false
 	end
 
-	local item = Item.new(id)
-
-	sea.item[id] = item
+	sea.item[id] = object or Item.new(id)
 
 	sea.success("Created item (ID: "..id..")")
 
-	return item
+	return sea.item[id]
 end
 
 function Item.remove(id)
@@ -72,8 +70,8 @@ function Item.getLastID()
     return itemIDs[#itemIDs]
 end
 
-function Item.spawn(typeID, x, y, ammoIn, ammo)
-	parse("spawnitem", typeID, x, y, ammoIn, ammo)
+function Item.spawn(typeID, tileX, tileY, loadedAmmo, spareAmmo)
+	parse("spawnitem", typeID, tileX, tileY, loadedAmmo, spareAmmo)
 
 	return Item.create(Item.getLastID())
 end
@@ -125,11 +123,11 @@ function Item:getPlayerAttribute()
 	return sea.player[item(self.id, "player")]
 end
 
-function Item:getAmmoAttribute()
+function Item:getSpareAmmoAttribute()
 	return item(self.id, "ammo")
 end
 
-function Item:getAmmoInAttribute()
+function Item:getLoadedAmmoAttribute()
 	return item(self.id, "ammoin")
 end
 
@@ -137,19 +135,27 @@ function Item:getModeAttribute()
 	return item(self.id, "mode")
 end
 
-function Item:getXAttribute()
+function Item:getTileXAttribute()
 	return item(self.id, "x")
 end
 
-function Item:getYAttribute()
+function Item:getTileYAttribute()
 	return item(self.id, "y")
+end
+
+function Item:getXAttribute()
+	return tileToPixel(self.tileX)
+end
+
+function Item:getYAttribute()
+	return tileToPixel(self.tileY)
 end
 
 function Item:getDroppedAttribute()
 	return item(self.id, "dropped")
 end
 
-function Item:getDroptimerAttribute()
+function Item:getDropTimerAttribute()
 	return item(self.id, "droptimer")
 end
 
@@ -157,20 +163,28 @@ end
 --       SETTERS       --
 -------------------------
 
-function Item:setAmmoInAttribute(value)
-	setammo(self.id, 0, value, self.ammo)
+function Item:setLoadedAmmoAttribute(value)
+	setammo(self.id, 0, value, self.spareAmmo)
 end
 
-function Item:setAmmoAttribute(value)
-	setammo(self.id, 0, self.ammoIn, value)
+function Item:setSpareAmmoAttribute(value)
+	setammo(self.id, 0, self.loadedAmmo, value)
+end
+
+function Item:setTileXAttribute(value)
+	self:setPosition(value, self.tileY)
+end
+
+function Item:setTileYAttribute(value)
+	self:setPosition(self.tileX, value)
 end
 
 function Item:setXAttribute(value)
-	self:setPosition(value, self.y)
+	self:setPosition(pixelToTile(value), self.tileY)
 end
 
 function Item:setYAttribute(value)
-	self:setPosition(self.x, value)
+	self:setPosition(self.tileX, pixelToTile(value))
 end
 
 -------------------------

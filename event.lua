@@ -32,7 +32,7 @@ local hooks = {
     key = {"player", true, true},
     kill = {"player", "player", "itemType", true, true, "object", "player"},
     leave = {"player", true},
-    --log = {true},
+    log = {true},
     mapchange = {true},
     menu = {"player", true, true},
     minute = {},
@@ -145,6 +145,17 @@ for name, params in pairs(hooks) do
                 sea.Item.remove(id)
             end
             sea.Item.generate()
+
+            -- Recreating the UI images (because they are removed at round start)
+            for _, player in pairs(sea.Player.get()) do
+                for _, element in pairs(player.ui.element) do
+                    if element.image then
+                        element.image = sea.Image.new(element.imagePath, element.x, element.y, 2, player)
+
+                        element:update()
+                    end
+                end
+            end
         elseif name == "second" then
             for k, v in pairs(sea.Player.get()) do
                 v.stat["Time Played"] = v.stat["Time Played"] + 1
@@ -169,6 +180,14 @@ for name, params in pairs(hooks) do
             args[1]:saveData()
 
             args[1]:destroy()
+        elseif name == "clientsetting" then
+            if args[2] == 1 then
+                local playerUI = args[1].ui
+
+                ui.width, ui.height = args[3], args[4]
+
+                ui:update()
+            end
         elseif name == "key" then
             if type(args[1]) == "table" then -- This gotta be here
                 for k, v in pairs(args[1].control) do

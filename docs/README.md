@@ -23,7 +23,7 @@ First of all, while you can manually configure in `config.lua`, every app indivi
 #### *info*
 `sea.config.player.info` contains the information that the player can see in their main menu. The key of the entry should be the name of the info, and the value should be a function (has player object parameter) returning how and what it displays in the menu.
 ```lua
-["Progress"] = function(player) return "Your level is "..player.level end
+["Progress"] = function(player) return "Your rank is "..player.rank end
 ```
 #### *stat*
 `sea.config.player.stat`, as you can tell, are the statistics of the player which can be seen in their main menu just like the information. The key of the entry should be the name of the statistic, and the value should be a table containing the default value (start value) and optionally a function (has stat's value parameter) that returns how it is displayed.
@@ -31,9 +31,9 @@ First of all, while you can manually configure in `config.lua`, every app indivi
 ["Money Spent"] = {0, function(value) return value.."$" end}
 ```
 #### *variable*
-`sea.config.player.variable` are the custom variables of the player, anything that would not make sense to into other categories should be inserted here. For instance, inventory, level, XP and such. The key of the entry should be the variable name and the value should be a table containing the default value (start value) and optionally a boolean value which if it is true, it will be treated as a data to be saved every minute and when the player leaves the server. The player variables will be included in the player objects, so you can get them using `player.level` for example.
+`sea.config.player.variable` are the custom variables of the player, anything that would not make sense to into other categories should be inserted here. For instance, inventory, rank, XP and such. The key of the entry should be the variable name and the value should be a table containing the default value (start value) and optionally a boolean value which if it is true, it will be treated as a data to be saved every minute and when the player leaves the server. The player variables will be included in the player objects, so you can get them using `player.rank` for example.
 ```lua
-level = {1, true}
+rank = {1, true}
 ```
 #### *preference*
 `sea.config.player.preference` contains the preferences that the player can change as they wish using the main menu. The key of the entry should be the name of the preference, and the value should be a table containing the default value and the options in a table that are available to the player. The default value has to be in the option table as a first parameter.
@@ -64,13 +64,13 @@ Event names might be different than you think. If you want to add a hook, you wo
 #### Creating config.lua
 
 ## Functions
-This framework contains lots of functions, from familiar ones to completely new ones that would assist you in nearly every usually scenario. 
+This framework contains lots of functions, from familiar ones to completely new ones that would assist you in nearly every usual scenario. 
 
 ### Library Functions
-These are the most common functions, the ones that you must have probably encountered and even used before. While some of them are only extensions to the `string`, `table` and `io` Lua libraries, the others consist of "utility functions" such as `getDirection()`, `deepcopy()`, `getDistance()`, and even a better `parse()`, you name it.
+These are the most common functions, the ones that you must have probably encountered and even used before. While some of them are only extensions to the `string`, `table` and `io` Lua libraries, the others consist of "utility functions" such as `getDirection()`, `deepcopy()`, `getDistance()`, and even an improved version of `parse()`, you name it.
 
 ### General Functions
-These are the ones Sea Framework provides. They are included in the namespace `sea`. You may not use these directly in your scripts, generally the system uses them for its own usage.
+These are the ones Sea Framework provides. They are included in the namespace `sea`. You may not use these directly in your apps and scripts, generally the system uses them for its own usage.
 
 ## Classes
 This framework contains numerous classes to make OOP possible. All of them are in the namespace `sea`.

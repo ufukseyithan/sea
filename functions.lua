@@ -12,7 +12,7 @@ function sea.createText(text, color, prefix, prefixColor)
 end
 
 function sea.createSystemText(text, color, prefix, prefixColor)
-    return sea.createText(text, color, sea.config.systemPrefix..(prefix and (" "..prefix) or ""), prefixColor)
+    return sea.createText(text, color or sea.Color.white, sea.config.systemPrefix..(prefix and (" "..prefix) or ""), prefixColor or sea.Color.white)
 end
 
 function sea.print(text)
