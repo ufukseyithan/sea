@@ -46,7 +46,7 @@ function Player:loadData()
 		if data then
 			table.merge(self, data, true)
 
-			self:notification(sea.createText("Your data has been loaded."))
+			self:notification("Your data has been loaded.", "Data")
 		end
 	end
 end
@@ -72,7 +72,7 @@ function Player:saveData()
 
 		table.save(data, sea.path.data..self.steamID..".lua")
 
-		self:notification(sea.createText("Your data has been saved."))
+		self:notification("Your data has been saved.", "Data")
 	end
 end
 
@@ -93,6 +93,96 @@ end
 
 function Player:getInfo(name, ...)
 	return sea.config.player.info[name](self, ...)
+end
+
+function Player:message(text)
+	sea.message(self.id, text)
+end
+
+function Player:notification(text, bracket)
+	text = sea.createNotificationText(text, bracket)
+
+	self:message(text)
+
+	table.insert(self.notifications, text)
+end
+
+function Player:hint(text)
+	self:message(sea.createNotificationText(text, "Hint"))
+
+	table.insert(self.hints, text)
+end
+
+function Player:alert(text)
+	self:message(text.."@C")
+end
+
+function Player:consoleMessage(text)
+	sea.consoleMessage(self.id, text)
+end
+
+function Player:displayMenu(menu, page)
+	page = page or 1
+
+	menu:show(self, page)
+
+	self.currentMenu = {menu, page}
+end
+
+function Player:viewsMenu()
+	return self.currentMenu[1] and true or false
+end
+
+function Player:isEnemyTo(player)
+	if self.team == 0 or player.team == 0 then -- Checks if either one of the players is a spectator
+		return false
+	end
+
+	return sea.Game.gameMode == 1 and true or (self.team ~= player.team)
+end
+
+function Player:isVIP()
+	return player(self.id, "team") == 3 and true or false
+end
+
+function Player:getItems()
+	local itemTypes = {}
+
+	for _, id in pairs(playerweapons(self.id)) do
+		table.insert(itemTypes, sea.itemType[id])
+	end
+
+	return itemTypes
+end
+
+--[[
+	@param radius (number) Radius in tiles. 
+]]
+function Player:getCloseItems(radius)
+	return sea.Item.getCloseToPlayer(self, radius)
+end
+
+function Player:hasItem(itemID)
+	for _, id in pairs(playerweapons(self.id)) do
+		if id == itemID then
+			return true
+		end
+	end
+
+	return false
+end
+
+function Player:getAmmo(itemID)
+	local loaded, spare = playerammo(self.id, itemID)
+
+	return {
+		loaded = loaded,
+		spare = spare
+	}
+end
+
+function Player:setAmmo(itemID, loaded, spare)
+	parse("setammo", self.id, itemID, loaded, spare)
 end
 
 function Player:kick(reason)
@@ -162,94 +252,6 @@ end
 
 function Player:stripAll()
 	self:strip(0)
-end
-
-function Player:isEnemyTo(player)
-	if self.team == 0 or player.team == 0 then -- Checks if either one of the players is a spectator
-		return false
-	end
-
-	return sea.Game.gameMode == 1 and true or (self.team ~= player.team)
-end
-
-function Player:message(text)
-	sea.message(self.id, text)
-end
-
-function Player:notification(text)
-	self:message(text)
-
-	table.insert(self.notifications, text)
-end
-
-function Player:hint(text)
-	self:message(text)
-
-	table.insert(self.hints, text)
-end
-
-function Player:alert(text)
-	self:message(text.."@C")
-end
-
-function Player:consoleMessage(text)
-	sea.consoleMessage(self.id, text)
-end
-
-function Player:displayMenu(menu, page)
-	page = page or 1
-
-	menu:show(self, page)
-
-	self.currentMenu = {menu, page}
-end
-
-function Player:viewsMenu()
-	return self.currentMenu[1] and true or false
-end
-
-function Player:isVIP()
-	return player(self.id, "team") == 3 and true or false
-end
-
-function Player:getItems()
-	local itemTypes = {}
-
-	for _, id in pairs(playerweapons(self.id)) do
-		table.insert(itemTypes, sea.itemType[id])
-	end
-
-	return itemTypes
-end
-
---[[
-	@param radius (number) Radius in tiles. 
-]]
-function Player:getCloseItems(radius)
-	return sea.Item.getCloseToPlayer(self, radius)
-end
-
-function Player:hasItem(itemID)
-	for _, id in pairs(playerweapons(self.id)) do
-		if id == itemID then
-			return true
-		end
-	end
-
-	return false
-end
-
-function Player:getAmmo(itemID)
-	local loaded, spare = playerammo(self.id, itemID)
-
-	return {
-		loaded = loaded,
-		spare = spare
-	}
-end
-
-function Player:setAmmo(itemID, loaded, spare)
-	parse("setammo", self.id, itemID, loaded, spare)
 end
 
 -------------------------

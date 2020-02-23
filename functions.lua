@@ -11,32 +11,32 @@ function sea.createText(text, color, prefix, prefixColor)
     return prefix.."©"..tostring(color or sea.getColor("default", "system"))..text
 end
 
-function sea.createSystemText(text, color, prefix, prefixColor)
-    return sea.createText(text, color or sea.Color.white, sea.config.systemPrefix..(prefix and (" "..prefix) or ""), prefixColor or sea.Color.white)
+function sea.createNotificationText(text, bracket)
+    return sea.createText(text, sea.Color.white, "["..bracket.."]")
 end
 
-function sea.print(text)
-    print(text)
+function sea.createSystemText(text, prefix, prefixColor)
+    return sea.createText(text, sea.Color.white, sea.config.systemPrefix..(prefix and (" "..prefix) or ""), prefixColor)
 end
 
-function sea.systemPrint(type, text)
-    sea.print(sea.createSystemText(text, nil, "["..type:upperFirst().."]", sea.getColor(type, "system")))
+function sea.print(type, text)
+    print(sea.createSystemText(text, "["..type:upperFirst().."]", sea.getColor(type, "system")))
 end
 
 function sea.error(text)
-    sea.systemPrint("error", text)
+    sea.print("error", text)
 end
 
 function sea.warning(text)
-    sea.systemPrint("warning", text)
+    sea.print("warning", text)
 end
 
 function sea.info(text)
-    sea.systemPrint("info", text)
+    sea.print("info", text)
 end
 
 function sea.success(text)
-    sea.systemPrint("success", text)
+    sea.print("success", text)
 end
 
 function sea.message(id, text)
@@ -300,6 +300,14 @@ end
 -------------------------
 
 function sea.addColor(name, color)
+    if name == "default" then
+        sea.config.color.system.default = color
+
+        sea.info("Set default color: "..sea.createText(name, color))
+        
+        return true
+    end
+
     local customColor = sea.config.color.custom
 
     if customColor[name] then

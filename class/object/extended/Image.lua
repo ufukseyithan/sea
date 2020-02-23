@@ -8,7 +8,6 @@ function Image:constructor(path, x, y, mode, player)
 	sea.Object.create(id, self)
 end
 
--- @TODO: Learn the difference between killobject and freeimage. If there is no difference at all, you can remove this function.
 function Image:destroy()
 	freeimage(self.id)
 

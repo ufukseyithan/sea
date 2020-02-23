@@ -100,6 +100,7 @@ sea.config.mainMenuStructure = {
                             if not table.isEmpty(player.hints) then
                                 player:message("The hints of the current session have been sent to your console.")
                 
+                                player:consoleMessage("[Hints]")
                                 for _, hint in ipairs(player.hints) do
                                     player:consoleMessage(hint)
                                 end

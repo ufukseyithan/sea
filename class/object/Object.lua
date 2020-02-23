@@ -66,8 +66,8 @@ function Object.getLastID()
     return objectIDs[#objectIDs]
 end
 
-function Object.spawn(typeID, tileX, tileY, rotation, mode, team, playerID)
-	parse("spawnobject", typeID, tileX, tileY, rotation, mode, team, playerID)
+function Object.spawn(typeID, tileX, tileY, rotation, mode, team, player)
+	parse("spawnobject", typeID, tileX, tileY, rotation, mode, team, player and player.id)
 
 	return Object.create(Object.getLastID())
 end
@@ -134,8 +134,8 @@ function Object:getTeamAttribute()
 	return object(self.id, "team")
 end
 
-function Object:getPlayerIDAttribute()
-    return object(self.id, "player")
+function Object:getPlayerAttribute()
+    return sea.player[object(self.id, "player")]
 end
 
 function Object:getXAttribute()
