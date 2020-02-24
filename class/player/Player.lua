@@ -138,7 +138,7 @@ function Player:isEnemyTo(player)
 		return false
 	end
 
-	return sea.Game.gameMode == 1 and true or (self.team ~= player.team)
+	return sea.Game.mode == 1 and true or (self.team ~= player.team)
 end
 
 function Player:isVIP()
@@ -179,6 +179,10 @@ function Player:getAmmo(itemID)
 		loaded = loaded,
 		spare = spare
 	}
+end
+
+function Player:setName(name, hide)
+	parse("setname", self.id, name, hide and 1)
 end
 
 function Player:setAmmo(itemID, loaded, spare)
@@ -554,14 +558,6 @@ end
 --       SETTERS       --
 -------------------------
 
-function Player:setNameAttribute(value)
-	parse("setname", self.id, value, 1)
-end
-
-function Player:setName2Attribute(value) -- server message while changing
-	parse("setname", self.id, value, 0)
-end
-
 function Player:setTeamAttribute(value)
 	if value == 1 then
 		parse("maket", self.id)
@@ -573,19 +569,19 @@ function Player:setTeamAttribute(value)
 end
 
 function Player:setXAttribute(value)
-	parse("setpos", self.id, value, self.y)
+	self:setPosition(value, self.y)
 end
 
 function Player:setYAttribute(value)
-	parse("setpos", self.id, self.x, value)
+	self:setPosition(self.x, value)
 end
 
 function Player:setTileXAttribute(value)
-	parse("setpos", self.id, tileToPixel(value), self.y)
+	self:setPosition(tileToPixel(value), self.y)
 end
 
 function Player:setTileYAttribute(value)
-	parse("setpos", self.id, self.x, tileToPixel(value))
+	self:setPosition(self.x, tileToPixel(value))
 end
 
 function Player:setHealthAttribute(value)

@@ -3,7 +3,7 @@ function sea.getColor(name, category)
 end
 
 function sea.getTeamColor(team)
-    return sea.game.gameMode == 1 and sea.getColor(3, "team") or sea.getColor(team, "team")
+    return sea.getColor(team, "team")
 end
 
 function sea.createText(text, color, prefix, prefixColor)
