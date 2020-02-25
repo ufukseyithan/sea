@@ -95,30 +95,28 @@ function Player:getInfo(name, ...)
 	return sea.config.player.info[name](self, ...)
 end
 
-function Player:message(text)
-	sea.message(self.id, text)
+function Player:message(text, color, tag, tagColor)
+	return sea.message(self.id, text, color, tag, tagColor)
 end
 
-function Player:notification(text, bracket)
-	text = sea.createNotificationText(text, bracket)
-
-	self:message(text)
-
-	table.insert(self.notifications, text)
+function Player:notification(text, tag)
+	table.insert(self.notifications, self:message(text, nil, tag))
 end
 
 function Player:hint(text)
-	self:message(sea.createNotificationText(text, "Hint"))
-
-	table.insert(self.hints, text)
+	table.insert(self.hints, self:message(text, nil, "Hint"))
 end
 
-function Player:alert(text)
-	self:message(text.."@C")
+function Player:alert(text, color)
+	self:message(text.."@C", color)
 end
 
-function Player:consoleMessage(text)
-	sea.consoleMessage(self.id, text)
+function Player:crucialAlert(text)
+	self:alert(text, sea.getColor("error", "system"))
+end
+
+function Player:consoleMessage(text, color, tag, tagColor)
+	sea.consoleMessage(self.id, text, color, tag, tagColor)
 end
 
 function Player:displayMenu(menu, page)

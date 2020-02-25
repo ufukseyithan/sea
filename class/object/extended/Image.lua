@@ -98,6 +98,12 @@ end
 --       SETTERS       --
 -------------------------
 
+function Image:setPathAttribute(value)
+	local temp = {value, self.x, self.y, self.mode, self.player}
+    self:destroy()
+    Image.new(unpack(temp))
+end
+
 function Image:setAlphaAttribute(value)
 	imagealpha(self.id, value)
 end

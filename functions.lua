@@ -1,26 +1,21 @@
 function sea.getColor(name, category)
-    return category and sea.config.color[category][name] or sea.config.color.custom[name]
+    local colorConfig = sea.config.color
+
+    return category and colorConfig[category][name] or colorConfig.custom[name]
 end
 
 function sea.getTeamColor(team)
     return sea.getColor(team, "team")
 end
 
-function sea.createText(text, color, prefix, prefixColor)
-    local prefix = prefix and sea.createText(prefix, prefixColor).." " or ""
-    return prefix.."©"..tostring(color or sea.getColor("default", "system"))..text
-end
+function sea.createColoredText(text, color)
+    color = color or sea.getColor("default", "system")
 
-function sea.createNotificationText(text, bracket)
-    return sea.createText(text, sea.Color.white, "["..bracket.."]")
-end
-
-function sea.createSystemText(text, prefix, prefixColor)
-    return sea.createText(text, sea.Color.white, sea.config.systemPrefix..(prefix and (" "..prefix) or ""), prefixColor)
+    return "©"..tostring(color)..text
 end
 
 function sea.print(type, text)
-    print(sea.createSystemText(text, "["..type:upperFirst().."]", sea.getColor(type, "system")))
+    print(sea.Message.new(text, nil, sea.config.printTagPrefix.." "..type:upperFirst(), sea.getColor(type, "system")))
 end
 
 function sea.error(text)
@@ -39,20 +34,28 @@ function sea.success(text)
     sea.print("success", text)
 end
 
-function sea.message(id, text)
+function sea.message(id, text, color, tag, tagColor)
+    local text = tostring(sea.Message.new(text, color, tag, tagColor))
+
     if not id or id == 0 then
         msg(text)
     else
         msg2(id, text)
     end
+
+    return text
 end
 
-function sea.consoleMessage(id, text)
+function sea.consoleMessage(id, text, color, tag, tagColor)
+    local text = tostring(sea.Message.new(text, color, tag, tagColor))
+
     if not id or id == 0 then
         parse("cmsg", text)
     else
         parse("cmsg", text, id)
     end
+
+    return text
 end
 
 function sea.createArticle(title, content, imagePath)
@@ -300,14 +303,6 @@ end
 -------------------------
 
 function sea.addColor(name, color)
-    if name == "default" then
-        sea.config.color.system.default = color
-
-        sea.info("Set default color: "..sea.createText(name, color))
-        
-        return true
-    end
-
     local customColor = sea.config.color.custom
 
     if customColor[name] then
@@ -317,7 +312,7 @@ function sea.addColor(name, color)
 
     customColor[name] = color
 
-    sea.success("Added color: "..sea.createText(name, color))
+    sea.success("Added color: "..sea.createColoredText(name, color))
 
     return true
 end

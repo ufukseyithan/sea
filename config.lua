@@ -1,11 +1,12 @@
 sea.config = {}
 
--- The prefix used for console outputs
-sea.config.systemPrefix = "[Sea]"
+-- The prefix of the tag of system console notifications
+sea.config.printTagPrefix = "Sea"
 
 -- These formats are the only ones that the server transfer list supports, meaning you may remove the existing ones as you wish but not add new ones
 sea.config.supportedTransferFileFormats = {".bmp", ".jpg", ".jpeg", ".png", ".wav", ".ogg"}
 
+-- Send a welcome message 
 sea.config.welcomeMessage = true
 
 -- Do not touch these, use sea.addColor function instead
@@ -20,10 +21,10 @@ sea.config.color = {
     },
     
     team = {
-        [0] = sea.Color.new(255, 220, 0),
-        [1] = sea.Color.new(255, 25, 0),
-        [2] = sea.Color.new(50, 150, 255),
-	    [3] = sea.Color.new(0, 255, 0)
+        [0] = sea.Color.new(255, 220, 0), -- Spectator
+        [1] = sea.Color.new(255, 25, 0), -- Terrorist
+        [2] = sea.Color.new(50, 150, 255), -- Counter-Terrorist
+	    [3] = sea.Color.new(0, 255, 0) -- Deathmatch
     },
 
     custom = {}

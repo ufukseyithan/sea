@@ -174,7 +174,7 @@ for name, params in pairs(hooks) do
 
         if name == "join" then
             if sea.config.welcomeMessage then
-                args[1]:message("Welcome to "..sea.game.name..", "..args[1].name.."!@C")
+                args[1]:alert("Welcome to "..sea.game.name..", "..args[1].name.."!", sea.Color.cyan)
             end
         elseif name == "leave" then
             args[1]:saveData()

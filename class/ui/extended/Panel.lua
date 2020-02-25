@@ -1,7 +1,7 @@
 local Panel = class(sea.Element)
 
 function Panel:constructor(ui, imagePath, x, y, style) 
-    local image = sea.Image.new(imagePath, x, y, 2, ui.player)
+    local image = sea.Image.create(imagePath, x, y, 2, ui.player)
 
     self.image = image
     self.imagePath = imagePath -- This needs to be saved for later use when recreating UI images upon round start
