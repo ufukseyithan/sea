@@ -100,15 +100,15 @@ function Player:message(text, color, tag, tagColor)
 end
 
 function Player:notification(text, tag)
-	table.insert(self.notifications, self:message(text, nil, tag))
+	table.insert(self.notifications, self:message(text, sea.Color.white, tag))
 end
 
 function Player:hint(text)
-	table.insert(self.hints, self:message(text, nil, "Hint"))
+	table.insert(self.hints, self:message(text, sea.Color.white, "Hint"))
 end
 
-function Player:alert(text, color)
-	self:message(text.."@C", color)
+function Player:alert(text, color, tag, tagColor)
+	self:message(text.."@C", color, tag, tagColor)
 end
 
 function Player:crucialAlert(text)

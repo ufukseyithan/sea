@@ -201,14 +201,14 @@ sea.config.mainMenuStructure = {
                                         name = function(player) return name.." ["..player.preference[name].."]" end, 
                                         func = function(player)
                                             local preferences = v[2]
-                                            local current = table.getKeyOf(v[2], player.preference[name])
+                                            local selected = table.getKeyOf(preferences, player.preference[name])
                         
-                                            current = current + 1
-                                            if current > table.count(preferences) then
-                                                current = 1
+                                            selected = selected + 1
+                                            if selected > table.count(preferences) then
+                                                selected = 1
                                             end
                         
-                                            player.preference[name] = preferences[current]
+                                            player.preference[name] = preferences[selected]
                         
                                             return true
                                         end, 

@@ -2,7 +2,7 @@ local Message = class()
 
 function Message:constructor(text, color, tag, tagColor)
     self.text = text
-    self.color = color or sea.Color.white
+    self.color = color
     self.tag = tag
     self.tagColor = tagColor
 end 

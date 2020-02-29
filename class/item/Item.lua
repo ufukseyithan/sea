@@ -180,11 +180,11 @@ function Item:setTileYAttribute(value)
 end
 
 function Item:setXAttribute(value)
-	self:setPosition(pixelToTile(value), self.tileY)
+	self.tileX = pixelToTile(value)
 end
 
 function Item:setYAttribute(value)
-	self:setPosition(self.tileX, pixelToTile(value))
+	self.tileY = pixelToTile(value)
 end
 
 -------------------------

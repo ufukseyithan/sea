@@ -9,20 +9,20 @@ function Panel:constructor(ui, imagePath, x, y, style)
     self:super(ui, x, y, image.width, image.height, style)
 end
 
--- @TODO: Set image path
+function Panel:show()
+    self.hidden = false
+
+    self:update()
+end
 
 function Panel:hide()
-    if not self.hidden then
-        self.image.alpha = 0
+    self.image.alpha = 0
 
-        self.hidden = true
-    end
+    self.hidden = true
 end
 
 function Panel:update()
-    if not self.hidden then
-        self.image.alpha = self.style.opacity
-    end
+    self.image.alpha = self.hidden and 0 or self.style.opacity
 
     self.image.color = self.style.color
 

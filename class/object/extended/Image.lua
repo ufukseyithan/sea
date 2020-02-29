@@ -1,8 +1,7 @@
+sea.image = {}
 local Image = class(sea.Object)
 
-function Image:constructor(path, x, y, mode, player)
-	local id = image(path, x, y, mode, player and player.id)
-
+function Image:constructor(id)
 	self.id = id
 
 	sea.Object.create(id, self)
@@ -12,10 +11,16 @@ function Image:destroy()
 	freeimage(self.id)
 
 	sea.Object.remove(self.id)
+
+	Image.remove(self.id)
 end
 
 function Image:scale(x, y)
 	imagescale(self.id, x, y)
+end
+
+function Image:setPosition(x, y, rotation)
+	imagepos(self.id, x, y, rotation or self.rotation)
 end
 
 function Image:hitZone(mode, xOffset, yOffset, width, height)
@@ -52,6 +57,38 @@ end
 
 function Image:tweenScale(time, x, y)
 	tween_scale(self.id, time, x, y)
+end
+
+-------------------------
+--        CONST        --
+-------------------------
+
+function Image.create(path, x, y, mode, player)
+	local id = image(path, x, y, mode, player and player.id)
+
+	if sea.image[id] then
+		sea.error("Attempted to create image that already exists (ID: "..id..")")
+		return false
+	end
+
+	sea.image[id] = Image.new(id)
+
+	sea.success("Created image (ID: "..id..")")
+
+	return sea.image[id]
+end
+
+function Image.remove(id)
+	if not sea.image[id] then
+		sea.error("Attempted to remove non-existent image (ID: "..id..")")
+		return false
+	end
+
+	sea.image[id] = nil
+
+	sea.success("Removed image (ID: "..id..")")
+
+	return true
 end
 
 -------------------------
@@ -98,10 +135,22 @@ end
 --       SETTERS       --
 -------------------------
 
+function Image:setXAttribute(value)
+	self:setPosition(value, self.y)
+end
+
+function Image:setYAttribute(value)
+	self:setPosition(self.x, value)
+end
+
+function Image:setRotationAttribute(value)
+	self:setPosition(self.x, self.y, value)
+end
+
 function Image:setPathAttribute(value)
 	local temp = {value, self.x, self.y, self.mode, self.player}
     self:destroy()
-    Image.new(unpack(temp))
+    Image.create(unpack(temp))
 end
 
 function Image:setAlphaAttribute(value)

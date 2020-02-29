@@ -29,13 +29,41 @@ function Element:setStyle(style)
     self:update()
 end
 
-function Element:show()
-    if self.hidden then
-        self.hidden = false
-
-        self:update()
-    end
+--[[function Element:getCenterPosition()
+    return self.x, self.y
 end
+
+function Element:getCenterTopPosition()
+    return self.width / 2, 0
+end
+
+function Element:getCenterBottomPosition()
+    return self.width / 2, self.height
+end
+
+function Element:getCenterLeftPosition()
+    return 0, self.height / 2
+end
+
+function Element:getCenterRightPosition()
+    return self.width, self.height / 2
+end
+
+function Element:getTopLeftPosition()
+    return self.width + self.margin, self.height + self.margin 
+end
+
+function Element:getTopRightPosition()
+    return self.width - self.margin, self.height + self.margin 
+end
+
+function Element:getBottomLeftPosition()
+    return self.width + self.margin, self.height - self.margin 
+end
+
+function Element:getBottomRightPosition()
+    return self.width - self.margin, self.height - self.margin 
+end]]
 
 -------------------------
 --        INIT         --

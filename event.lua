@@ -130,11 +130,16 @@ for name, params in pairs(hooks) do
             sea.Object.create(args[6])
         elseif name == "collect" then
             sea.Item.remove(args[2])
+        elseif name == "itemfadeout" then
+            sea.Item.remove(args[1])
         elseif name == "drop" then
             sea.Item.create(args[2])
-        elseif name == "itemfadeout" then
-            sea.Item.remove(args[2])
         elseif name == "startround_prespawn" then
+            -- Clearing image table
+            for id in pairs(sea.image) do
+                sea.Image.remove(id)
+            end
+
             -- Clearing object and item tables and regenerating them as they are removed at each round start
             for id in pairs(sea.object) do
                 sea.Object.remove(id)
@@ -150,19 +155,19 @@ for name, params in pairs(hooks) do
             for _, player in pairs(sea.Player.get()) do
                 for _, element in pairs(player.ui.element) do
                     if element.image then
-                        element.image = sea.Image.new(element.imagePath, element.x, element.y, 2, player)
+                        element.image = sea.Image.create(element.imagePath, element.x, element.y, 2, player)
 
                         element:update()
                     end
                 end
             end
         elseif name == "second" then
-            for k, v in pairs(sea.Player.get()) do
-                v.stat["Time Played"] = v.stat["Time Played"] + 1
+            for _, player in pairs(sea.Player.get()) do
+                player.stat["Time Played"] = player.stat["Time Played"] + 1
             end
         elseif name == "minute" then
-            for k, v in pairs(sea.Player.get()) do
-                v:saveData()
+            for _, player in pairs(sea.Player.get()) do
+                player:saveData()
             end
         end
 
@@ -174,7 +179,7 @@ for name, params in pairs(hooks) do
 
         if name == "join" then
             if sea.config.welcomeMessage then
-                args[1]:alert("Welcome to "..sea.game.name..", "..args[1].name.."!", sea.Color.cyan)
+                args[1]:alert("Welcome to "..sea.game.name..", "..args[1].name.."!", sea.Color.green)
             end
         elseif name == "leave" then
             args[1]:saveData()
@@ -189,7 +194,7 @@ for name, params in pairs(hooks) do
                 ui:update()
             end
         elseif name == "key" then
-            if type(args[1]) == "table" then -- This gotta be here
+            if type(args[1]) == "table" then -- Check if the sea.player with the specific ID exists, this has to be here becuase key hook even is triggeren when player leaves the server (is leaving the server, until they navigate to the main menu)
                 for k, v in pairs(args[1].control) do
                     if v == args[2] then                  
                         return sea.callEvent(createName(args[3] == 1 and "press" or "release", k:toPascalCase(" ")), args[1])
@@ -201,7 +206,9 @@ for name, params in pairs(hooks) do
                 args[1]:displayMenu(sea.mainMenu)
             end
         elseif name == "menu" then
-            args[1].currentMenu[1]:interact(args[1], args[3])
+            if args[1].currentMenu[1] then
+                args[1].currentMenu[1]:interact(args[1], args[3])
+            end
         elseif name == "die" then
             args[1].stat["Deaths"] = args[1].stat["Deaths"] + 1
         elseif name == "kill" then

@@ -15,7 +15,7 @@ function sea.createColoredText(text, color)
 end
 
 function sea.print(type, text)
-    print(sea.Message.new(text, nil, sea.config.printTagPrefix.." "..type:upperFirst(), sea.getColor(type, "system")))
+    print(sea.Message.new(text, sea.Color.white, sea.config.printTagPrefix.." "..type:upperFirst(), sea.getColor(type, "system")))
 end
 
 function sea.error(text)

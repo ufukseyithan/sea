@@ -36,7 +36,7 @@ First of all, while you can manually configure in `config.lua`, every app indivi
 rank = {1, true}
 ```
 #### *preference*
-`sea.config.player.preference` contains the preferences that the player can change as they wish using the main menu. The key of the entry should be the name of the preference, and the value should be a table containing the default value and the options in a table that are available to the player. The default value has to be in the option table as a first parameter.
+`sea.config.player.preference` contains the preferences that the player can change as they wish using the main menu. The key of the entry should be the name of the preference, and the value should be a table containing the default value and the options in a table that are available to the player. The option table has to contain the default value, meaning the default value has to be one of the options in the option table.
 ```lua
 ["Passive Mode"] = {"On", {"On", "Off"}}
 ```

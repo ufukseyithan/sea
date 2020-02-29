@@ -18,12 +18,16 @@ function Text:setText(text)
     self:update()
 end
 
-function Text:hide()
-    if not self.hidden then
-        parse("hudtxtalphafade", self.ui.player.id, self.textID, 1, 0)
+function Text:show()
+    self.hidden = false
 
-        self.hidden = true
-    end
+    self:update()
+end
+
+function Text:hide()
+    parse("hudtxtalphafade", self.ui.player.id, self.textID, 1, 0)
+
+    self.hidden = true
 end
 
 function Text:update()
