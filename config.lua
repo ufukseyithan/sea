@@ -6,10 +6,7 @@ sea.config.printTagPrefix = "Sea"
 -- These formats are the only ones that the server transfer list supports, meaning you may remove the existing ones as you wish but not add new ones
 sea.config.supportedTransferFileFormats = {".bmp", ".jpg", ".jpeg", ".png", ".wav", ".ogg"}
 
--- Send a welcome message 
-sea.config.welcomeMessage = true
-
--- Do not touch these, use sea.addColor function instead
+-- Do not touch these, use sea.addColor() instead
 sea.config.color = {
     system = {
         error = sea.Color.new(255, 25, 54),
@@ -30,12 +27,17 @@ sea.config.color = {
     custom = {}
 }
 
+sea.config.gameSetting = {
+    welcomeMessage = true,
+    itemDrop = true
+}
+
 sea.config.player = {
     info = {
         ["Name"] = function(player) return player.name end,
         ["U.S.G.N."] = function(player) return player.usgn or "Not logged in" end,
         ["Steam"] = function(player) return player.steamID ~= "0" and player.steamName or "Not logged in" end,
-        ["Position"] = function(player) return player.tileX.." | "..player.tileY.." ("..player.x.." | "..player.y..")" end
+        ["Position"] = function(player) return player.tileX.." | "..player.tileY.." (in pixels: "..player.x.." | "..player.y..")" end
     },
 
     stat = { -- Get illuminated: http://www.cs2d.com/help.php?luacat=player&luacmd=player#cmd, http://www.cs2d.com/help.php?luacat=player&luacmd=stats#cmd & http://www.cs2d.com/help.php?luacat=player&luacmd=steamstats#cmd

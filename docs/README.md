@@ -19,6 +19,9 @@ First of all, while you can manually configure in `config.lua`, every app indivi
 
 `sea.config.color.system` & `sea.config.color.team` are not recommended to be touched. You can fill `sea.config.color.custom` manually by yourself or with `sea.addColor`. When apps attempt to insert new colors as config, they will be inserted into `custom` table.
 
+### Game Setting
+
+
 ### Player
 #### *info*
 `sea.config.player.info` contains the information that the player can see in their main menu. The key of the entry should be the name of the info, and the value should be a function (has player object parameter) returning how and what it displays in the menu.

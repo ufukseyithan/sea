@@ -119,7 +119,8 @@ sea.hook = {}
 
 for name, params in pairs(hooks) do
     sea.event[createName("hook", name)] = {}
-    sea.hook[name] = function(...)
+
+    local function defaultFunc(...)
         local args = {...}
 
         if name == "join" then
@@ -132,8 +133,6 @@ for name, params in pairs(hooks) do
             sea.Item.remove(args[2])
         elseif name == "itemfadeout" then
             sea.Item.remove(args[1])
-        elseif name == "drop" then
-            sea.Item.create(args[2])
         elseif name == "startround_prespawn" then
             -- Clearing image table
             for id in pairs(sea.image) do
@@ -150,7 +149,7 @@ for name, params in pairs(hooks) do
                 sea.Item.remove(id)
             end
             sea.Item.generate()
-
+        elseif name == "startround" then
             -- Recreating the UI images (because they are removed at round start)
             for _, player in pairs(sea.Player.get()) do
                 for _, element in pairs(player.ui.element) do
@@ -178,7 +177,7 @@ for name, params in pairs(hooks) do
         end
 
         if name == "join" then
-            if sea.config.welcomeMessage then
+            if sea.config.gameSetting.welcomeMessage then
                 args[1]:alert("Welcome to "..sea.game.name..", "..args[1].name.."!", sea.Color.green)
             end
         elseif name == "leave" then
@@ -194,7 +193,7 @@ for name, params in pairs(hooks) do
                 ui:update()
             end
         elseif name == "key" then
-            if type(args[1]) == "table" then -- Check if the sea.player with the specific ID exists, this has to be here becuase key hook even is triggeren when player leaves the server (is leaving the server, until they navigate to the main menu)
+            if type(args[1]) == "table" then -- Checks if the sea.player with the specific ID exists, this has to be here becuase key hook event is triggered when player is leaving the server (between the time where they pressed disconnect and until they navigate to the main menu)
                 for k, v in pairs(args[1].control) do
                     if v == args[2] then                  
                         return sea.callEvent(createName(args[3] == 1 and "press" or "release", k:toPascalCase(" ")), args[1])
@@ -219,9 +218,27 @@ for name, params in pairs(hooks) do
 
         return sea.callEvent(createName("hook", name), unpack(args))
     end
+
+    local func
+    if name == "drop" then
+        func = function(playerID, itemID, type, loadedAmmo, spareAmmo, mode, x, y)
+            if sea.config.gameSetting.drop then
+                sea.Item.create(itemID)
+
+                return defaultFunc(playerID, itemID, type, loadedAmmo, spareAmmo, mode, x, y)
+            else
+                defaultFunc(playerID, itemID, type, loadedAmmo, spareAmmo, mode, x, y)
+
+                return 1
+            end
+        end
+    end
+
+    sea.hook[name] = func or defaultFunc
+
     addhook(name, "sea.hook."..name)
 end
 
 function addhook()
-    sea.error("addhook is not valid, use sea.addEvent instead.")
+    sea.error("addhook() is invalid, use sea.addEvent() instead.")
 end

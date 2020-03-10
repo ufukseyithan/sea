@@ -67,6 +67,7 @@ function Image.create(path, x, y, mode, player)
 	local id = image(path, x, y, mode, player and player.id)
 
 	if sea.image[id] then
+		--freeimage(id)
 		sea.error("Attempted to create image that already exists (ID: "..id..")")
 		return false
 	end

@@ -197,6 +197,13 @@ function sea.initApp(directory)
                             end
                         end
                     end,
+                    gameSetting = function()
+                        for setting, value in pairs(content) do
+                            sea.setGameSetting(setting, value)
+
+                            successfulConfig = successfulConfig + 1
+                        end
+                    end,
                     player = function()
                         for k, v in pairs(content) do
                             switch(k) {
@@ -255,9 +262,9 @@ function sea.initApp(directory)
                                 end,
                                 setting = function()
                                     for setting, value in pairs(v) do
-                                        if sea.setServerSetting(setting, value) then
-                                            successfulConfig = successfulConfig + 1
-                                        end
+                                        sea.setServerSetting(setting, value)
+
+                                        successfulConfig = successfulConfig + 1
                                     end
                                 end
                             }
@@ -315,6 +322,14 @@ function sea.addColor(name, color)
     sea.success("Added color: "..sea.createColoredText(name, color))
 
     return true
+end
+
+function sea.setGameSetting(setting, value)
+    local gameSetting = sea.config.gameSetting
+
+    gameSetting[setting] = value
+
+    sea.info("Set game setting: "..setting.." to "..tostring(value))
 end
 
 function sea.addPlayerInfo(name, func)
@@ -416,8 +431,6 @@ function sea.setServerSetting(setting, value)
     sea.game[setting] = value
 
     sea.info("Set server setting: "..setting.." to "..tostring(value))
-
-    return true
 end
 
 function sea.addMainMenuButton(button)
