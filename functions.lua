@@ -138,7 +138,7 @@ function sea.updateServerTransferList(response)
     file:close()
 
     if addedFiles > 0 then
-		sea.info("The server transfer list has been updated with "..addedFiles.." entries. You may need to restart the server in order to get use of it.")
+		sea.warning("The server transfer list has been updated with "..addedFiles.." entries. You may need to restart the server in order to get use of it.")
 	end
 end
 
