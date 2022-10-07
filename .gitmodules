@@ -1,4 +1,0 @@
-[submodule "app/tibia"]
-	path = app/tibia
-	url = https://github.com/ufukseyithan/tibia
-	ignore = dirty
