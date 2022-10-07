@@ -88,7 +88,6 @@ function sea.addEvent(name, func, priority)
         priority = priority or 0
     })
 
-    -- @TODO: Maybe a better info?
     sea.info("Tied function to the event \""..name.."\"")
 
     return true
@@ -222,7 +221,7 @@ for name, params in pairs(hooks) do
     local func
     if name == "drop" then
         func = function(playerID, itemID, type, loadedAmmo, spareAmmo, mode, x, y)
-            if sea.config.gameSetting.drop then
+            if sea.config.gameSetting.itemDrop then
                 sea.Item.create(itemID)
 
                 return defaultFunc(playerID, itemID, type, loadedAmmo, spareAmmo, mode, x, y)
