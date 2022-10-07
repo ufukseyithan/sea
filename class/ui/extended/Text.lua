@@ -12,6 +12,8 @@ function Text:constructor(ui, text, x, y, style)
 end
 
 function Text:setText(text)
+    text = tostring(text)
+
     self.text = text
     self.width = textwidth(text)
 
@@ -38,6 +40,9 @@ function Text:update()
     parse("hudtxt2", self.ui.player.id, self.textID, self.text, self.x, self.y, self.style.align, self.style.verticalAlign, self.style.textSize)
 
     parse("hudtxtalphafade", self.ui.player.id, self.textID, 1, self.style.opacity)
+
+    local color = self.style.color
+    parse("hudtxtcolorfade", self.ui.player.id, self.textID, 1, color.red, color.green, color.blue)
 
     -- Background
 end

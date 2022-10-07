@@ -32,6 +32,10 @@ function Style:getVerticalAlignAttribute()
     return self.properties.verticalAlign or 0
 end
 
+function Style:getFrameAttribute()
+    return self.properties.frame or 0
+end
+
 function Style:getBackgroundAttribute()
     return self.properties.background
 end
@@ -63,6 +67,11 @@ end
 function Style:setVerticalAlignAttribute(value)
     self.properties.verticalAlign = value
 end
+
+function Style:setFrameAttribute(value)
+    self.properties.frame = value
+end
+
 
 function Style:setBackgroundAttribute(value)
     self.properties.background = value

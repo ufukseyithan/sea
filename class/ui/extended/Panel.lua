@@ -22,6 +22,8 @@ function Panel:hide()
 end
 
 function Panel:update()
+    self.image.frame = self.style.frame
+
     self.image.alpha = self.hidden and 0 or self.style.opacity
 
     self.image.color = self.style.color
