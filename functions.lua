@@ -143,22 +143,22 @@ function sea.updateServerTransferList(response)
 end
 
 function sea.initApp(directory)
-    local app
-    
     local mainPath = directory.."main.lua"
     if not io.exists(mainPath) then
         sea.error("The app directory \""..directory.."\" cannot be initialized, it does not include main.lua.")
         return false
     end
 
-    app = dofile(mainPath)
+    local app = dofile(mainPath)
 
     if not app.namespace then
         sea.error("The app directory \""..directory.."\" cannot be initialized, namespace is not defined in the main.lua.")
         return false
     end
 
-    if app.disabled then
+    local isDisabled = app.disabled or directory:find(".disabled")
+
+    if isDisabled then
         sea.warning("The app "..app.name.." is not initialized as it is disabled.")
         return false
     end
