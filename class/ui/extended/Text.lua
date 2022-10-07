@@ -37,12 +37,9 @@ function Text:update()
 
     if self.hidden then return end
 
-    parse("hudtxt2", self.ui.player.id, self.textID, self.text, self.x, self.y, self.style.align, self.style.verticalAlign, self.style.textSize)
+    parse("hudtxt2", self.ui.player.id, self.textID, "©"..tostring(self.style.color)..self.text, self.x, self.y, self.style.align, self.style.verticalAlign, self.style.textSize)
 
     parse("hudtxtalphafade", self.ui.player.id, self.textID, 1, self.style.opacity)
-
-    local color = self.style.color
-    parse("hudtxtcolorfade", self.ui.player.id, self.textID, 1, color.red, color.green, color.blue)
 
     -- Background
 end
