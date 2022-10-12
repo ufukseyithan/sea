@@ -187,9 +187,9 @@ for name, params in pairs(hooks) do
             if args[2] == 1 then
                 local playerUI = args[1].ui
 
-                ui.width, ui.height = args[3], args[4]
+                playerUI.width, playerUI.height = args[3], args[4]
 
-                ui:update()
+                playerUI:update()
             end
         elseif name == "key" then
             if type(args[1]) == "table" then -- Checks if the sea.player with the specific ID exists, this has to be here becuase key hook event is triggered when player is leaving the server (between the time where they pressed disconnect and until they navigate to the main menu)

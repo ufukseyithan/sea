@@ -171,12 +171,11 @@ function Player:hasItem(itemID)
 end
 
 function Player:getAmmo(itemID)
-	local loaded, spare = playerammo(self.id, itemID)
+	return {playerammo(self.id, itemID)}
+end
 
-	return {
-		loaded = loaded,
-		spare = spare
-	}
+function Player:getCurrentAmmo()
+	return self:getAmmo(self.weapon)
 end
 
 function Player:setName(name, hide)
@@ -458,6 +457,10 @@ end
 
 function Player:getWeaponAttribute()
 	return player(self.id, "weapontype")
+end
+
+function Player:getItemAttribute()
+	return sea.itemType[self.weapon]
 end
 
 function Player:getNightvisionAttribute()

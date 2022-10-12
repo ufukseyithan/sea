@@ -5,13 +5,25 @@ function ItemType:constructor(id)
     self.id = id
 end
 
+function ItemType:isArmor()
+	local id = self.id
+	
+	if id == 57 or id == 58 then
+		return true
+	elseif id >= 79 and id <= 84 then
+		return true
+	end
+
+	return false
+end
+
 function ItemType:toArmor()
 	local id = self.id
 
 	if id == 57 then
-		return 100
+		return 65
 	elseif id == 58 then 
-		return 200
+		return 100
 	elseif id >= 79 and id <= 84 then
 		return 200 + (id - 78)
 	end
