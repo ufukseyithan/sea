@@ -101,6 +101,18 @@ function ItemType:getRecoilAttribute()
 	return itemtype(self.id, "recoil")
 end
 
+function ItemType:getImagePathAttribute()
+	local path = "gfx/weapons/"
+
+    path = path..self.name:lower():gsub("%s+", ""):gsub("-", "")
+
+    if io.exists(path.."_d.bmp") then
+        path = path.."_d"
+    end
+
+    return path..".bmp"
+end
+
 -------------------------
 --        INIT         --
 -------------------------
