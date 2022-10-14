@@ -1,20 +1,24 @@
 sea.itemType = {}
 local ItemType = class()
 
+local armors = {57, 58, 79, 80, 81, 82, 83, 84}
+local consumables = {51, 52, 53, 54, 72, 73, 75, 76, 86, 77, 87--[[, 89]]} -- Satchel Charge isn't included because it is never destroyed upon use
+local equipment = {56, 59, 60, 55, 70, 71}
+
 function ItemType:constructor(id)
     self.id = id
 end
 
 function ItemType:isArmor()
-	local id = self.id
-	
-	if id == 57 or id == 58 then
-		return true
-	elseif id >= 79 and id <= 84 then
-		return true
-	end
+	return table.contains(armors, self.id)
+end
 
-	return false
+function ItemType:isConsumable()
+	return table.contains(consumables, self.id)
+end
+
+function ItemType:isEquipment()
+	return table.contains(equipment, self.id)
 end
 
 function ItemType:toArmor()
@@ -154,3 +158,4 @@ for _, typeID in pairs(typeIDs) do
 end
 
 return ItemType
+
