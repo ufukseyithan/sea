@@ -31,6 +31,24 @@ function ItemType:toArmor()
 	return 0
 end
 
+function ItemType:getImagePath(mode)
+	local path = "gfx/weapons/"
+
+    path = path..self.name:lower():gsub("%s+", ""):gsub("-", "")
+
+	if mode == "drop" then
+		if io.exists(path.."_d.bmp") then
+			path = path.."_d"
+		end
+	elseif mode == "kill" then
+		if io.exists(path.."_k.bmp") then
+			path = path.."_k"
+		end
+	end
+
+    return path..".bmp"
+end
+
 -------------------------
 --       CONSTS        --
 -------------------------
@@ -99,18 +117,6 @@ end
 
 function ItemType:getRecoilAttribute()
 	return itemtype(self.id, "recoil")
-end
-
-function ItemType:getImagePathAttribute()
-	local path = "gfx/weapons/"
-
-    path = path..self.name:lower():gsub("%s+", ""):gsub("-", "")
-
-    if io.exists(path.."_d.bmp") then
-        path = path.."_d"
-    end
-
-    return path..".bmp"
 end
 
 -------------------------

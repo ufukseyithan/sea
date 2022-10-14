@@ -36,6 +36,10 @@ function Style:getFrameAttribute()
     return self.properties.frame or 0
 end
 
+function Style:getBlendAttribute()
+    return self.properties.blend or 0
+end
+
 function Style:getBackgroundAttribute()
     return self.properties.background
 end
@@ -72,6 +76,9 @@ function Style:setFrameAttribute(value)
     self.properties.frame = value
 end
 
+function Style:setBlendAttribute()
+    self.properties.blend = value
+end
 
 function Style:setBackgroundAttribute(value)
     self.properties.background = value

@@ -18,7 +18,7 @@ local hooks = {
     connect = {"player"},
     die = {"player", "player", "itemType", true, true, "object"},
     dominate = {"player", true, true},
-    drop = {"player", "item", true, true},
+    drop = {"player", "item", "itemType", true, true, true, true, true},
     endround = {true},
     flagcapture = {"player", true, true},
     flagtake = {"player", true, true},
@@ -222,8 +222,10 @@ for name, params in pairs(hooks) do
     if name == "drop" then
         func = function(playerID, itemID, type, loadedAmmo, spareAmmo, mode, x, y)
             if sea.config.gameSetting.itemDrop then
-                sea.Item.create(itemID)
-
+                if type ~= 50 then
+                    sea.Item.create(itemID)
+                end
+                
                 return defaultFunc(playerID, itemID, type, loadedAmmo, spareAmmo, mode, x, y)
             else
                 defaultFunc(playerID, itemID, type, loadedAmmo, spareAmmo, mode, x, y)

@@ -21,10 +21,19 @@ function Panel:hide()
     self.hidden = true
 end
 
+function Panel:setPosition(x, y)
+    self.x = x
+    self.y = y
+
+    self:update()
+end
+
 function Panel:update()
     self.image.frame = self.style.frame
 
     self.image.alpha = self.hidden and 0 or self.style.opacity
+
+    self.image.blendMode = self.style.blend
 
     self.image.color = self.style.color
 
