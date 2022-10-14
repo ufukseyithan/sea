@@ -136,7 +136,7 @@ function Player:isEnemyTo(player)
 		return false
 	end
 
-	return sea.Game.mode == 1 and true or (self.team ~= player.team)
+	return sea.game.mode == 1 and true or (self.team ~= player.team)
 end
 
 function Player:isVIP()
@@ -394,7 +394,7 @@ function Player:getBotAttribute()
 end
 
 function Player:getTeamAttribute()
-	if sea.Game.mode == 1 then
+	if sea.game.mode == 1 then
 		return 3
 	end
 

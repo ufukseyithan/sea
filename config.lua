@@ -1,7 +1,7 @@
 sea.config = {}
 
 -- Enable / disable console outputs
-sea.config.debug = false
+sea.config.debug = true
 
 -- The prefix of the tag of system console notifications
 sea.config.printTagPrefix = "Sea"

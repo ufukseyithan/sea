@@ -148,7 +148,7 @@ for name, params in pairs(hooks) do
                 sea.Item.remove(id)
             end
             sea.Item.generate()
-
+        elseif name == "startround" then 
             -- Recreating the UI images (because they are removed at round start)
             for _, player in pairs(sea.Player.get()) do
                 for _, element in pairs(player.ui.element) do
