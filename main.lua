@@ -140,6 +140,9 @@ sea.success("Core has been loaded.")
 sea.game = sea.Game.new()
 sea.map = sea.Map.new()
 
+sea.Item.generate()
+sea.Object.generate()
+
 sea.info("Checking app directories...")
 
 sea.path.app = sea.path.lua.."app/"
@@ -187,8 +190,5 @@ sea.addEvent("onPressMouseScrollDown", function(player)
         end
     end
 end, -100)
-
-sea.Item.generate()
-sea.Object.generate()
 
 sea.success("Sea Framework v"..sea.version.." is up and running!")

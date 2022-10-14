@@ -15,6 +15,10 @@ function sea.createColoredText(text, color)
 end
 
 function sea.print(type, text)
+    if not sea.config.debug then 
+        return
+    end
+
     print(sea.Message.new(text, sea.Color.white, sea.config.printTagPrefix.." "..type:upperFirst(), sea.getColor(type, "system")))
 end
 

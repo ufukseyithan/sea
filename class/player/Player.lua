@@ -46,7 +46,7 @@ function Player:loadData()
 		if data then
 			table.merge(self, data, true)
 
-			self:notification("Your data has been loaded.", "Data")
+			self:notify("Your data has been loaded.", "Data")
 		end
 	end
 end
@@ -72,7 +72,7 @@ function Player:saveData()
 
 		table.save(data, sea.path.data..self.steamID..".lua")
 
-		self:notification("Your data has been saved.", "Data")
+		self:notify("Your data has been saved.", "Data")
 	end
 end
 
@@ -99,7 +99,7 @@ function Player:message(text, color, tag, tagColor)
 	return sea.message(self.id, text, color, tag, tagColor)
 end
 
-function Player:notification(text, tag)
+function Player:notify(text, tag)
 	table.insert(self.notifications, self:message(text, sea.Color.white, tag))
 end
 
@@ -171,7 +171,9 @@ function Player:hasItem(itemID)
 end
 
 function Player:getAmmo(itemID)
-	return {playerammo(self.id, itemID)}
+	local loaded, spare = playerammo(self.id, itemID)
+
+	return not loaded and false or {loaded, spare}
 end
 
 function Player:getCurrentAmmo()
@@ -333,6 +335,14 @@ function Player.getAtRadius(x, y, radius, team)
 	end
 	
     return players
+end
+
+function Player.messageAll(text, color, tag, tagColor)
+	return sea.message(0, text, color, tag, tagColor)
+end
+
+function Player.alertAll(text, color, tag, tagColor)
+	Player.messageAll(text.."@C", color, tag, tagColor)
 end
 
 -------------------------
