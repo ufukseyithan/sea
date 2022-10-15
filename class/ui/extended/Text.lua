@@ -20,7 +20,6 @@ function Text:setText(text)
     self:update()
 end
 
-
 function Text:setPosition(x, y)
     self.x = x
     self.y = y

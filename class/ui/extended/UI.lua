@@ -2,6 +2,7 @@ local UI = class(sea.Element)
 
 function UI:constructor(player)
     self.player = player
+    
     self.element = {}
     self.hudText = {}
     self.margin = sea.config.ui.margin
