@@ -16,6 +16,10 @@ function Menu:addButton(name, func, description)
     })
 end
 
+function Menu:addGap()
+    table.insert(self.buttons, false)
+end
+
 function Menu:show(player, page)
     page = page or 1
 
