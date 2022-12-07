@@ -1,7 +1,5 @@
 local Menu = class()
 
---local function - function and function() or name
-
 function Menu:constructor(name, mode)
     self.name = name
     self.mode = mode
@@ -77,8 +75,12 @@ function Menu:interact(player, index)
         if type(button.func) == "table" then
             player:displayMenu(button.func)
         else
-            if button.func(player) == true then
+            local result = button.func(player)
+
+            if result == true then
                 player:displayMenu(player.currentMenu[1])
+            elseif type(result) == "table" then
+                player:displayMenu(result)
             end
         end
     end
@@ -88,12 +90,18 @@ end
 --        CONST        --
 -------------------------
 
-function Menu.construct(structure, parent) 
+function Menu.construct(structure, parent, player) 
     local menu = Menu.new(structure.name, "big")
 
-    for _, button in ipairs(type(structure.content) == "function" and structure.content() or structure.content) do
+    for _, button in ipairs(type(structure.content) == "function" and structure.content(player) or structure.content) do
         if button.structure then
-            menu:addButton(button.name, Menu.construct(button.structure, menu), button.description or ">")
+            menu:addButton(button.name, function(player)
+                if button.func then
+                    button.func(player)
+                end
+                
+                return Menu.construct(button.structure, menu, player)
+            end, button.description or ">")
         else
             menu:addButton(button.name, button.func, button.description)
         end
