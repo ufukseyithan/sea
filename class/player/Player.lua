@@ -349,6 +349,10 @@ end
 --       GETTERS       --
 -------------------------
 
+function Player:getAliveAttribute()
+	return self.health > 0
+end
+
 function Player:getExistsAttribute()
 	return player(self.id, "exists")
 end
