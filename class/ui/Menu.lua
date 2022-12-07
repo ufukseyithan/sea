@@ -94,17 +94,21 @@ function Menu.construct(structure, parent, player)
     local menu = Menu.new(structure.name, "big")
 
     for _, button in ipairs(type(structure.content) == "function" and structure.content(player) or structure.content) do
-        if button.structure then
-            menu:addButton(button.name, function(player)
-                if button.func then
-                    button.func(player)
+        local description = button.description or (button.structure and ">" or "")
+       
+        menu:addButton(button.name, function(player)
+            if button.func then
+                local result = button.func(player)
+
+                if result then
+                    return result
                 end
-                
+            end
+            
+            if button.structure then
                 return Menu.construct(button.structure, menu, player)
-            end, button.description or ">")
-        else
-            menu:addButton(button.name, button.func, button.description)
-        end
+            end
+        end, description)
     end
 
     if parent then
