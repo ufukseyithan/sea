@@ -536,7 +536,7 @@ function Game:setDropGrenadesAttribute(value)
     parse("mp_dropgrenades", value)
 end
 
-function Game:setFlaslightAttribute(value)
+function Game:setFlashlightAttribute(value)
     parse("mp_flashlight", value)
 end
 
