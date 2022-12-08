@@ -95,7 +95,7 @@ function Menu.construct(structure, parent, player)
 
     for _, button in ipairs(type(structure.content) == "function" and structure.content(player) or structure.content) do
         local func = button.func
-        local description = button.description or (button.structure and ">" or "")
+        local description = button.description
         
         if button.structure then
             func = function(player)
@@ -106,6 +106,10 @@ function Menu.construct(structure, parent, player)
                 if button.structure then
                     return Menu.construct(button.structure, menu, player)
                 end
+            end
+
+            if description == nil then
+                description = ">"
             end
         end
 
