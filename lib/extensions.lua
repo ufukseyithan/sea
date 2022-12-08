@@ -70,6 +70,10 @@ function math.average(...)
     return sum/#arg
 end
 
+function math.clamp(num, min, max)
+    return math.max(min, math.min(max, num))
+end
+
 -- Table
 function table.getKeys(tbl)
     local keys = {}
