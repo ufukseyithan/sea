@@ -30,7 +30,7 @@ function Menu:show(player, page)
         local name, description = "", ""
 
         if button then
-            local disabled = not button.func and true or false
+            local disabled = button.func == nil
 
             if button.name then
                 name = type(button.name) == "function" and button.name(player) or button.name
@@ -94,21 +94,22 @@ function Menu.construct(structure, parent, player)
     local menu = Menu.new(structure.name, "big")
 
     for _, button in ipairs(type(structure.content) == "function" and structure.content(player) or structure.content) do
+        local func = button.func
         local description = button.description or (button.structure and ">" or "")
-       
-        menu:addButton(button.name, function(player)
-            if button.func then
-                local result = button.func(player)
-
-                if result then
-                    return result
+        
+        if button.structure then
+            func = function(player)
+                if button.func then
+                    button.func(player)
+                end
+                
+                if button.structure then
+                    return Menu.construct(button.structure, menu, player)
                 end
             end
-            
-            if button.structure then
-                return Menu.construct(button.structure, menu, player)
-            end
-        end, description)
+        end
+
+        menu:addButton(button.name, func, description)
     end
 
     if parent then
