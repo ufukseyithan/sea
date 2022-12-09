@@ -103,9 +103,7 @@ function Menu.construct(structure, parent, player)
                     button.func(player)
                 end
                 
-                if button.structure then
-                    return Menu.construct(button.structure, menu, player)
-                end
+                return Menu.construct(button.structure, menu, player)
             end
 
             if description == nil then
