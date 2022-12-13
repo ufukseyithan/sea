@@ -36,6 +36,8 @@ function Player:constructor(id)
 end
 
 function Player:destroy()
+	self.ui:destroy()
+
 	Player.remove(self.id)
 end
 
