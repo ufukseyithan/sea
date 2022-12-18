@@ -50,6 +50,18 @@ function sea.message(id, text, color, tag, tagColor)
     return text
 end
 
+function sea.playSound(id, path, x, y)
+    if x then
+        parse("sv_soundpos", path, x, y, id)
+    else
+        if id then
+            parse("sv_sound2", id, path)
+        else
+            parse("sv_sound", path)
+        end
+    end
+end
+
 function sea.consoleMessage(id, text, color, tag, tagColor)
     local text = tostring(sea.Message.new(text, color, tag, tagColor))
 
