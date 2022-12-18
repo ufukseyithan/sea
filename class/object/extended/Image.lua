@@ -15,6 +15,12 @@ function Image:destroy()
 	Image.remove(self.id)
 end
 
+function Image:destroyIn(millisec)
+	timerEx(millisec, function()
+		self:destroy()
+	end)
+end
+
 function Image:scale(x, y)
 	imagescale(self.id, x, y)
 end
@@ -168,18 +174,6 @@ end
 
 function Image:setFrameAttribute(value)
 	imageframe(self.id, value)
-end
-
-function Image:setXAttribute(value)
-	imagepos(self.id, value, self.y, self.rotation)
-end
-
-function Image:setYAttribute(value)
-	imagepos(self.id, self.x, value, self.rotation)
-end
-
-function Image:setRotationAttribute(value)
-	imagepos(self.id, self.x, self.y, value)
 end
 
 -------------------------

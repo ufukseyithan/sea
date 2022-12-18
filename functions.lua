@@ -54,7 +54,7 @@ function sea.playSound(id, path, x, y)
     if x then
         parse("sv_soundpos", path, x, y, id)
     else
-        if id then
+        if not id or id == 0 then
             parse("sv_sound2", id, path)
         else
             parse("sv_sound", path)
