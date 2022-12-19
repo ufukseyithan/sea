@@ -39,15 +39,15 @@ function sea.success(text)
 end
 
 function sea.message(id, text, color, tag, tagColor)
-    local message = tostring(sea.Message.new(text, color, tag, tagColor))
+    local text = tostring(sea.Message.new(text, color, tag, tagColor))
 
     if not id or id == 0 then
-        msg(message)
+        msg(text)
     else
-        msg2(id, message)
+        msg2(id, text)
     end
 
-    return message
+    return text
 end
 
 function sea.playSound(id, path, x, y)
