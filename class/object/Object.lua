@@ -31,26 +31,36 @@ end
 
 function Object.create(id, object)
 	if sea.object[id] then
-		sea.error("Attempted to create object that already exists (ID: "..id..")")
+		if sea.config.debugObject then
+			sea.error("Attempted to create object that already exists (ID: "..id..")")
+		end
+
 		return false
 	end
 
 	sea.object[id] = object or Object.new(id)
 
-	sea.success("Created object (ID: "..id..")")
+	if sea.config.debugObject then
+		sea.success("Created object (ID: "..id..")")
+	end
 
 	return sea.object[id]
 end
 
 function Object.remove(id)
 	if not sea.object[id] then
-		sea.error("Attempted to remove non-existent object (ID: "..id..")")
+		if sea.config.debugObject then
+			sea.error("Attempted to remove non-existent object (ID: "..id..")")
+		end
+
 		return false
 	end
 
 	sea.object[id] = nil
 
-	sea.success("Removed object (ID: "..id..")")
+	if sea.config.debugObject then
+		sea.success("Removed object (ID: "..id..")")
+	end
 
 	return true
 end

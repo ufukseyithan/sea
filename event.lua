@@ -236,7 +236,6 @@ for name, params in pairs(hooks) do
     end
 
     sea.hook[name] = func or defaultFunc
-
     addhook(name, "sea.hook."..name)
 end
 

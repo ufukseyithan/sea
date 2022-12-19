@@ -74,26 +74,36 @@ function Image.create(path, x, y, mode, player)
 
 	if sea.image[id] then
 		-- freeimage(id)
-		sea.error("Attempted to create image that already exists (ID: "..id..")")
+		if sea.config.debugImage then
+			sea.error("Attempted to create image that already exists (ID: "..id..")")
+		end
+
 		return false
 	end
 
 	sea.image[id] = Image.new(id)
 
-	sea.success("Created image (ID: "..id..")")
+	if sea.config.debugImage then
+		sea.success("Created image (ID: "..id..")")
+	end
 
 	return sea.image[id]
 end
 
 function Image.remove(id)
 	if not sea.image[id] then
-		sea.error("Attempted to remove non-existent image (ID: "..id..")")
+		if sea.config.debugImage then
+			sea.error("Attempted to remove non-existent image (ID: "..id..")")
+		end
+
 		return false
 	end
 
 	sea.image[id] = nil
 
-	sea.success("Removed image (ID: "..id..")")
+	if sea.config.debugImage then
+		sea.success("Removed image (ID: "..id..")")
+	end
 
 	return true
 end

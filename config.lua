@@ -3,6 +3,12 @@ sea.config = {}
 -- Enable / disable console outputs
 sea.config.debug = true
 
+-- You can individually enable / disable the console outputs below (these do not matter if sea.config.debug is set to false)
+-- Image related console outputs
+sea.config.debugImage = false
+-- Object related console outputs
+sea.config.debugObject = false
+
 -- The prefix of the tag of system console notifications
 sea.config.printTagPrefix = "Sea"
 
@@ -27,6 +33,7 @@ sea.config.color = {
 	    [3] = sea.Color.new(0, 255, 0) -- Deathmatch
     },
 
+    -- Custom app created colors
     custom = {}
 }
 
