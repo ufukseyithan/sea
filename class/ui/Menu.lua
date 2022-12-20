@@ -30,7 +30,7 @@ function Menu:show(player, page)
         local name, description = "", ""
 
         if button then
-            local disabled = button.func == nil
+            local disabled = not button.func
 
             if button.name then
                 name = type(button.name) == "function" and button.name(player) or button.name
@@ -106,7 +106,7 @@ function Menu.construct(structure, parent, player)
                 return Menu.construct(button.structure, menu, player)
             end
 
-            if description == nil then
+            if not description then
                 description = ">"
             end
         end
