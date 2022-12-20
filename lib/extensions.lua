@@ -125,10 +125,10 @@ end
 
 function table.merge(tbl, tbl2, override)
     for k, v in pairs(tbl2) do 
-        if override then
-            tbl[k] = v
+        if type(v) == "table" and tbl[k] then
+            table.merge(tbl[k], v, override)
         else
-            tbl[k] = tbl[k] or v
+            tbl[k] = override and (tbl[k] or v) or v
         end
     end
 end

@@ -180,9 +180,11 @@ for name, params in pairs(hooks) do
                 args[1]:alert("Welcome to "..sea.game.name..", "..args[1].name.."!", sea.Color.green)
             end
         elseif name == "leave" then
-            args[1]:saveData()
+            if type(args[1]) == "table" then
+                args[1]:saveData()
 
-            args[1]:destroy()
+                args[1]:destroy()
+            end
         elseif name == "clientsetting" then
             if args[2] == 1 then
                 local playerUI = args[1].ui
