@@ -4,7 +4,7 @@ local function useAttributes(class)
         if class[attributeKey] then
             return class[attributeKey](self)
         end
-        return rawget(class, key)
+        return class[key]
     end
 
     function class:__newindex(key, value)
