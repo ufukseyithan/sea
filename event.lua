@@ -73,9 +73,7 @@ local hooks = {
     walkover = {"player", "item", "itemType", true, true, true}
 }
 
-local function createName(action, name)
-    return "on"..action:upperFirst()..name:upperFirst()
-end
+local createName = sea.createEventName
 
 function sea.addEvent(name, func, priority)
     if not sea.event[name] then
@@ -83,6 +81,7 @@ function sea.addEvent(name, func, priority)
         return false
     end
 
+    
     table.insert(sea.event[name], {
         func = func,
         priority = priority or 0
@@ -109,9 +108,8 @@ function sea.callEvent(name, ...)
 end
 
 -- Adding player control events
-for name, key in pairs(sea.config.player.control) do
-    sea.event[createName("press", name:toPascalCase(" "))] = {} 
-    sea.event[createName("release", name:toPascalCase(" "))] = {} 
+for name in pairs(sea.config.player.control) do
+    sea.createControlEventName(name)
 end
 
 sea.hook = {}
@@ -133,6 +131,8 @@ for name, params in pairs(hooks) do
         elseif name == "itemfadeout" then
             sea.Item.remove(args[1])
         elseif name == "startround_prespawn" then
+            print("called startround_prespawn")
+
             -- Clearing image table
             for id in pairs(sea.image) do
                 sea.Image.remove(id)

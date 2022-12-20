@@ -14,6 +14,15 @@ function sea.createColoredText(text, color)
     return "©"..tostring(color)..text
 end
 
+function sea.createEventName(action, name)
+    return "on"..action:upperFirst()..name:upperFirst()
+end
+
+function sea.createControlEventName(name)
+    sea.event[sea.createEventName("press", name:toPascalCase(" "))] = {} 
+    sea.event[sea.createEventName("release", name:toPascalCase(" "))] = {} 
+end
+
 function sea.print(type, text)
     if not sea.config.debug then 
         return
@@ -418,7 +427,9 @@ function sea.addPlayerControl(name, defaultKey, isReassignable)
 
     playerControl[name] = {defaultKey, isReassignable}
 
-    sea.success("Added player control: "..name.." "..isReassignable and "(reassignable)" or "")
+    sea.createControlEventName(name)
+
+    sea.success("Added player control: "..name.." "..(isReassignable and "(reassignable)" or ""))
 
     return true
 end
