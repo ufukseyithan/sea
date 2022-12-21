@@ -22,16 +22,13 @@ function string:toPascalCase(delimiter)
     return table.concat(tab)
 end
 
--- @TODO: Check if this is working correctly
 function string.camelCaseToUnderscore(str)
-    local tab = {}
-    str:gsub('%u?%l+', function (c)
-        table.insert(tab, c:lower())
-    end)
-    return table.concat(tab, '_')
+    -- Made by ChatGPT
+    local underscoreStr = str:gsub("(%u)", function(c) return "_" .. c:lower() end)
+    underscoreStr = underscoreStr:gsub("__", "_")
+    return underscoreStr
 end
 
--- @TODO: Check if this is working correctly
 function string.underscoreToPascalCase(str)
     local tab = {}
     str:gsub('([^_]+)', function (c)

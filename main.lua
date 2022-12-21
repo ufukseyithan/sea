@@ -163,7 +163,14 @@ end
 
 sea.info("Putting the final touches...")
 
--- @TODO: Add sea-framework gfx and sfx to the server transfer list
+-- Add sea-framework gfx and sfx to the server transfer list
+for pathName, appCustomPath in pairs(sea.path) do
+    if pathName == "gfx" or pathName == "sfx" then
+        for _, filePath in pairs(io.getFilePaths(appCustomPath, true)) do
+            sea.addTransferFile(filePath)
+        end
+    end
+end
 
 sea.updateServerTransferList()
 
