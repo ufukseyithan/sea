@@ -121,9 +121,9 @@ end
 
 sea.path.class = sea.path.lua.."class/"
 for _, classDirectoryPath in pairs(io.getDirectoryPaths(sea.path.class)) do
-    initClass(classDirectoryPath)
+    initClass(classDirectoryPath.."common/")
 
-    initClass(classDirectoryPath.."extended/")
+    initClass(classDirectoryPath)
 end
 
 sea.path.config = sea.path.lua.."config.lua"

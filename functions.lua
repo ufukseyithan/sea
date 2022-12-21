@@ -322,6 +322,9 @@ function sea.initApp(directory)
         app.path.config = config
     end
 
+    -- Load extension
+    --local extensionsPath
+
     local loadedScripts = 0
     if app.scripts then
         for _, path in ipairs(app.scripts) do
