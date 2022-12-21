@@ -9,7 +9,7 @@ sea.config.debugImage = false
 -- Object related console outputs
 sea.config.debugObject = false
 
--- The prefix of the tag of system console notifications
+-- The tag prefix of system console notifications
 sea.config.printTagPrefix = "Sea"
 
 -- These formats are the only ones that the server transfer list supports, meaning you may remove the existing ones as you wish but not add new ones

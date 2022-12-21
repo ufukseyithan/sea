@@ -121,7 +121,7 @@ function sea.addTransferFile(path, response, update)
         return false
     end
 
-    -- Gettinh the size of the file
+    -- Getting the size of the file
     local file = io.open(path)
     local fileSizeInKB = math.round(file:seek("end") / 1024, 2)
     if fileSizeInKB >= 250 then
@@ -182,7 +182,6 @@ function sea.initApp(directory)
     end
 
     local isDisabled = app.disabled or directory:find(".disabled")
-
     if isDisabled then
         sea.warning("The app "..app.name.." is not initialized as it is disabled.")
         return false
