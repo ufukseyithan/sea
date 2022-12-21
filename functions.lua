@@ -144,10 +144,19 @@ end
 
 function sea.updateServerTransferList(response)
     local serverTransferListPath = sea.path.sys.."servertransfer.lst"
+    local transferFiles = sea.transferFiles
 
     io.toTable(serverTransferListPath, sea.transferFiles)
 
     sea.transferFiles = table.removeDuplicates(sea.transferFiles)
+
+    -- Remove files that do not exist
+    for k, v in pairs(sea.transferFiles) do
+        if not io.exists(v) then
+            -- Do not use table.remove() here
+            sea.transferFiles[k] = nil
+        end
+    end
     
     local addedFiles = 0
     local file = io.open(serverTransferListPath, "w+") or io.tmpfile()
