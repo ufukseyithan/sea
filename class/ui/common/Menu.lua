@@ -6,12 +6,18 @@ function Menu:constructor(name, mode)
     self.buttons = {}
 end
 
-function Menu:addButton(name, func, description)
-    table.insert(self.buttons, {
+function Menu:addButton(name, func, description, index)
+    local button = {
         name = name,
         func = func,
         description = description
-    })
+    }
+
+    self.buttons[index and index or #self.buttons + 1] = button
+end
+
+function Menu:addBackButton(parent, index)
+    self:addButton("Back", parent, "<", index)
 end
 
 function Menu:addGap()
@@ -119,9 +125,7 @@ function Menu.construct(structure, parent, player)
     if parent then
         menu.name = parent.name.." / "..menu.name
 
-        menu:addButton("Back", function(player)
-            player:displayMenu(parent) 
-        end, "<")
+        menu:addBackButton(parent)
     end
 
     return menu
