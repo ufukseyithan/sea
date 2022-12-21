@@ -1,6 +1,6 @@
 sea = {}
 
-sea.version = "0.0.1a"
+sea.version = "0.5.0a"
 
 sea.path = {
     gfx = "gfx/sea-framework/",
@@ -73,6 +73,8 @@ function io.getDirectoryPaths(directory, deep)
 end
 
 function dofileDirectory(directory, formats, deep)
+    formats = formats or ".lua"
+
     for _, filePath in pairs(io.getFilePaths(directory, deep)) do
         if type(formats) == "table" then
             for _, format in pairs(formats) do
@@ -110,21 +112,8 @@ sea.path.data = sea.path.lua.."data/"
 
 require(sea.path.lua.."functions")
 
-local function initClass(directoryPath)
-    for file in io.enumdir(directoryPath) do
-        if file:sub(-4) == '.lua' then
-            local name = file:sub(1, -5)
-            sea[name] = require(directoryPath..name)
-        end
-    end
-end
-
 sea.path.class = sea.path.lua.."class/"
-for _, classDirectoryPath in pairs(io.getDirectoryPaths(sea.path.class)) do
-    initClass(classDirectoryPath.."common/")
-
-    initClass(classDirectoryPath)
-end
+sea.initClassDirectory(sea.path.class)
 
 sea.path.config = sea.path.lua.."config.lua"
 dofile(sea.path.config)

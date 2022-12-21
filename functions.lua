@@ -179,6 +179,24 @@ function sea.updateServerTransferList(response)
     sea.transferFiles = transferFiles
 end
 
+function sea.initClass(directoryPath, namespace)
+    namespace = namespace or "sea"
+
+    for file in io.enumdir(directoryPath) do
+        if file:sub(-4) == '.lua' then
+            local name = file:sub(1, -5)
+            _G[namespace][name] = require(directoryPath..name)
+        end
+    end
+end
+
+function sea.initClassDirectory(directoryPath, namespace)
+    for _, classDirectoryPath in pairs(io.getDirectoryPaths(directoryPath)) do
+        sea.initClass(classDirectoryPath.."common/", namespace)
+        sea.initClass(classDirectoryPath, namespace)
+    end
+end
+
 function sea.initApp(directory)
     local mainPath = directory.."main.lua"
     if not io.exists(mainPath) then
@@ -322,8 +340,24 @@ function sea.initApp(directory)
         app.path.config = config
     end
 
-    -- Load extension
-    --local extensionsPath
+    -- Load config directory
+    configPath = directory.."config/"
+    if io.exists(configPath) then
+        dofileDirectory(configPath)
+    end
+
+    -- Load extensions
+    local extensionsPath = directory.."extensions/"
+    if io.exists(extensionsPath) then
+        print("LOLLLLLLLLLLLLLLLLLLLLLL")
+        dofileDirectory(extensionsPath)
+    end
+
+    -- Load classes
+    local classPath = directory.."class/"
+    if io.exists(classPath) then
+        sea.initClassDirectory(classPath, app.namespace)
+    end
 
     local loadedScripts = 0
     if app.scripts then
@@ -333,6 +367,7 @@ function sea.initApp(directory)
             end
         end
     end  
+
     sea[app.namespace] = _G[app.namespace]
 
     sea.app[app.namespace] = app 
