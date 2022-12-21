@@ -95,3 +95,13 @@ function dump(o)
        return tostring(o)
     end
 end
+
+function secondsToHMS(seconds)
+    -- Calculate the number of hours, minutes, and seconds
+    local hours = math.floor(seconds / 3600)
+    local minutes = math.floor((seconds % 3600) / 60)
+    seconds = seconds % 60
+  
+    -- Return the result as a formatted string
+    return string.format("%2dh %02dm %02ds", hours, minutes, seconds)
+  end

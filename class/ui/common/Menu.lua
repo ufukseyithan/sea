@@ -81,6 +81,8 @@ function Menu:interact(player, index)
                 player:displayMenu(player.currentMenu[1])
             elseif type(result) == "table" then
                 player:displayMenu(result)
+            else
+                player.currentMenu = {}
             end
         end
     end
