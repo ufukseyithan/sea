@@ -13,7 +13,7 @@ function Menu:addButton(name, func, description, index)
         description = description
     }
 
-    self.buttons[index and index or #self.buttons + 1] = button
+    self.buttons[index and index or (#self.buttons + 1)] = button
 end
 
 function Menu:addBackButton(parent, index)
