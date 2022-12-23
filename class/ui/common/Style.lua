@@ -76,7 +76,7 @@ function Style:setFrameAttribute(value)
     self.properties.frame = value
 end
 
-function Style:setBlendAttribute()
+function Style:setBlendAttribute(value)
     self.properties.blend = value
 end
 

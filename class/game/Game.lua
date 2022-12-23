@@ -645,7 +645,7 @@ function Game:setMaxClientsIPAttribute(value)
 end
 
 function Game:setMaxRConFailsAttribute(value)
-    parsed("mp_maxrconfails", value)
+    parse("mp_maxrconfails", value)
 end
 
 function Game:setNatHolePunchingAttribute(value)

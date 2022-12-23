@@ -98,7 +98,7 @@ end
 
 function Object.getAt(x, y, typeID)
 	local objects = {}
-	
+		
 	for _, id in pairs(objectat(x, y, typeID)) do
 		table.insert(objects, sea.object[id])
 	end
