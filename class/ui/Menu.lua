@@ -17,7 +17,11 @@ function Menu:addButton(name, func, description, index)
 end
 
 function Menu:addBackButton(parent, index)
-    self:addButton("Back", parent, "<", index)
+    if not index then
+        self.backButtonTarget = parent
+    else
+        self:addButton("Back", parent, "<", index)
+    end
 end
 
 function Menu:addGap()
@@ -27,11 +31,15 @@ end
 function Menu:show(player, page)
     page = page or 1
 
-    self.totalPage = math.ceil(table.count(self.buttons) / 9)
+    local backButtonTarget = self.backButtonTarget
+
+    local buttonsPerPage = backButtonTarget and 8 or 9
+
+    self.totalPage = math.ceil(table.count(self.buttons) / buttonsPerPage)
 
     local buttons = {}
-    for i = 1, 9 do
-        local button = self.buttons[((page - 1) * 9) + i]
+    for i = 1, buttonsPerPage do
+        local button = self.buttons[((page - 1) * buttonsPerPage) + i]
 
         local name, description = "", ""
 
@@ -52,6 +60,10 @@ function Menu:show(player, page)
         end
 
         table.insert(buttons, name.."|"..description)
+    end
+
+    if backButtonTarget then
+        table.insert(buttons, "Back|<")
     end
 
     local mode = ""
@@ -75,8 +87,14 @@ function Menu:interact(player, index)
         return
     end
 
+    local backButtonTarget = self.backButtonTarget
+    if index == 9 and backButtonTarget then 
+        player:displayMenu(backButtonTarget)
+        return
+    end
+
     local button = self.buttons[((player.currentMenu[2] - 1) * 9) + index]
-    
+
     if button then
         if type(button.func) == "table" then
             player:displayMenu(button.func)
@@ -98,7 +116,7 @@ end
 --        CONST        --
 -------------------------
 
-function Menu.construct(structure, parent, player) 
+function Menu.construct(structure, parent, player)
     local menu = Menu.new(structure.name, "big")
 
     for _, button in ipairs(type(structure.content) == "function" and structure.content(player) or structure.content) do
@@ -114,8 +132,11 @@ function Menu.construct(structure, parent, player)
                 return Menu.construct(button.structure, menu, player)
             end
 
-            if not description then
-                description = ">"
+            if type(description) == "function" then
+                local temp = description
+                description = function(player) return temp(player).." >" end
+            else
+                description = description and description.." >" or ">"
             end
         end
 
@@ -125,7 +146,7 @@ function Menu.construct(structure, parent, player)
     if parent then
         menu.name = parent.name.." / "..menu.name
 
-        menu:addBackButton(parent)
+        menu.backButtonTarget = parent
     end
 
     return menu
