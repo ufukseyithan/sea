@@ -1,3 +1,4 @@
+---@diagnostic disable: discard-returns
 -- String
 function string:split(sep)
     local sep, fields = sep or ":", {}

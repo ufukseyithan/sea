@@ -3,7 +3,9 @@
         "lowercase-global",
         "unbalanced-assignments",
         "undefined-field",
-        "redundant-parameter"
+        "redundant-parameter",
+        "deprecated",
+        "duplicate-set-field"
     ],
     "Lua.diagnostics.globals": [
         "addbind",
