@@ -93,7 +93,9 @@ function Menu:interact(player, index)
         return
     end
 
-    local button = self.buttons[((player.currentMenu[2] - 1) * 9) + index]
+    local buttonsPerPage = backButtonTarget and 8 or 9
+
+    local button = self.buttons[((player.currentMenu[2] - 1) * buttonsPerPage) + index]
 
     if button then
         if type(button.func) == "table" then
