@@ -275,9 +275,9 @@ function sea.initApp(directory)
                                         end
                                     end
                                 end,
-                                variable = function()
+                                data = function()
                                     for name, v in pairs(v) do
-                                        if sea.addPlayerVariable(name, v[1], v[2]) then
+                                        if sea.addPlayerData(name, v) then
                                             successfulConfig = successfulConfig + 1
                                         end
                                     end
@@ -349,7 +349,6 @@ function sea.initApp(directory)
     -- Load extensions
     local extensionsPath = directory.."extensions/"
     if io.exists(extensionsPath) then
-        print("LOLLLLLLLLLLLLLLLLLLLLLL")
         dofileDirectory(extensionsPath)
     end
 
@@ -436,17 +435,17 @@ function sea.addPlayerStat(name, defaultValue, customDisplay)
     return true
 end
 
-function sea.addPlayerVariable(name, defaultValue, data)
-    local playerVariable = sea.config.player.variable
+function sea.addPlayerData(name, defaultValue)
+    local playerData = sea.config.player.data
 
-    if playerVariable[name] then
-        sea.error("The player variable "..name.." cannot be added, it already exists.")
+    if playerData[name] then
+        sea.error("The player data "..name.." cannot be added, it already exists.")
         return false
     end
 
-    playerVariable[name] = {defaultValue, data}
+    playerData[name] = defaultValue
 
-    sea.success("Added player variable: "..name.." (default value: "..tostring(defaultValue)..(data and ", data" or "")..")")
+    sea.success("Added player data: "..name.." (default value: "..tostring(defaultValue)..")")
 
     return true
 end

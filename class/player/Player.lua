@@ -9,9 +9,9 @@ function Player:constructor(id)
 	self.currentMenu = {}
 	self.ui = sea.UI.new(self)
 
-	for name, v in pairs(sea.config.player.variable) do
+	for name, v in pairs(sea.config.player.data) do
 		if not self[name] then
-			self[name] = v[1]
+			self[name] = deepcopy(v)
 		end
 	end
 

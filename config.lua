@@ -57,7 +57,7 @@ sea.config.player = {
         ["Assists"] = {0} 
     },
 
-    variable = {},
+    data = {},
 
     preference = {},
 
