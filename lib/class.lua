@@ -1,15 +1,33 @@
-local function useAttributes(class)
+local function setProperties(class)
+    local function getProperty(key)
+        local propertyKey = string.camelCaseToPascalCase(key).."Property"
+        local property = class[propertyKey]
+        
+        if property then
+            return class[propertyKey]
+        end
+    end
+
     function class:__index(key)
+        local get = getProperty(key)
         local attributeKey = "get"..string.camelCaseToPascalCase(key).."Attribute"
-        if class[attributeKey] then
+
+        if get then
+            return get(self)
+        elseif class[attributeKey] then
             return class[attributeKey](self)
         end
+
         return class[key]
     end
 
     function class:__newindex(key, value)
+        local get, set = getProperty(key)
         local attributeKey = "set"..string.camelCaseToPascalCase(key).."Attribute"
-        if class[attributeKey] then
+
+        if set then
+            set(self, value)
+        elseif class[attributeKey] then
             class[attributeKey](self, value)
         else
             rawset(self, key, value)
@@ -76,7 +94,7 @@ class = function(inheritsFrom)
         return instance
     end
 
-    useAttributes(class)
+    setProperties(class)
 
     -- Returns the class.
     return class
