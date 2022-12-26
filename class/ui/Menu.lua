@@ -4,6 +4,7 @@ function Menu:constructor(name, mode)
     self.name = name
     self.mode = mode
     self.buttons = {}
+    self.staticButton = {}
 end
 
 function Menu:addButton(name, func, description, index)
@@ -17,30 +18,41 @@ function Menu:addButton(name, func, description, index)
 end
 
 function Menu:addBackButton(parent, index)
-    if not index then
-        self.backButtonTarget = parent
-    else
-        self:addButton("Back", parent, "<", index)
+    self:addButton("Back", parent, "<", index)
+end
+
+function Menu:setStaticButton(index, name, func, description)
+    if index < 1 or index > 9 then
+        return
     end
+
+    self.staticButton[index] = {
+        name = name,
+        func = func,
+        description = description
+    }
+end
+
+function Menu:setStaticBackButton(parent, index)
+    self:setStaticButton(index or 9, "Back", parent, "<")
 end
 
 function Menu:addGap()
     table.insert(self.buttons, false)
 end
 
+function Menu:setStatiticGap(index)
+    self.staticButton[index] = false
+end
+
 function Menu:show(player, page)
     page = page or 1
 
-    local backButtonTarget = self.backButtonTarget
-
-    local buttonsPerPage = backButtonTarget and 8 or 9
+    local buttonsPerPage = self.buttonsPerPage
 
     self.totalPage = math.ceil(table.count(self.buttons) / buttonsPerPage)
 
-    local buttons = {}
-    for i = 1, buttonsPerPage do
-        local button = self.buttons[((page - 1) * buttonsPerPage) + i]
-
+    local function createButtonString(button)
         local name, description = "", ""
 
         if button then
@@ -59,11 +71,24 @@ function Menu:show(player, page)
             end
         end
 
-        table.insert(buttons, name.."|"..description)
+        return name.."|"..description
     end
 
-    if backButtonTarget then
-        table.insert(buttons, "Back|<")
+    local buttons = {}
+
+    -- Static buttons
+    for i = 1, 9 do
+        local button = self.staticButton[i]
+        if button ~= nil then
+            buttons[i] = createButtonString(button)
+        end
+    end
+
+    -- Dynamic buttons
+    for i = 1, buttonsPerPage do
+        local button = self.buttons[((page - 1) * buttonsPerPage) + i]
+
+        table.insert(buttons, createButtonString(button))
     end
 
     local mode = ""
@@ -87,21 +112,13 @@ function Menu:interact(player, index)
         return
     end
 
-    local backButtonTarget = self.backButtonTarget
-    if index == 9 and backButtonTarget then 
-        player:displayMenu(backButtonTarget)
-        return
-    end
+    local function interactWithButton(button)
+        local func = button.func
 
-    local buttonsPerPage = backButtonTarget and 8 or 9
-
-    local button = self.buttons[((player.currentMenu[2] - 1) * buttonsPerPage) + index]
-
-    if button then
-        if type(button.func) == "table" then
-            player:displayMenu(button.func)
+        if type(func) == "table" then
+            player:displayMenu(func)
         else
-            local result = button.func(player)
+            local result = func(player)
 
             if result == true then
                 player:displayMenu(player.currentMenu[1])
@@ -111,6 +128,17 @@ function Menu:interact(player, index)
                 player.currentMenu = {}
             end
         end
+    end
+
+    local staticButton = self.staticButton[index]
+    if staticButton then
+        interactWithButton(staticButton)
+        return
+    end
+
+    local button = self.buttons[((player.currentMenu[2] - 1) * self.buttonsPerPage) + index]
+    if button then
+        interactWithButton(button)
     end
 end
 
@@ -122,36 +150,50 @@ function Menu.construct(structure, parent, player)
     local menu = Menu.new(structure.name, "big")
 
     for _, button in ipairs(type(structure.content) == "function" and structure.content(player) or structure.content) do
-        local func = button.func
-        local description = button.description
-        
-        if button.structure then
-            func = function(player)
-                if button.func then
-                    button.func(player)
+        if not button.name then
+            menu:addGap()
+        else
+            local func = button.func
+            local description = button.description
+            
+            if button.structure then
+                func = function(player)
+                    if button.func then
+                        button.func(player)
+                    end
+                    
+                    return Menu.construct(button.structure, menu, player)
                 end
-                
-                return Menu.construct(button.structure, menu, player)
+    
+                if type(description) == "function" then
+                    local temp = description
+                    description = function(player) return temp(player).." >" end
+                else
+                    description = description and description.." >" or ">"
+                end
             end
-
-            if type(description) == "function" then
-                local temp = description
-                description = function(player) return temp(player).." >" end
-            else
-                description = description and description.." >" or ">"
-            end
+    
+            menu:addButton(button.name, func, description)
         end
-
-        menu:addButton(button.name, func, description)
     end
 
     if parent then
         menu.name = parent.name.." / "..menu.name
 
-        menu.backButtonTarget = parent
+        menu:setStaticBackButton(parent)
     end
 
     return menu
+end
+
+-------------------------
+--     PROPERTIES     --
+-------------------------
+
+function Menu:buttonsPerPageProperty()
+    return function(self)
+        return 9 - table.count(self.staticButton)
+    end
 end
 
 -------------------------

@@ -84,7 +84,13 @@ function table.getKeys(tbl)
 end
 
 function table.count(tbl)
-    return table.maxn(tbl) == 0 and #table.getKeys(tbl) or table.maxn(tbl)
+    local count = 0
+
+    for k, v in pairs(tbl) do
+        count = count + 1
+    end
+
+    return count
 end
 
 function table.contains(tab, value)

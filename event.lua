@@ -131,8 +131,6 @@ for name, params in pairs(hooks) do
         elseif name == "itemfadeout" then
             sea.Item.remove(args[1])
         elseif name == "startround_prespawn" then
-            print("called startround_prespawn")
-
             -- Clearing image table
             for id in pairs(sea.image) do
                 sea.Image.remove(id)

@@ -1,10 +1,9 @@
 local function setProperties(class)
     local function getProperty(key)
-        local propertyKey = string.camelCaseToPascalCase(key).."Property"
-        local property = class[propertyKey]
-        
+        local property = class[key.."Property"]
+
         if property then
-            return class[propertyKey]
+            return property()
         end
     end
 
