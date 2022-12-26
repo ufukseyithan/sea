@@ -76,7 +76,7 @@ end
 function table.getKeys(tbl)
     local keys = {}
 
-    for k, v in pairs(tbl) do
+    for k in pairs(tbl) do
         table.insert(keys, k)
     end
 
@@ -86,7 +86,7 @@ end
 function table.count(tbl)
     local count = 0
 
-    for k, v in pairs(tbl) do
+    for _ in pairs(tbl) do
         count = count + 1
     end
 
