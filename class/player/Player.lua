@@ -38,6 +38,13 @@ end
 function Player:destroy()
 	self.ui:destroy()
 
+	-- Destroy all the images related to the player (images only visible to them or images that follow them)
+	for _, image in pairs(sea.image) do
+		if image.player == self or image:isFollowingPlayer(self) then
+			image:destroy()
+		end
+	end
+
 	Player.remove(self.id)
 end
 
