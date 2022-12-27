@@ -179,6 +179,13 @@ for name, params in pairs(hooks) do
             end
         elseif name == "leave" then
             if type(args[1]) == "table" then
+                -- Destroy all the images related to the player (images only visible to them or images that follow them)
+                for _, image in pairs(sea.image) do
+                    if image.player == args[1] or image:isFollowingPlayer(args[1]) then
+                        image:destroy()
+                    end
+                end
+
                 args[1]:saveData()
 
                 args[1]:destroy()

@@ -66,10 +66,8 @@ function Player:saveData()
 		mergeData("preference")
 		mergeData("control")
 
-		for k, v in pairs(sea.config.player.variable) do
-			if v[2] then
-				data[k] = self[k]
-			end
+		for k, v in pairs(sea.config.player.data) do
+			data[k] = self[k]
 		end
 
 		table.save(data, sea.path.data..self.steamID..".lua")

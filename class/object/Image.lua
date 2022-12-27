@@ -1,8 +1,10 @@
 sea.image = {}
 local Image = class(sea.Object)
 
-function Image:constructor(id)
+function Image:constructor(id, mode, player)
 	self.id = id
+	self.mode = mode
+	self.player = player
 
 	sea.Object.create(id, self)
 end
@@ -65,6 +67,17 @@ function Image:tweenScale(time, x, y)
 	tween_scale(self.id, time, x, y)
 end
 
+function Image:isFollowingPlayer(player)
+	if not self.followsPlayer then
+		return false
+	end
+
+	local mode = self.mode
+	local playerID = player.id
+
+	return (mode == 100 + playerID) or (mode == 132 + playerID) or (mode == 200 + playerID)
+end
+
 -------------------------
 --        CONST        --
 -------------------------
@@ -81,7 +94,7 @@ function Image.create(path, x, y, mode, player)
 		return false
 	end
 
-	sea.image[id] = Image.new(id)
+	sea.image[id] = Image.new(id, mode, player)
 
 	if sea.config.debugImage then
 		sea.success("Created image (ID: "..id..")")
@@ -111,6 +124,12 @@ end
 -------------------------
 --       GETTERS       --
 -------------------------
+
+function Image:followsPlayerProperty()
+	return function(self)
+		return self.mode > 100
+	end
+end
 
 function Image:getXAttribute()
 	return imageparam(self.id, "x")

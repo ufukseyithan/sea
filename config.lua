@@ -106,7 +106,7 @@ sea.config.mainMenuStructure = {
                                 player:alert("No available notifications found")
                             end
                         end,
-                        description = "View the notifications you have received in this session ("..#player.notifications.." available)"
+                        description = function(player) return "View the notifications you have received in this session ("..#player.notifications.." available)" end
                     },
                     {
                         name = "Hints",
@@ -122,7 +122,7 @@ sea.config.mainMenuStructure = {
                                 player:alert("No available hints found")
                             end
                         end,
-                        description = "View the hints you have received in this session ("..#player.hints.." available)"
+                        description = function(player) return "View the hints you have received in this session ("..#player.hints.." available)" end
                     }
                 }
             }
