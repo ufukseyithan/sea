@@ -98,6 +98,7 @@ sea.config.mainMenuStructure = {
                             if not table.isEmpty(player.notifications) then
                                 player:message("The notifications of the current session have been sent to your console.")
                 
+                                player:consoleMessage("[Notifications]")
                                 for _, notification in ipairs(player.notifications) do
                                     player:consoleMessage(notification)
                                 end
@@ -105,7 +106,7 @@ sea.config.mainMenuStructure = {
                                 player:alert("No available notifications found")
                             end
                         end,
-                        description = "View the notifications you have received in this session"
+                        description = "View the notifications you have received in this session ("..#player.notifications.." available)"
                     },
                     {
                         name = "Hints",
@@ -121,7 +122,7 @@ sea.config.mainMenuStructure = {
                                 player:alert("No available hints found")
                             end
                         end,
-                        description = "View the hints you have received in this session"
+                        description = "View the hints you have received in this session ("..#player.hints.." available)"
                     }
                 }
             }
