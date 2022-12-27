@@ -5,6 +5,7 @@ function Image:constructor(id, mode, player)
 	self.id = id
 	self.mode = mode
 	self.player = player
+	self._alpha = 1
 
 	sea.Object.create(id, self)
 end
@@ -144,7 +145,8 @@ function Image:getRotationAttribute()
 end
 
 function Image:getAlphaAttribute()
-	return imageparam(self.id, "alpha")
+	return self._alpha
+	-- return imageparam(self.id, "alpha") -- This gives rotation value instead
 end
 
 function Image:getPathAttribute()
@@ -191,6 +193,7 @@ end
 
 function Image:setAlphaAttribute(value)
 	imagealpha(self.id, value)
+	self._alpha = value
 end
 
 function Image:setBlendModeAttribute(value)
