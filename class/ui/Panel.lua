@@ -21,6 +21,13 @@ function Panel:hide()
     self.hidden = true
 end
 
+function Panel:updatePath(path)
+    self.image.path = path
+    self.imagePath = path
+
+    self:update()
+end
+
 function Panel:setPosition(x, y)
     self.x = x
     self.y = y
