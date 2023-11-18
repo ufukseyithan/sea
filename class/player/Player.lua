@@ -135,21 +135,21 @@ function Player:displayMenu(menu, page)
 end
 
 function Player:viewsMenu()
-	return self.currentMenu[1] and true or false
+	return self.currentMenu[1]
 end
 
 function Player:isEnemyTo(player)
-	local targetTeam = type(player) == "table" and player.team or player
+	local targetTeam = (type(player) == "table" and player.team or player)
 
 	if self.team == 0 or targetTeam == 0 then -- Checks if either one of the players is a spectator
 		return false
 	end
 
-	return sea.game.mode == 1 and true or (self.team ~= targetTeam)
+	return sea.game.mode == 1 or (self.team ~= targetTeam)
 end
 
 function Player:isVIP()
-	return player(self.id, "team") == 3 and true or false
+	return self.team == 3
 end
 
 function Player:getItems()
