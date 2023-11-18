@@ -1,5 +1,6 @@
 sea.event = {}
 
+-- Hook argument type casts
 local hooks = {
     always = {},
     assist = {"player", "player", "player"},
