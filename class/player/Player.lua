@@ -266,6 +266,10 @@ function Player:stripAll()
 	self:strip(0)
 end
 
+function Player:playSound(path, x, y)
+	sea.playSound(self.id, path, x, y)
+end
+
 -------------------------
 --        CONST        --
 -------------------------
@@ -348,6 +352,10 @@ end
 
 function Player.messageAll(text, color, tag, tagColor)
 	return sea.message(0, text, color, tag, tagColor)
+end
+
+function Player.playSoundForAll(path, x, y)
+	return sea.playSound(0, path, x, y)
 end
 
 function Player.alertAll(text, color, tag, tagColor)
