@@ -354,12 +354,12 @@ function Player.messageAll(text, color, tag, tagColor)
 	return sea.message(0, text, color, tag, tagColor)
 end
 
-function Player.playSoundForAll(path, x, y)
-	return sea.playSound(0, path, x, y)
-end
-
 function Player.alertAll(text, color, tag, tagColor)
 	Player.messageAll(text.."@C", color, tag, tagColor)
+end
+
+function Player.playSoundForAll(path, x, y)
+	return sea.playSound(0, path, x, y)
 end
 
 -------------------------
