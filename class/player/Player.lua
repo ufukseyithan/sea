@@ -359,7 +359,7 @@ function Player.alertAll(text, color, tag, tagColor)
 end
 
 function Player.playSoundForAll(path, x, y)
-	return sea.playSound(0, path, x, y)
+	sea.playSound(0, path, x, y)
 end
 
 -------------------------
