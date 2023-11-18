@@ -149,7 +149,7 @@ function Player:isEnemyTo(player)
 end
 
 function Player:isVIP()
-	return self.team == 3
+	return sea.game.mode != 1 and self.team == 3 or false
 end
 
 function Player:getItems()
