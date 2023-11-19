@@ -8,8 +8,8 @@ function Map:constructor()
 end
 
 function Map:generate()
-    for x = 0, self.xSize - 1 do
-        for y = 0, self.ySize - 1 do
+    for x = 0, self.xSize do
+        for y = 0, self.ySize do
             table.insert2D(self.tile, x, y, sea.Tile.new(x, y))
         end
 	end
