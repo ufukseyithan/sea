@@ -2,7 +2,7 @@ function tileToPixel(x)
     return x * 32 + 16
 end
 
-function pixeltoTile(x)
+function pixelToTile(x)
     return math.floor(x / 32)
 end
 
