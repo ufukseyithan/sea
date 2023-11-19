@@ -7,6 +7,14 @@ function Tile:constructor(x, y)
 end
 
 -------------------------
+--        CONST        --
+-------------------------
+
+function Tile.get(x, y)
+    return sea.tile[x] and sea.tile[x][y]
+end
+
+-------------------------
 --       GETTERS       --
 -------------------------
 
