@@ -103,6 +103,8 @@ function Menu:show(player, page)
         pageLabel = " ("..page.." of "..self.totalPage..")"
     end
 
+    print(dump(buttons))
+
     menu(player.id, self.name..pageLabel..mode..","..table.concat(buttons, ","))
 end
 
