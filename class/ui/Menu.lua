@@ -88,7 +88,7 @@ function Menu:show(player, page)
     for i = 1, buttonsPerPage do
         local button = self.buttons[((page - 1) * buttonsPerPage) + i]
 
-        table.insert(buttons, createButtonString(button))
+        buttons[i] = createButtonString(button)
     end
 
     local mode = ""
@@ -102,8 +102,6 @@ function Menu:show(player, page)
     if self.totalPage > 1 then
         pageLabel = " ("..page.." of "..self.totalPage..")"
     end
-
-    print(dump(buttons))
 
     menu(player.id, self.name..pageLabel..mode..","..table.concat(buttons, ","))
 end
