@@ -71,6 +71,14 @@ function sea.playSound(id, path, x, y)
     end
 end
 
+function sea.explosion(x, y, size, damage, player)
+    parse("explosion", x, y, size, damage, player.id)
+end
+
+function sea.effect(effect, x, y, amount, size, r, g, b)
+    parse("effect", effect, x, y, amount, size, r, g, b)
+end
+
 function sea.consoleMessage(id, text, color, tag, tagColor)
     local text = tostring(sea.Message.new(text, color, tag, tagColor))
 

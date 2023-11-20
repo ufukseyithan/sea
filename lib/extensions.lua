@@ -95,7 +95,7 @@ end
 
 function table.contains(tab, value)
     for _, v in pairs(tab) do
-        if (v == value) then
+        if table.equal(v, value) then
             return true
         end
     end
@@ -155,6 +155,65 @@ end
 
 function table.isEmpty(tab)
     return next(tab) == nil
+end
+
+function table.shuffle(tbl)
+	local n = #tbl
+	while n > 2 do
+		local k = math.random(n)
+		tbl[n], tbl[k] = tbl[k], tbl[n]
+		n = n - 1
+	end
+	return tbl
+end
+
+function table.equal(tbl, tbl2)
+	if type(tbl) ~= "table" and type(tbl2) ~= "table" then
+		return tbl == tbl2
+	end
+	for k, v in pairs(tbl) do
+		if v ~= tbl2[k] then
+			return false
+		end
+	end
+	return true
+end
+
+function table.toString( tbl )
+	local result, done = {}, {}
+	for k, v in ipairs( tbl ) do
+		if k ~= 'tmp' then
+			table.insert( result, table.val_to_str( v ) )
+			done[ k ] = true
+		end
+	end
+	for k, v in pairs( tbl ) do
+		if not done[ k ] then
+			table.insert( result, 
+				table.key_to_str( k ) .. "=" .. table.val_to_str( v ) )
+		end
+	end
+	return "{" .. table.concat( result, ", " ) .. "}"
+end
+
+function table.valToString ( v )
+	if "string" == type( v ) then
+		v = string.gsub( v, "\n", "\\n" )
+		if string.match( string.gsub(v, "[^'\"]", ""), '^"+$' ) then
+			return "'" .. v .. "'"
+		end
+		return '"' .. string.gsub(v, '"', '\\"' ) .. '"'
+	else
+		return "table" == type( v ) and table.toString( v ) or tostring( v )
+	end
+end
+
+function table.keyToString ( k )
+	if "string" == type( k ) and string.match( k, "^[_%a][_%a%d]*$" ) then
+		return k
+	else
+		return "[" .. table.val_to_str( k ) .. "]"
+	end
 end
 
 -- IO
