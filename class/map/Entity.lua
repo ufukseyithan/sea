@@ -6,13 +6,22 @@ function Entity:constructor(x, y)
     self.y = y
 end
 
-function Entity:trigger()
-    if self.name then
+function Entity:trigger(name)
+    if name and self.name then
         parse("trigger", self.name)
     else
         parse("triggerposition", self.x, self.y)
     end
 end
+
+-------------------------
+--        CONST        --
+-------------------------
+
+function Entity.get(x, y)
+    return sea.entity[x] and sea.entity[x][y]
+end
+
 
 -------------------------
 --       GETTERS       --
