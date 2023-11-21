@@ -71,8 +71,8 @@ function sea.playSound(id, path, x, y)
     end
 end
 
-function sea.explosion(x, y, size, damage, player)
-    parse("explosion", x, y, size, damage, player.id)
+function sea.explosion(x, y, size, damage, id)
+    parse("explosion", x, y, size, damage, id)
 end
 
 function sea.effect(effect, x, y, amount, size, r, g, b)
@@ -119,7 +119,7 @@ end
 function sea.addTransferFile(path, response, update)
     local hasUnsupportedFormat
     for _, format in pairs(sea.config.supportedTransferFileFormats) do
-        if path:find(format) then
+        if path:find(format) or path:find(format:upper()) then
             hasUnsupportedFormat = true
         end
     end

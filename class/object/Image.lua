@@ -33,6 +33,11 @@ function Image:setPosition(x, y, rotation)
 end
 
 function Image:hitZone(mode, xOffset, yOffset, width, height)
+	if not xOffset then
+		width, height = self.width, self.height
+		xOffset, yOffset = -width / 2, -height / 2
+	end
+
 	imagehitzone(self.id, mode, xOffset, yOffset, width, height)
 end
 
