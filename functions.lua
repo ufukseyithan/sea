@@ -348,12 +348,6 @@ function sea.initApp(directory)
         app.path.config = config
     end
 
-    -- Load config directory
-    configPath = directory.."config/"
-    if io.exists(configPath) then
-        dofileDirectory(configPath)
-    end
-
     -- Load extensions
     local extensionsPath = directory.."extensions/"
     if io.exists(extensionsPath) then
@@ -364,6 +358,12 @@ function sea.initApp(directory)
     local classPath = directory.."class/"
     if io.exists(classPath) then
         sea.initClassDirectory(classPath, app.namespace)
+    end
+    
+    -- Load config directory
+    configPath = directory.."config/"
+    if io.exists(configPath) then
+        dofileDirectory(configPath)
     end
 
     local loadedScripts = 0
