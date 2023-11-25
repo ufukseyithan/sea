@@ -11,7 +11,7 @@ function Player:constructor(id)
 
 	for name, v in pairs(sea.config.player.data) do
 		if not self[name] then
-			self[name] = deepcopy(v)
+			self[name] = type(v) == "function" and v(self) or deepcopy(v)
 		end
 	end
 
