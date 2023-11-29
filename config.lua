@@ -59,7 +59,9 @@ sea.config.player = {
 
     data = {},
 
-    preference = {},
+    preference = {
+        ["Save Method"] = {"Auto", {"Auto", "Steam", "USGN"}}
+    },
 
     control = {
         ["Escape"] = {"escape"},

@@ -48,20 +48,37 @@ function Player:destroy()
 	Player.remove(self.id)
 end
 
+function Player:getSteamSavePath()
+	return sea.path.data.."player/steam/"..self.steamID..".lua"
+end
+
+function Player:getUSGNSavePath()
+	return sea.path.data.."player/usgn/"..self.usgn..".lua"
+end
+
 function Player:loadData()
-	if self.steamID ~= "0" then
-		local data = table.load(sea.path.data..self.steamID..".lua")
+	local method = self.preference["Save Method"]
 
-		if data then
-			table.merge(self, data, true)
+	local data
+	if self.steamID ~= "0" and (method == "Auto" or method == "Steam") then
+		data = table.load(self:getSteamSavePath())
+	elseif self.usgn and (method == "Auto" or method == "USGN") then
+		data = table.load(self:getUSGNSavePath())
+	end
 
-			self:notify("Your data has been loaded.", "Data")
-		end
+	if data then
+		table.merge(self, data, true)
+
+		self:notify("Your data has been loaded.", "Data")
 	end
 end
 
 function Player:saveData()
-	if self.steamID ~= "0" then
+	local method = self.preference["Save Method"]
+
+	local saved = false
+
+	local function fetchData()
 		local data = {}
 
 		local function mergeData(k)
@@ -77,8 +94,26 @@ function Player:saveData()
 			data[k] = self[k]
 		end
 
-		table.save(data, sea.path.data..self.steamID..".lua")
+		return data
+	end
 
+	local function saveToSteam()
+		table.save(fetchData(), self:getSteamSavePath())
+		saved = true
+	end
+
+	local function saveToUSGN()
+		table.save(fetchData(), self:getUSGNSavePath())
+		saved = true
+	end
+
+	if self.steamID ~= "0" and (method == "Auto" or method == "Steam") then
+		saveToSteam()
+	elseif self.usgn and (method == "Auto" or method == "USGN") then
+		saveToUSGN()
+	end
+
+	if saved then
 		self:notify("Your data has been saved.", "Data")
 	end
 end
