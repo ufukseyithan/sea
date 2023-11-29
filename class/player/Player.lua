@@ -67,7 +67,7 @@ function Player:loadData()
 	end
 
 	if data then
-		table.merge(self, data, true)
+		table.merge(self, data)
 
 		self:notify("Your data has been loaded.", "Data")
 	end
