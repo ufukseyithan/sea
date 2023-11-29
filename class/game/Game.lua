@@ -8,9 +8,7 @@ function Game:loadData()
     local data = table.load(self.savePath)
     
     if data then
-        table.merge(self, data, true)
-
-        print(dump(data))
+        table.merge(self, data)
 
         sea.success("Game data has been loaded.")    
     end
