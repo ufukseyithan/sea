@@ -26,7 +26,7 @@ function table.save(tbl,file)
             indent = indent + 1
             local tab = ""
             for i=1,indent do tab = tab .. "    " end
-            for k,v in pairs(o) do
+            for k,v in pairs(o.__serialize and o:__serialize() or o) do
                 f:write(tab .. "[")
                 serialize(k)
                 f:write("] = ")
@@ -45,7 +45,7 @@ function table.save(tbl,file)
  
     -- here's the actual save process
     f:write("return {\n")
-    for k,v in pairs(tbl) do
+    for k,v in pairs(tbl.__serialize and tbl:__serialize() or tbl) do
         f:write("    [")
         serialize(k)
         f:write("] = ")
