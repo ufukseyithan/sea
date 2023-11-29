@@ -175,7 +175,7 @@ for name, params in pairs(hooks) do
         end
 
         if name == "join" then
-            if sea.config.gameSetting.welcomeMessage then
+            if sea.config.game.setting.welcomeMessage then
                 args[1]:alert("Welcome to "..sea.game.name..", "..args[1].name.."!", sea.Color.green)
             end
         elseif name == "leave" then
@@ -222,7 +222,7 @@ for name, params in pairs(hooks) do
     local func
     if name == "drop" then
         func = function(playerID, itemID, type, loadedAmmo, spareAmmo, mode, x, y)
-            if sea.config.gameSetting.itemDrop then
+            if sea.config.game.setting.itemDrop then
                 if type ~= 50 then
                     sea.Item.create(itemID)
                 end

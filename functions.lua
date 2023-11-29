@@ -259,13 +259,28 @@ function sea.initApp(directory)
                             end
                         end
                     end,
-                    gameSetting = function()
-                        for setting, value in pairs(content) do
-                            sea.setGameSetting(setting, value)
 
-                            successfulConfig = successfulConfig + 1
+                    game = function()
+                        for k, v in pairs(content) do
+                            switch(k) {
+                                setting = function()
+                                    for setting, value in pairs(content) do
+                                        sea.setGameSetting(setting, value)
+            
+                                        successfulConfig = successfulConfig + 1
+                                    end 
+                                end,
+                                data = function()
+                                    for name, v in pairs(v) do
+                                        if sea.addGameData(name, v) then
+                                            successfulConfig = successfulConfig + 1
+                                        end
+                                    end
+                                end
+                            }
                         end
                     end,
+
                     player = function()
                         for k, v in pairs(content) do
                             switch(k) {
@@ -307,6 +322,7 @@ function sea.initApp(directory)
                             }
                         end
                     end,
+
                     server = function()
                         for k, v in pairs(content) do
                             switch (k) {
@@ -332,6 +348,7 @@ function sea.initApp(directory)
                             }
                         end
                     end,
+
                     mainMenuButtons = function()
                         for _, button in pairs(content) do
                             sea.addMainMenuButton(button)
@@ -406,11 +423,26 @@ function sea.addColor(name, color)
 end
 
 function sea.setGameSetting(setting, value)
-    local gameSetting = sea.config.gameSetting
+    local gameSetting = sea.config.game.setting
 
     gameSetting[setting] = value
 
     sea.info("Set game setting: "..setting.." to "..tostring(value))
+end
+
+function sea.addGameData(name, defaultValue)
+    local gameData = sea.config.game.data
+
+    if gameData[name] then
+        sea.error("The game data "..name.." cannot be added, it already exists.")
+        return false
+    end
+
+    gameData[name] = defaultValue
+
+    sea.success("Added game data: "..name.." (default value: "..tostring(defaultValue)..")")
+
+    return true
 end
 
 function sea.addPlayerInfo(name, func)

@@ -37,9 +37,13 @@ sea.config.color = {
     custom = {}
 }
 
-sea.config.gameSetting = {
-    welcomeMessage = true,
-    itemDrop = true
+sea.config.game = {
+    setting = {
+        welcomeMessage = true,
+        itemDrop = true
+    },
+
+    data = {}
 }
 
 sea.config.player = {
