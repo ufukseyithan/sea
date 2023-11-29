@@ -264,7 +264,7 @@ function sea.initApp(directory)
                         for k, v in pairs(content) do
                             switch(k) {
                                 setting = function()
-                                    for setting, value in pairs(content) do
+                                    for setting, value in pairs(v) do
                                         sea.setGameSetting(setting, value)
             
                                         successfulConfig = successfulConfig + 1

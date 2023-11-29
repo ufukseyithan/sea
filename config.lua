@@ -43,9 +43,7 @@ sea.config.game = {
         itemDrop = true
     },
 
-    data = {
-        ufuk = 2
-    }
+    data = {}
 }
 
 sea.config.player = {
