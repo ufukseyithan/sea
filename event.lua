@@ -163,9 +163,13 @@ for name, params in pairs(hooks) do
                 player.stat["Time Played"] = player.stat["Time Played"] + 1
             end
         elseif name == "minute" then
+            sea.game:saveData()
+
             for _, player in pairs(sea.Player.get()) do
                 player:saveData()
             end
+        elseif name == "shutdown" then
+            sea.game:saveData()
         end
 
         for i = 1, #args do

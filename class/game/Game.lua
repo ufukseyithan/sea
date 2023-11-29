@@ -1,5 +1,41 @@
 local Game = class()
 
+function Game:loadData()
+    for k, v in pairs(sea.config.game.data) do
+        self[k] = v
+    end
+
+    local data = table.load(self.savePath)
+    
+    if data then
+        table.merge(self, data, true)
+
+        print(dump(data))
+
+        sea.success("Game data has been loaded.")    
+    end
+end
+
+function Game:saveData()
+    local data = {}
+
+    for k, v in pairs(sea.config.game.data) do
+        data[k] = self[k]
+    end
+
+    if not table.isEmpty(data) then
+        table.save(data, self.savePath)
+
+        sea.success("Game data has been saved.")
+    end
+end
+
+-------------------------
+--        CONST        --
+-------------------------
+
+Game.savePath = sea.path.data.."game.lua"
+
 -------------------------
 --       GETTERS       --
 -------------------------

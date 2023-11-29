@@ -1,6 +1,6 @@
 sea = {}
 
-sea.version = "0.5.0a"
+sea.version = "0.7.0"
 
 sea.path = {
     gfx = "gfx/sea-framework/",
@@ -162,6 +162,8 @@ for pathName, appCustomPath in pairs(sea.path) do
 end
 
 sea.updateServerTransferList()
+
+sea.game:loadData()
 
 -- Adding default control key bindings
 for _, v in pairs(sea.config.player.control) do
