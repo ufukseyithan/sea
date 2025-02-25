@@ -79,6 +79,10 @@ function sea.effect(effect, x, y, amount, size, r, g, b)
     parse("effect", effect, x, y, amount, size, r, g, b)
 end
 
+function sea.flashAtPosition(x, y, intensity)
+    parse("flashposition", x, y, intensity)
+end
+
 function sea.consoleMessage(id, text, color, tag, tagColor)
     local text = tostring(sea.Message.new(text, color, tag, tagColor))
 
@@ -362,7 +366,8 @@ function sea.initApp(directory)
             app.config = config
         end
 
-        app.path.config = config
+        -- Not needed?
+        -- app.path.config = config
     end
 
     -- Load extensions
