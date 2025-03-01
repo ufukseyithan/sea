@@ -48,15 +48,7 @@ function Player:destroy()
 	Player.remove(self.id)
 end
 
-function Player:getSteamSavePath()
-	return sea.path.data.."player/steam/"..self.steamID..".lua"
-end
-
-function Player:getUSGNSavePath()
-	return sea.path.data.."player/usgn/"..self.usgn..".lua"
-end
-
-function Player:loadData()
+function Player:load()
 	local method = self.preference["Save Method"]
 
 	local data
@@ -73,7 +65,7 @@ function Player:loadData()
 	end
 end
 
-function Player:saveData()
+function Player:save()
 	local method = self.preference["Save Method"]
 
 	local saved = false
@@ -351,6 +343,22 @@ local function getPlayers(mode, specific)
     return players
 end
 
+function Player.getByUSGN(usgn)
+	for _, player in pairs(Player.get()) do
+		if player.usgn == usgn then
+			return player
+		end
+	end
+end
+
+function Player.getBySteamID(id)
+	for _, player in pairs(Player.get()) do
+		if player.steamID == id then
+			return player
+		end
+	end
+end
+
 function Player.get(specific)
     return getPlayers("table", specific)
 end
@@ -395,6 +403,45 @@ end
 
 function Player.playSoundForAll(path, x, y)
 	sea.playSound(0, path, x, y)
+end
+
+function Player.getSavePath(self, platform)
+	if platform == "steam" then
+		return Player.getSteamSavePath(self)
+	elseif platform == "usgn" then
+		return Player.getUSGNSavePath(self)
+	end
+end
+
+function Player.getSteamSavePath(self)
+	local steamID = type(self) == "table" and self.steamID or self
+
+	return sea.path.data.."player/steam/"..steamID..".lua"
+end
+
+function Player.getUSGNSavePath(self)
+	local usgn = type(self) == "table" and self.usgn or self
+
+	return sea.path.data.."player/usgn/"..usgn..".lua"
+end
+
+function Player.getSaveData(self, platform)
+	local path = Player.getSavePath(self, platform)
+
+	return dofile(path), path
+end
+
+function Player.dataStream(self, platform)
+	local path = Player.getSavePath(self, platform)
+	local data = dofile(path)
+
+	return data, function(key, value)
+		if key and value then
+			data[key] = value
+		end
+
+		table.save(data, path)
+	end
 end
 
 -------------------------

@@ -1,6 +1,6 @@
 local Game = class()
 
-function Game:loadData()
+function Game:load()
     for k, v in pairs(sea.config.game.data) do
         self[k] = v
     end
@@ -14,7 +14,7 @@ function Game:loadData()
     end
 end
 
-function Game:saveData()
+function Game:save()
     local data = {}
 
     for k, v in pairs(sea.config.game.data) do

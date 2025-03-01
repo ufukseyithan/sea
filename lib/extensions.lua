@@ -113,6 +113,42 @@ function table.getKeyOf(tab, value)
     return false
 end
 
+function table.reverse(tbl)
+    local reversed = {}
+    for i = #tbl, 1, -1 do
+        table.insert(reversed, tbl[i])
+    end
+    return reversed
+end
+
+function table.print(tbl, indent, key)
+    indent = indent or 0
+    local spacing = string.rep("  ", indent)
+
+    if type(tbl) ~= "table" then
+        print(spacing .. tostring(tbl))
+        return
+    end
+
+    if not key then
+        print(spacing .. "{")
+    else
+        print(spacing .. (key and (key.." = ") or "") .. " {")
+    end
+    
+    for k, v in pairs(tbl) do
+        local key = tostring(k)
+       
+        if type(v) == "table" then
+            table.print(v, indent + 2, key)
+        else
+            print(string.rep("  ", indent + 2) .. key .. " = " .. tostring(v))
+        end
+    end
+
+    print(spacing .. "}")
+end
+
 function table.removeDuplicates(tbl)
 	local hash = {}
 	local res = {}
@@ -183,36 +219,36 @@ function table.toString( tbl )
 	local result, done = {}, {}
 	for k, v in ipairs( tbl ) do
 		if k ~= 'tmp' then
-			table.insert( result, table.val_to_str( v ) )
+			table.insert( result, table.valToString(v) )
 			done[ k ] = true
 		end
 	end
 	for k, v in pairs( tbl ) do
 		if not done[ k ] then
 			table.insert( result, 
-				table.key_to_str( k ) .. "=" .. table.val_to_str( v ) )
+				table.keyToString(k) .. "=" .. table.valToString(v))
 		end
 	end
-	return "{" .. table.concat( result, ", " ) .. "}"
+	return "{" .. table.concat(result, ", ") .. "}"
 end
 
-function table.valToString ( v )
-	if "string" == type( v ) then
-		v = string.gsub( v, "\n", "\\n" )
+function table.valToString(v)
+	if "string" == type(v) then
+		v = string.gsub(v, "\n", "\\n" )
 		if string.match( string.gsub(v, "[^'\"]", ""), '^"+$' ) then
 			return "'" .. v .. "'"
 		end
 		return '"' .. string.gsub(v, '"', '\\"' ) .. '"'
 	else
-		return "table" == type( v ) and table.toString( v ) or tostring( v )
+		return "table" == type(v) and table.toString(v) or tostring(v)
 	end
 end
 
-function table.keyToString ( k )
-	if "string" == type( k ) and string.match( k, "^[_%a][_%a%d]*$" ) then
+function table.keyToString(k)
+	if "string" == type(k) and string.match(k, "^[_%a][_%a%d]*$") then
 		return k
 	else
-		return "[" .. table.val_to_str( k ) .. "]"
+		return "[" .. table.valToString(k) .. "]"
 	end
 end
 

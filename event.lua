@@ -122,7 +122,7 @@ for name, params in pairs(hooks) do
         local args = {...}
 
         if name == "join" then
-            sea.Player.create(args[1]):loadData()
+            sea.Player.create(args[1]):load()
         elseif name == "objectkill" then
             sea.Object.remove(args[1])
         elseif name == "build" then
@@ -163,13 +163,13 @@ for name, params in pairs(hooks) do
                 player.stat["Time Played"] = player.stat["Time Played"] + 1
             end
         elseif name == "minute" then
-            sea.game:saveData()
+            sea.game:save()
 
             for _, player in pairs(sea.Player.get()) do
-                player:saveData()
+                player:save()
             end
         elseif name == "shutdown" then
-            sea.game:saveData()
+            sea.game:save()
         end
 
         for i = 1, #args do
@@ -184,7 +184,7 @@ for name, params in pairs(hooks) do
             end
         elseif name == "leave" then
             if type(args[1]) == "table" then
-                args[1]:saveData()
+                args[1]:save()
 
                 args[1]:destroy()
             end

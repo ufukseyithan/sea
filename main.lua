@@ -163,7 +163,7 @@ end
 
 sea.updateServerTransferList()
 
-sea.game:loadData()
+sea.game:load()
 
 -- Adding default control key bindings
 for _, v in pairs(sea.config.player.control) do

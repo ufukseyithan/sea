@@ -6,9 +6,9 @@ function Entity:constructor(x, y)
     self.y = y
 end
 
-function Entity:trigger(name)
-    if name and self.name then
-        parse("trigger", self.name)
+function Entity:trigger(byName)
+    if byName and self.nameField then
+        parse("trigger", self.nameField)
     else
         parse("triggerposition", self.x, self.y)
     end

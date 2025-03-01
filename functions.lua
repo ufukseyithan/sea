@@ -218,6 +218,8 @@ function sea.initApp(directory)
 
     local app = dofile(mainPath)
 
+    
+
     if not app.namespace then
         sea.error("The app directory \""..directory.."\" cannot be initialized, namespace is not defined in the main.lua.")
         return false
@@ -388,6 +390,9 @@ function sea.initApp(directory)
         dofileDirectory(configPath)
     end
 
+    -- Define sea.app in case app scripts will utilize it
+    sea.app[app.namespace] = app 
+
     local loadedScripts = 0
     if app.scripts then
         for _, path in ipairs(app.scripts) do
@@ -398,8 +403,6 @@ function sea.initApp(directory)
     end  
 
     sea[app.namespace] = _G[app.namespace]
-
-    sea.app[app.namespace] = app 
 
     local version = app.version and " v"..app.version or ""
     local author = app.author and " by "..app.author or ""
