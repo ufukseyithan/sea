@@ -81,7 +81,6 @@ function sea.addEvent(name, func, priority)
         sea.error("Attempted to add event with the invalid name \""..name.."\"")
         return false
     end
-
     
     table.insert(sea.event[name], {
         func = func,
@@ -116,7 +115,9 @@ end
 sea.hook = {}
 
 for name, params in pairs(hooks) do
-    sea.event[createName("hook", name)] = {}
+    local eventName = createName("hook", name)
+
+    sea.event[eventName] = {}
 
     local function defaultFunc(...)
         local args = {...}
@@ -220,7 +221,7 @@ for name, params in pairs(hooks) do
             args[1].stat["Assists"] = args[1].stat["Assists"] + 1
         end
 
-        return sea.callEvent(createName("hook", name), unpack(args))
+        return sea.callEvent(eventName, unpack(args))
     end
 
     local func
@@ -247,3 +248,7 @@ end
 function addhook()
     sea.error("addhook() is invalid, use sea.addEvent() instead.")
 end
+
+-- Custom events
+sea.event['onGameLoad'] = {}
+sea.event['onGameSave'] = {}

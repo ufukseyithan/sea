@@ -218,8 +218,6 @@ function sea.initApp(directory)
 
     local app = dofile(mainPath)
 
-    
-
     if not app.namespace then
         sea.error("The app directory \""..directory.."\" cannot be initialized, namespace is not defined in the main.lua.")
         return false
@@ -368,8 +366,7 @@ function sea.initApp(directory)
             app.config = config
         end
 
-        -- Not needed?
-        -- app.path.config = config
+        app.path.config = configPath
     end
 
     -- Load extensions

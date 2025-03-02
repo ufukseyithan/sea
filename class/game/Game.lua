@@ -12,9 +12,13 @@ function Game:load()
 
         sea.success("Game data has been loaded.")    
     end
+
+    sea.callEvent("onGameLoad")
 end
 
 function Game:save()
+    sea.callEvent('onGameSave')
+
     local data = {}
 
     for k, v in pairs(sea.config.game.data) do

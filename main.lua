@@ -136,7 +136,6 @@ sea.info("Checking app directories...")
 
 sea.path.app = sea.path.lua.."app/"
 local appDirectoryPaths = io.getDirectoryPaths(sea.path.app)
-
 if not table.isEmpty(appDirectoryPaths) then
     -- @TODO: Priorities for loading apps?..
     for _, appDirectoryPath in pairs(appDirectoryPaths) do
