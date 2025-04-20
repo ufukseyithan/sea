@@ -375,16 +375,16 @@ function sea.initApp(directory)
         dofileDirectory(extensionsPath)
     end
 
-    -- Load classes
-    local classPath = directory.."class/"
-    if io.exists(classPath) then
-        sea.initClassDirectory(classPath, app.namespace)
-    end
-    
     -- Load config directory
     configPath = directory.."config/"
     if io.exists(configPath) then
         dofileDirectory(configPath)
+    end
+
+    -- Load classes
+    local classPath = directory.."class/"
+    if io.exists(classPath) then
+        sea.initClassDirectory(classPath, app.namespace)
     end
 
     -- Define sea.app in case app scripts will utilize it
