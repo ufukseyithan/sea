@@ -5,6 +5,7 @@ function Menu:constructor(name, mode)
     self.mode = mode
     self.buttons = {}
     self.staticButton = {}
+    self.closeButtonFunc = nil
 end
 
 function Menu:addButton(name, func, description, index)
@@ -108,6 +109,10 @@ end
 
 function Menu:interact(player, index)
     if index == 0 then
+        if self.closeButtonFunc then
+            self.closeButtonFunc(player)
+        end
+
         player.currentMenu = {}
         return
     end
