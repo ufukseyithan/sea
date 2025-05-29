@@ -1,9 +1,10 @@
--- timerEx 2020 by MikuAuahDark
--- A rewrite of my 7-year-old timerEx 4.0
--- The old can be found here
--- https://www.unrealsoftware.de/files_show.php?file=13759
+-- timerEx 2025 by MikuAuahDark
+-- A rewrite of my timerEx 2020 using CS2D 1.0.1.6 `frame` hook.
+-- The old can be found here:
+-- * https://gist.github.com/MikuAuahDark/3cf5daf77901d2b8370c30e010e0f092 (timerEx 2020)
+-- * https://www.unrealsoftware.de/files_show.php?file=13759 (timerEx 4.0, before timerEx 2020)
 --[[---------------------------------------------------------------------------
--- Copyright (c) 2020 Miku AuahDark
+-- Copyright (c) 2025 Miku AuahDark
 --
 -- Permission is hereby granted, free of charge, to any person obtaining a
 -- copy of this software and associated documentation files (the "Software"),
@@ -24,117 +25,164 @@
 -- DEALINGS IN THE SOFTWARE.
 --]]---------------------------------------------------------------------------
 
-local random, concat, traceback = math.random, table.concat, debug.traceback
-local xpcall, unpack, select, loadstring = xpcall, unpack, select, loadstring
-local assert, print, timer, freetimer = assert, print, _G.timer, _G.freetimer
+if game("version") < "1.0.1.6" then
+	error("please use timerEx 2020 for CS2D < 1.0.1.6")
+end
 
-local active = {}
-local xpcallArg = nil
-local validChars = "_0123456789"..
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"..
-	"abcdefghijklmnopqrstuvwxyz"
+local debug_traceback = debug.traceback
+local math_max = math.max
+local math_floor = math.floor
+local pairs = pairs
+local print = print
+local tostring = tostring
+local type = type
+local unpack = _G.unpack
 
--- Helper function to generate random function
-local function genTempFuncName()
-	local tmpfunc = {"_timerEx_"}
-	for _ = 1, 8 do
-		local i = random(1, #validChars)
-		tmpfunc[#tmpfunc + 1] = validChars:sub(i, i)
+local modulename = ... -- just used to test if it's loaded through `require`.
+
+if _G.timerEx and _G.freetimerEx then
+	if modulename then
+		print("\169255000000Warning: Using global `timerEx` for timerEx module \""..modulename.."\", this is may not what you want!")
+	else
+		print("\169255000000Warning: Another `timerEx` has been loaded, this is may not what you want!")
 	end
 
-	return concat(tmpfunc)
+	local tex, ftex = timerEx, freetimerEx
+	local module = setmetatable({
+		new = tex,
+		free = ftex
+	}, {
+		__call = function(...)
+			return tex(select(2, ...))
+		end
+	})
+	if false then
+		---@diagnostic disable-next-line: cast-local-type
+		module = tex
+	end
+	return module
+end
+
+---@type table<string,timerEx._info>
+local timers = {} -- Yes, this also contains the reverse mapping of id <-> integers.
+
+-- Some xpcall hack to allow passing arguments to the target function.
+local myxpcall
+if jit then
+	-- LuaJIT has this built-in.
+	myxpcall = xpcall
+else
+	local xpcallargs = {}
+	local function xpcallhandler()
+		return xpcallargs[1](unpack(xpcallargs, 2))
+	end
+
+	function myxpcall(f, msgh, ...)
+		xpcallargs = {f, ...}
+		return xpcall(xpcallhandler, msgh)
+	end
 end
 
 local function resolveFunction(func)
-	local result = loadstring("return "..func)
+	local chunk = loadstring("return "..tostring(func))
+	local result = nil
 
-	if result then
-		return result()
+	if chunk then
+		local a, b = pcall(chunk)
+		if a and type(b) == "function" then
+			result = b
+		end
 	end
 
-	return nil
+	return result
 end
 
-local function handleXpcall()
-	return xpcallArg[1](unpack(xpcallArg[2]))
-end
 
-local function handle(id)
-	-- Retrieve data
-	local data = assert(active[id], id)
 
-	-- Call handler
-	xpcallArg = data
-	local result, msg = xpcall(handleXpcall, traceback)
-
-	if result == false then
-		-- Print error message
-		-- FIXME: Should we stop the timer in this case?
-		print("\169255000000"..msg)
+---Delay an execution of a function `func` by specified amount of milliseconds.
+---
+---**Note**: This function does not check if equal timers already exist. It always create new timer whenever you call this function. This can lead to multiple exactly equal timers.
+---@param t number Delay of the timer, in milliseconds.
+---@param func function|string Function to call with delay.
+---@param count integer? How many times the timer should be executed? If left out, defaults to 1. 0 or negative means run the function with delay infinitely until removed with `freetimerEx`.
+---@param ... any Additional arguments to pass to `func` when it's called.
+---@return any @Identifier of the timer, can be used with `freetimerEx` to cancel the timer. The type of the identifier is implementation-detail but this always returns a truth value.
+local function timerEx(t, func, count, ...)
+	local target = nil
+	if type(func) == "function" then
+		target = func
+	else
+		target = resolveFunction(func)
 	end
+	assert(target, "bad argument #1 to 'timerEx' (expected function)")
 
-	-- Decrease counter
-	data[3] = data[3] - 1
-	if data[3] == 0 then
-		-- Cleanup
-		active[id] = nil
-	end
-end
-
-local function timerEx(ms, func, count, ...)
-	-- Check if this function is called by the actual "timer" function
-	if type(ms) == "string" and func == nil and ms:sub(1, 9) == "_timerEx_" then
-		-- Call handle function
-		return handle(ms)
-	end
-
-	-- "count" defaults to 1
-	count = count or 1
-	-- "count" < 0 means infinite times
-	if count == 0 then count = -1 end
-
-	-- Resolve function
-	if type(func) == "string" then
-		-- Function is in global table namespace
-		func = assert(resolveFunction(func), "unable to access function")
-	end
-
-	-- Generate random function name
-	local id = genTempFuncName()
-
-	-- Add to active timer
-	-- active[id] = {
-	--     [1] = function
-	--     [2] = table of function arguments
-	--     [3] = timer count
-	-- }
-	active[id] = {func, {...}, count}
-
-	timer(ms, "timerEx", id, count)
+	---@class timerEx._info
+	local tinfo = {
+		elapsed = 0,
+		delay = t / 1000,
+		func = target,
+		args = {...},
+		count = math_floor(count or 1)
+	}
+	local id = tostring(tinfo)
+	timers[id] = tinfo
 	return id
 end
 
+---Cancels a time with specified identifier.
+---
+---Identifier are intentionally annotated as `any` type as the type of the identifier is considered implementation-detail.
+---@param id any Identifier of the timer returned by `timerEx` function.
+---@return boolean @`true` if the timer exist and freed, `false` otherwise.
 local function freetimerEx(id)
-	if active[id] then
-		-- Abort timer and clean up
-		freetimer("timerEx", id)
-		active[id] = nil
-		return true
-	end
-
-	-- Not found
-	return false
+	local exist = not not timers[id]
+	timers[id] = nil
+	return exist
 end
 
--- Because backward compatibility is nice
-_G.timerEx = timerEx
-_G.freetimerEx = freetimerEx
+if not modulename then
+	-- Set global variables if loaded with e.g. `dofile("sys/lua/timerEx.lua")` or placed in `sys/lua/autorun`.
+	_G.timerEx = timerEx
+	_G.freetimerEx = freetimerEx
+end
+
+
+
+local globalFrameHandler = string.format("__timerEx_%04x_%04x_%04x_%04x__",
+	math.random(0, 65535),
+	math.random(0, 65535),
+	math.random(0, 65535),
+	math.random(0, 65535)
+)
+addhook("frame", globalFrameHandler)
+---@param dt number
+rawset(_G, globalFrameHandler, function(dt)
+	for tid, tinfo in pairs(timers) do
+		tinfo.elapsed = tinfo.elapsed + dt
+
+		while tinfo.elapsed >= tinfo.delay do
+			local result, msg = myxpcall(tinfo.func, debug_traceback, unpack(tinfo.args))
+			if not result then
+				print("\169255000000"..msg)
+			end
+
+			tinfo.elapsed = tinfo.elapsed - tinfo.delay
+			tinfo.count = math_max(tinfo.count - 1, -1)
+			if tinfo.count == 0 then
+				freetimerEx(tid)
+				break
+			end
+		end
+	end
+end)
+
+
 
 -- For you "require" users:
--- It will return table with these fields
--- new: new timer, argument same as old timerEx function
--- free: free timer, argument same as freetimerEx function
-return setmetatable({
+-- It will return table with these fields:
+-- * `new`: new timer, argument same as old `timerEx` function
+-- * `free`: free timer, argument same as `freetimerEx` function
+local module = setmetatable({
 	new = timerEx,
 	free = freetimerEx
 }, {
@@ -142,3 +190,8 @@ return setmetatable({
 		return timerEx(select(2, ...))
 	end
 })
+if false then
+	---@diagnostic disable-next-line: cast-local-type
+	module = timerEx
+end
+return module
