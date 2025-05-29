@@ -20,6 +20,10 @@ function Object:constructor(id)
     self.id = id
 end
 
+function Object:damage(amount, player)
+	parse("damageobject", self.id, amount, player and player.id or 0)
+end
+
 function Object:destroy()
 	-- No need to remove the object from sea.object afterwards because killobject command automatically triggers the objectkill hook
 	parse("killobject", self.id)
