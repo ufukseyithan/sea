@@ -1,9 +1,17 @@
-function tileToPixel(x)
-    return x * 32 + 16
+function tileToPixel(x, y)
+    if y then
+        return tileToPixel(x), tileToPixel(y)
+    else
+        return x * 32 + 16
+    end
 end
 
-function pixelToTile(x)
-    return math.floor(x / 32)
+function pixelToTile(x, y)
+    if y then
+        return pixelToTile(x), pixelToTile(y)
+    else
+        return math.floor(x / 32)
+    end
 end
 
 function getDistance(x1, y1, x2, y2)
