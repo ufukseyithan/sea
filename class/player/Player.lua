@@ -80,7 +80,7 @@ function Player:save()
 
 		mergeData("stat")
 		mergeData("preference")
-		mergeData("control")
+		-- mergeData("control")
 
 		for k, v in pairs(sea.config.player.data) do
 			data[k] = self[k]
