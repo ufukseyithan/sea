@@ -10,6 +10,10 @@ function Color:__tostring()
 	return string.format("%03d%03d%03d", self.red, self.green, self.blue)
 end
 
+function Color:__call()
+	return self.red, self.green, self.blue
+end
+
 -------------------------
 --        CONST        --
 -------------------------
