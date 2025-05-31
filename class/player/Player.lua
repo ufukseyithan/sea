@@ -533,7 +533,7 @@ function Player:getTileYAttribute()
 end
 
 function Player:getTileAttribute()
-	return sea.tile[self.tileX][self.tileY]
+	return sea.Tile.get(self.tileX, self.tileY)
 end
 
 function Player:getHealthAttribute()

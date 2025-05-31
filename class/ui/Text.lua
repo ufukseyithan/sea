@@ -51,10 +51,30 @@ function Text:update()
     -- Background
 end
 
+function Text:colorFade(duration, color)
+    parse("hudtxtcolorfade", self.ui.player.id, self.textID, duration, color())
+end
+
+function Text:alphaFade(duration, opacity)
+    parse("hudtxtalphafade", self.ui.player.id, self.textID, duration, opacity)
+end
+
+function Text:move(duration, x, y)
+    parse("hudtxtmove", self.ui.player.id, self.textID, duration, x, y)
+end
+
 function Text:destroy()
     parse("hudtxt2", self.ui.player.id, self.textID)
 
     self.ui.hudText[self.textID] = nil
+end
+
+function Text:destroyIn(millisec)
+	timerEx(millisec, function()
+		parse("hudtxt2", self.ui.player.id, self.textID)
+
+        self.ui.hudText[self.textID] = nil
+	end)
 end
 
 -------------------------
