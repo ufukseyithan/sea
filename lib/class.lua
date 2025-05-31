@@ -21,7 +21,7 @@ local function setProperties(class)
     end
 
     function class:__newindex(key, value)
-        local get, set = getProperty(key)
+        local _, set = getProperty(key)
         local attributeKey = "set"..string.camelCaseToPascalCase(key).."Attribute"
 
         if set then

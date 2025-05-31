@@ -1,20 +1,31 @@
 local Vector = class()
 
 function Vector:constructor(x, y)
-    self.x = x or 0
-    self.y = y or 0
+    if type(x) == 'table' then
+        self.x, self.y = x.x or x[1] or 0, x.y or x[2] or 0
+    end
+
+    self.x, self.y = x or 0, y or 0
 end
 
 function Vector:__call()
 	return self.x, self.y
 end
 
-function Vector:toPixel()
-    self.x, self.y = tileToPixel(self.x, self.y)
+function Vector:__serialize()
+	return {self()}
 end
 
-function Vector:toTile()
-    self.x, self.y = pixelToTile(self.x, self.y)
+function Vector:__eq(other)
+	return self.x == other.x and self.y == other.y
+end
+
+function Vector:toPixel()
+    return Vector.new(tileToPixel(self()))
+end
+
+function Vector:toTile(ref)
+    return Vector.new(pixelToTile(self()))
 end
 
 function Vector:distance(other)
@@ -25,17 +36,8 @@ function Vector:angle(other)
     return getDirection(self.x, self.y, other.x, other.y)
 end
 
-function Vector:extendX(angle, length)
-    self.x = self.x + extendX(angle, length)
-end
-
-function Vector:extendY(angle, length)
-    self.y = self.y + extendY(angle, length)
-end
-
 function Vector:extendPosition(angle, length)
-    self:extendX(angle, length)
-    self:extendY(angle, length)
+    return Vector.new(extendPosition(self.x, self.y, angle, length))
 end
 
 function Vector:isInside(vector1, vector2)
@@ -46,10 +48,10 @@ end
 --        CONST        --
 -------------------------
 
-Vector.left = Vector(-1, 0)
-Vector.right = Vector(1, 0)
-Vector.up = Vector(0, -1)
-Vector.down = Vector(0, 1)
+Vector.left = Vector.new(-1, 0)
+Vector.right = Vector.new(1, 0)
+Vector.up = Vector.new(0, -1)
+Vector.down = Vector.new(0, 1)
 
 -------------------------
 --        INIT         --
