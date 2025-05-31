@@ -112,4 +112,4 @@ function secondsToHMS(seconds)
   
     -- Return the result as a formatted string
     return string.format("%2dh %02dm %02ds", hours, minutes, seconds)
-  end
+end
