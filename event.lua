@@ -215,7 +215,7 @@ for name, params in pairs(hooks) do
             if type(args[1]) == "table" then -- Checks if the sea.player with the specific ID exists, this has to be here becuase key hook event is triggered when player is leaving the server (between the time where they pressed disconnect and until they navigate to the main menu)
                 for k, v in pairs(args[1].control) do
                     if v == args[2] then                  
-                        return sea.emit(createName(args[3] == 1 and "press" or "release", k:toPascalCase(" ")), args[1])
+                        return sea.emit("key"..k:toPascalCase(" ")..(args[3] == 1 and "Pressed" or "Released"), args[1])
                     end
                 end
             end
