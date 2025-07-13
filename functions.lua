@@ -14,15 +14,6 @@ function sea.createColoredText(text, color)
     return "©"..tostring(color)..text
 end
 
-function sea.createEventName(action, name)
-    return "on"..action:upperFirst()..name:upperFirst()
-end
-
-function sea.createControlEventName(name)
-    sea.event[sea.createEventName("press", name:toPascalCase(" "))] = {} 
-    sea.event[sea.createEventName("release", name:toPascalCase(" "))] = {} 
-end
-
 function sea.print(type, text)
     if not sea.config.debug then 
         return

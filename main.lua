@@ -1,6 +1,5 @@
 sea = {}
 
-sea.version = "0.7.0"
 
 sea.path = {
     gfx = "gfx/sea-framework/",
@@ -172,7 +171,7 @@ end
 -- Creating main menu
 sea.mainMenu = sea.Menu.construct(sea.config.mainMenuStructure)
 
-sea.addEvent("onPressMouseScrollUp", function(player)
+sea.listen("onPressMouseScrollUp", function(player)
     if player:viewsMenu() then
         if player.currentMenu[2] > 1 then 
             player:displayMenu(player.currentMenu[1], player.currentMenu[2] - 1)
@@ -180,7 +179,7 @@ sea.addEvent("onPressMouseScrollUp", function(player)
     end
 end, -100)
 
-sea.addEvent("onPressMouseScrollDown", function(player)
+sea.listen("onPressMouseScrollDown", function(player)
     if player:viewsMenu() then
         if player.currentMenu[2] < player.currentMenu[1].totalPage then
             player:displayMenu(player.currentMenu[1], player.currentMenu[2] + 1)

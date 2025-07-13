@@ -74,11 +74,20 @@ local hooks = {
     walkover = {"player", "item", "itemType", true, true, true}
 }
 
-local createName = sea.createEventName
+function sea.createEvent(name)
+    if sea.event[name] then
+        sea.error("Attempted to create event that already exists \""..name.."\"")
+        return false
+    end
 
-function sea.addEvent(name, func, priority)
+    sea.event[name] = {}
+
+    return true
+end
+
+function sea.listen(name, func, priority)
     if not sea.event[name] then
-        sea.error("Attempted to add event with the invalid name \""..name.."\"")
+        sea.error("Attempted to listen event with the invalid name \""..name.."\"")
         return false
     end
     
@@ -87,14 +96,14 @@ function sea.addEvent(name, func, priority)
         priority = priority or 0
     })
 
-    sea.info("Tied function to the event \""..name.."\"")
+    sea.info("Added new listener to the event \""..name.."\"")
 
     return true
 end
 
-function sea.callEvent(name, ...)
+function sea.emit(name, ...)
     if not sea.event[name] then
-        sea.error("Attempted to call event with the invalid name \""..name.."\"")
+        sea.error("Attempted to emit event with the invalid name \""..name.."\"")
         return
     end
     
@@ -107,6 +116,11 @@ function sea.callEvent(name, ...)
     return returnValue or false
 end
 
+function sea.createControlEventName(name)
+    sea.event["key"..name:toPascalCase(" ").."Pressed"] = {} 
+    sea.event["key"..name:toPascalCase(" ").."Released"] = {} 
+end
+
 -- Adding player control events
 for name in pairs(sea.config.player.control) do
     sea.createControlEventName(name)
@@ -115,9 +129,9 @@ end
 sea.hook = {}
 
 for name, params in pairs(hooks) do
-    local eventName = createName("hook", name)
+    local eventName = name
 
-    sea.event[eventName] = {}
+    sea.createEvent(eventName)
 
     local function defaultFunc(...)
         local args = {...}
@@ -201,7 +215,7 @@ for name, params in pairs(hooks) do
             if type(args[1]) == "table" then -- Checks if the sea.player with the specific ID exists, this has to be here becuase key hook event is triggered when player is leaving the server (between the time where they pressed disconnect and until they navigate to the main menu)
                 for k, v in pairs(args[1].control) do
                     if v == args[2] then                  
-                        return sea.callEvent(createName(args[3] == 1 and "press" or "release", k:toPascalCase(" ")), args[1])
+                        return sea.emit(createName(args[3] == 1 and "press" or "release", k:toPascalCase(" ")), args[1])
                     end
                 end
             end
@@ -221,7 +235,7 @@ for name, params in pairs(hooks) do
             args[1].stat["Assists"] = args[1].stat["Assists"] + 1
         end
 
-        return sea.callEvent(eventName, unpack(args))
+        return sea.emit(eventName, unpack(args))
     end
 
     local func
@@ -246,9 +260,9 @@ for name, params in pairs(hooks) do
 end
 
 function addhook()
-    sea.error("addhook() is invalid, use sea.addEvent() instead.")
+    sea.error("addhook() is invalid, use sea.listen() instead.")
 end
 
 -- Custom events
-sea.event['onGameLoad'] = {}
-sea.event['onGameSave'] = {}
+sea.createEvent("gameLoaded")
+sea.createEvent("gameSaved")

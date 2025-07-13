@@ -13,11 +13,11 @@ function Game:load()
         sea.success("Game data has been loaded.")    
     end
 
-    sea.callEvent("onGameLoad")
+    sea.emit("gameLoaded")
 end
 
 function Game:save()
-    sea.callEvent('onGameSave')
+    sea.emit('gameSaved')
 
     local data = {}
 
