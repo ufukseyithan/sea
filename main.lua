@@ -1,6 +1,6 @@
 sea = {}
 
-sea.version = "0.8.0b"
+sea.version = "1.0.0"
 
 sea.path = {
     gfx = "gfx/sea-framework/",
