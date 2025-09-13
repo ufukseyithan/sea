@@ -396,6 +396,8 @@ function sea.initApp(directory)
     local author = app.author and " by "..app.author or ""
     sea.success("Initialized app: "..app.name..version..author.." (namespace: "..app.namespace..", "..transferFiles.." transfer files, "..successfulConfig.." successful configurations, "..loadedScripts.." loaded scripts)")
 
+    sea.emit("appInitialized", app.namespace)
+
     return true
 end
 

@@ -266,3 +266,4 @@ end
 -- Custom events
 sea.createEvent("gameLoaded")
 sea.createEvent("gameSaved")
+sea.createEvent("appInitialized")
