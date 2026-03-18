@@ -1,2 +1,10 @@
 .vscode
 .DS_Store
+
+# AI Agent Instructions
+INSTRUCTIONS.md
+CLAUDE.md
+AGENTS.md
+.cursorrules
+.windsurfrules
+.github/copilot-instructions.md
