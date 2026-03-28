@@ -54,7 +54,7 @@ function Player:load()
 	local data
 	if self.steamID ~= "0" and (method == "Auto" or method == "Steam") then
 		data = table.load(self:getSteamSavePath())
-	elseif self.usgn and (method == "Auto" or method == "USGN") then
+	elseif self.usgn ~= 0 and (method == "Auto" or method == "USGN") then
 		data = table.load(self:getUSGNSavePath())
 	end
 
