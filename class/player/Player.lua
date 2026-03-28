@@ -101,7 +101,7 @@ function Player:save()
 
 	if self.steamID ~= "0" and (method == "Auto" or method == "Steam") then
 		saveToSteam()
-	elseif self.usgn and (method == "Auto" or method == "USGN") then
+	elseif self.usgn ~= 0 and (method == "Auto" or method == "USGN") then
 		saveToUSGN()
 	end
 
