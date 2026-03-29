@@ -66,7 +66,10 @@ function sea.explosion(x, y, size, damage, id)
     parse("explosion", x, y, size, damage, id)
 end
 
-function sea.effect(effect, x, y, amount, size, r, g, b)
+function sea.effect(effect, x, y, amount, size, color, g, b)
+    local isColor = type(color) == "table"
+    local r, g, b = isColor and color.red or color, isColor and color.green or g, isColor and color.blue or b
+
     parse("effect", effect, x, y, amount, size, r, g, b)
 end
 
