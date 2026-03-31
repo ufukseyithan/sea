@@ -367,6 +367,10 @@ function Player.getLiving(specific)
     return getPlayers("tableliving", specific)
 end
 
+function Player.getAlive(specific)
+    return Player.getLiving(specific)
+end
+
 function Player.getTerrorists(specific)
     return getPlayers("team1", specific)
 end
@@ -381,6 +385,14 @@ end
 
 function Player.getLivingCounterTerrorists(specific)
     return getPlayers("team2living", specific)
+end
+
+function Player.getAliveTerrorists(specific)
+    return Player.getLivingTerrorists(specific)
+end
+
+function Player.getAliveCounterTerrorists(specific)
+    return Player.getLivingCounterTerrorists(specific)
 end
 
 function Player.getAtRadius(x, y, radius, team)
