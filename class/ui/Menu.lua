@@ -176,9 +176,21 @@ function Menu.construct(structure, parent, player)
                 else
                     description = description and description.." >" or ">"
                 end
+            elseif button.refresh then
+                func = function(player)
+                    if button.func then
+                        button.func(player)
+                    end
+                    
+                    return Menu.construct(structure, nil, player)
+                end
             end
     
-            menu:addButton(button.name, func, description)
+            if button.index then
+                menu:setStaticButton(button.index, button.name, func, description)
+            else
+                menu:addButton(button.name, func, description)
+            end
         end
     end
 
