@@ -38,7 +38,7 @@ function table.save(tbl,file)
             for i=1,indent do tab = tab .. "    " end
             f:write(tab .. "}")
         else
-            print("unable to serialzie data: "..tostring(o))
+            print("unable to serialize data: "..tostring(o))
             f:write("nil, -- ***ERROR: unsupported data type: "..type(o).."!***")
         end
     end

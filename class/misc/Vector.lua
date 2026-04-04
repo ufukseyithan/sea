@@ -2,7 +2,7 @@ local Vector = class()
 
 function Vector:constructor(x, y)
     if type(x) == 'table' then
-        self.x, self.y = x.x or x[1] or 0, x.y or x[2] or 0
+        x, y = x.x or x[1] or 0, x.y or x[2] or 0
     end
 
     self.x, self.y = x or 0, y or 0
