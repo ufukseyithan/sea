@@ -115,14 +115,14 @@ function sea.loadScript(path)
 end
 
 function sea.addTransferFile(path, response, update)
-    local hasUnsupportedFormat
+    local hasSupportedFormat
     for _, format in pairs(sea.config.supportedTransferFileFormats) do
         if path:find(format) or path:find(format:upper()) then
-            hasUnsupportedFormat = true
+            hasSupportedFormat = true
         end
     end
 
-    if not hasUnsupportedFormat then
+    if not hasSupportedFormat then
         sea.error("The file \""..path.."\" cannot be added as a transfer file, its format is not supported.")
         return false
     end
@@ -234,9 +234,9 @@ function sea.initApp(directory)
     for pathName, appCustomPath in pairs(app.path) do
         if pathName == "gfx" or pathName == "sfx" then
             for _, filePath in pairs(io.getFilePaths(appCustomPath, true)) do
-                sea.addTransferFile(filePath)
-
-                transferFiles = transferFiles + 1
+                if sea.addTransferFile(filePath) then
+                    transferFiles = transferFiles + 1
+                end
             end
         end
     end
