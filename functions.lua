@@ -152,18 +152,17 @@ function sea.updateServerTransferList(response)
     local serverTransferListPath = sea.path.sys.."servertransfer.lst"
     local transferFiles = {}
 
-    io.toTable(serverTransferListPath, transferFiles)
+    if not sea.config.refreshTransferFile then
+        io.toTable(serverTransferListPath, transferFiles)
+    end
 
-    transferFiles = table.removeDuplicates(transferFiles)
-
-    -- Remove files that do not exist
-    local tbl = {}
-    for k, v in pairs(transferFiles) do
+    for k, v in pairs(sea.transferFiles) do
         if io.exists(v) then
-            table.insert(tbl, v)
+            table.insert(transferFiles, v)
         end
     end
-    transferFiles = tbl
+
+    transferFiles = table.removeDuplicates(transferFiles)
 
     local addedFiles = 0
     local file = io.open(serverTransferListPath, "w+") or io.tmpfile()
@@ -179,7 +178,7 @@ function sea.updateServerTransferList(response)
     file:close()
 
     if addedFiles > 0 then
-		sea.warning("The server transfer list has been updated with "..addedFiles.." entries. You may need to restart the server in order to get use of it.")
+		sea.warning("The server transfer list has been updated with "..addedFiles.." entries. You may need to restart the server to apply changes.")
 	end
 
     sea.transferFiles = transferFiles

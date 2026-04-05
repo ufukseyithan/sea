@@ -15,6 +15,9 @@ sea.config.printTagPrefix = "Sea"
 -- These formats are the only ones that the server transfer list supports, meaning you may remove the existing ones as you wish but not add new ones
 sea.config.supportedTransferFileFormats = {".bmp", ".jpg", ".jpeg", ".png", ".wav", ".ogg"}
 
+-- Overwrites the server transfer list upon every server start, potentially deleting the old entries you manually added
+sea.config.refreshTransferFile = false
+
 -- Do not touch these, use sea.addColor() instead
 sea.config.color = {
     system = {
