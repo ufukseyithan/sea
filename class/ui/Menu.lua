@@ -153,6 +153,7 @@ end
 
 function Menu.construct(structure, parent, player)
     local menu = Menu.new(structure.name, "big")
+    menu.closeButtonFunc = structure.closeButtonFunc
 
     for _, button in ipairs(type(structure.content) == "function" and structure.content(player) or structure.content) do
         if not button.name then
