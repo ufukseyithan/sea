@@ -8,7 +8,7 @@ function Text:constructor(ui, text, x, y, style)
 
     ui.hudText[textID] = self
 
-    self:super(ui, x, y, textwidth(text), nil, style)
+    self:super(ui, x, y, textwidth(text), style.textSize, style)
 end
 
 function Text:setText(text)
@@ -71,9 +71,7 @@ end
 
 function Text:destroyIn(millisec)
 	timerEx(millisec, function()
-		parse("hudtxt2", self.ui.player.id, self.textID)
-
-        self.ui.hudText[self.textID] = nil
+        self:destroy()
 	end)
 end
 
