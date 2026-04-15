@@ -24,6 +24,7 @@ end
 function Panel:updatePath(path)
     self.image.path = path
     self.imagePath = path
+    self.width, self.height = self.image.width, self.image.height
 
     self:update()
 end
