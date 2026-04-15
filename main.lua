@@ -172,6 +172,7 @@ end
 -- Creating main menu
 sea.mainMenu = sea.Menu.construct(sea.config.mainMenuStructure)
 
+-- Menu listeners
 sea.listen("keyMouseScrollUpPressed", function(player)
     if player:viewsMenu() then
         if player.currentMenu[2] > 1 then 
@@ -184,6 +185,68 @@ sea.listen("keyMouseScrollDownPressed", function(player)
     if player:viewsMenu() then
         if player.currentMenu[2] < player.currentMenu[1].totalPage then
             player:displayMenu(player.currentMenu[1], player.currentMenu[2] + 1)
+        end
+    end
+end, -100)
+
+-- UI button listeners
+sea.listen("keyLeftMousePressed", function(player)
+    local mouseX, mouseY = player.mouseX, player.mouseY
+
+    for _, element in pairs(player.ui.element) do
+        if not element.hidden and element.onClick and element:isInside(mouseX, mouseY) then
+            player.ui.lastPressedOn = element
+            break
+        end
+    end
+end, -100)
+
+sea.listen("keyLeftMouseReleased", function(player)
+    if player.ui.lastPressedOn then
+        local mouseX, mouseY = player.mouseX, player.mouseY
+
+        if player.ui.lastPressedOn.onRelease then
+            player.ui.lastPressedOn:onRelease()
+        end
+
+        if player.ui.lastPressedOn:isInside(mouseX, mouseY) then
+            player.ui.lastPressedOn:onClick()
+        end
+
+        player.ui.lastPressedOn = nil
+    end
+end, -100)
+
+sea.listen("always", function()
+    for _, player in pairs(sea.Player.get()) do
+        local mouseX, mouseY = player.mouseX, player.mouseY
+
+        if player.ui.lastPressedOn and player.ui.lastPressedOn.onPress then
+            player.ui.lastPressedOn:onPress()
+        end
+
+        for _, element in pairs(player.ui.element) do
+            if not element.hidden then
+                if element:isInside(mouseX, mouseY) then
+                    if element.onMouseEnter then
+                        if not element.hovered then
+                            element:onMouseEnter()
+                            element.hovered = true
+                        end
+                    end
+
+                    if element.onMouseOver then
+                        element:onMouseOver()
+                    end
+                else
+                    if element.onMouseLeave then
+                        if element.hovered then
+                            element:onMouseLeave()
+                            element.hovered = false
+                        end
+                    end
+                end
+            end
         end
     end
 end, -100)

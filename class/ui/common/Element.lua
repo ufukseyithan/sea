@@ -16,6 +16,10 @@ end
     end
 end]]
 
+function Element:isInside(x, y)
+    return isInside(x, y, self.x - self.width / 2, self.y - self.height / 2, self.x + self.width / 2, self.y + self.height / 2)
+end
+
 function Element:setPosition(x, y)
     self.x = x
     self.y = y
