@@ -440,12 +440,20 @@ end
 function Player.getSaveData(self, platform)
 	local path = Player.getSavePath(self, platform)
 
+	if not io.exists(path) then
+		local identifier = type(self) == "table" and (platform == "steam" and self.steamID or self.usgn) or self
+		sea.error("Player save data not found: No "..platform.." file exists for ID "..identifier..".")
+		return
+	end
+
 	return dofile(path), path
 end
 
 function Player.dataStream(self, platform)
-	local path = Player.getSavePath(self, platform)
-	local data = dofile(path)
+	local data, path = Player.getSaveData(self, platform)
+	if not data then
+		return
+	end
 
 	return data, function(key, value)
 		if key and value then
