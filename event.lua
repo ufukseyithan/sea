@@ -165,7 +165,7 @@ for name, params in pairs(hooks) do
         elseif name == "startround" then 
             -- Recreating the UI images (because they are removed at round start)
             for _, player in pairs(sea.Player.get()) do
-                for _, element in pairs(player.ui.frame.element) do
+                for _, element in pairs(player.ui.element) do
                     if element.image then
                         element.image = sea.Image.create(element.imagePath, element.x, element.y, 2, player)
 

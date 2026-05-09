@@ -1,7 +1,7 @@
 local Frame = class(sea.Element)
 
 function Frame:constructor(ui, x, y, imagePath, style, width, height) 
-    self.element = {}
+    self.children = {}
 
     if width then
         self.selfMeasured = true
@@ -18,9 +18,9 @@ function Frame:constructor(ui, x, y, imagePath, style, width, height)
 end
 
 function Frame:show()
-    for _, element in pairs(self.element) do
-        if not element.hidden then
-            element:show()
+    for _, child in pairs(self.children) do
+        if not child.hidden then
+            child:show()
         end
     end
 
@@ -29,37 +29,42 @@ function Frame:show()
     self:update()
 end
 
-function Frame:createElement(object)
-    local element = self.element
-    local id = #element + 1
+function Frame:addChild(child)
+    local children = self.children
+    local id = #children + 1
 
-    element[id] = object
+    child.parent = self
+
+    children[id] = child
 
     if self.hidden then
-        object:hide()
+        child:hide()
     end
 
-    local temp = object.destroy
-    function object:destroy()
-        temp(object)
+    local temp = child.destroy
+    function child:destroy()
+        temp(child)
 
-        element[id] = nil
+        children[id] = nil
+        child.parent = nil
     end
 
-    return element[id]
+    return children[id]
 end
 
-function Frame:createText(text, x, y, style)
-    return self:createElement(sea.Text.new(self.ui, text, x, y, style))
-end
-
-function Frame:createFrame(x, y, imagePath, style, width, height)
-    return self:createElement(sea.Frame.new(self.ui, x, y, imagePath, style, width, height))
+function Frame:removeChild(object)
+    for i, child in ipairs(self.children) do
+        if child == object then
+            object.parent = nil
+            table.remove(self.children, i)
+            break
+        end
+    end
 end
 
 function Frame:hide()
-    for _, element in pairs(self.element) do
-        element:hide()
+    for _, child in pairs(self.children) do
+        child:hide()
     end
 
     if self.image then
@@ -85,13 +90,13 @@ function Frame:updatePath(path, selfMeasured)
     self:update()
 end
 
-function Frame:setPosition(x, y, moveElements)
-    if moveElements then
+function Frame:setPosition(x, y, moveChildren)
+    if moveChildren then
         local dx = x - self.x
         local dy = y - self.y
 
-        for _, element in pairs(self.element) do
-            element:setPosition(element.x + dx, element.y + dy, true)
+        for _, child in pairs(self.children) do
+            child:setPosition(element.x + dx, element.y + dy, true)
         end
     end
 
@@ -118,8 +123,8 @@ function Frame:update()
 end
 
 function Frame:destroy()
-    for _, element in pairs(self.element) do
-        element:destroy()
+    for _, child in pairs(self.children) do
+        child:destroy()
     end
 
     if self.image then
