@@ -193,7 +193,7 @@ end, -100)
 sea.listen("keyLeftMousePressed", function(player)
     local mouseX, mouseY = player.mouseX, player.mouseY
 
-    for _, element in pairs(player.ui.element) do
+    for _, element in pairs(player.ui.frame.element) do
         if not element.hidden and element.onClick and element:isInside(mouseX, mouseY) then
             player.ui.lastPressedOn = element
             break
@@ -225,7 +225,7 @@ sea.listen("always", function()
             player.ui.lastPressedOn:onPress()
         end
 
-        for _, element in pairs(player.ui.element) do
+        for _, element in pairs(player.ui.frame.element) do
             if not element.hidden then
                 if element:isInside(mouseX, mouseY) then
                     if element.onMouseEnter then

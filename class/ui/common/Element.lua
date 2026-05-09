@@ -33,6 +33,10 @@ function Element:setStyle(style)
     self:update()
 end
 
+function Element:update()
+
+end
+
 --[[function Element:getCenterPosition()
     return self.x, self.y
 end

@@ -21,10 +21,7 @@ function Text:setText(text)
 end
 
 function Text:setPosition(x, y)
-    self.x = x
-    self.y = y
-
-    self:update()
+    self.super.setPosition(self, x, y)
 end
 
 function Text:show()
