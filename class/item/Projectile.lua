@@ -6,8 +6,8 @@ local Projectile = class()
     to create a projectile class, this class is not yet usable. If CS2D gets a related update, this can have a use.
 ]]
 
-function Projectile:constructor(listID, id)
-    self.listID = id
+function Projectile:constructor(playerID, id)
+    self.playerID = playerID
     self.id = id
 end
 
@@ -15,46 +15,65 @@ end
 --        CONST        --
 -------------------------
 
-function Projectile.create(listID, id)
-    if sea.projectile[id] then
+function Projectile.create(playerID, id)
+    sea.projectile[playerID] = sea.projectile[playerID] or {}
+
+    if sea.projectile[playerID][id] then
 		sea.error("Attempted to create projectile that already exists (ID: "..id..")")
 		return false
     end
-    
-	local projectile = Projectile.new(listID, id)
 
-    table.insert2D(sea.projectile, listID, id, projectile)
+	local projectile = Projectile.new(playerID, id)
 
-	sea.success("Created projectile (ID: "..id.." for the list "..listID..")")
+    table.insert2D(sea.projectile, playerID, id, projectile)
+
+	sea.success("Created projectile (ID: "..id.." for the player "..playerID..")")
 
 	return projectile
 end
 
-function Projectile.remove(listID, id)
-    if not sea.projectile[listID][id] then
-        sea.error("Attempted to remove non-existent projectile (ID: "..id..")")
-        return false
+function Projectile.remove(playerID, id)
+    if not sea.projectile[playerID] or not sea.projectile[playerID][id] then
+		sea.error("Attempted to remove non-existent projectile (ID: "..id..")")
+		return false
     end
 
-    sea.projectile[listID][id] = nil
+    sea.projectile[playerID][id] = nil
 
-    sea.success("Removed projectile (ID: "..id.." from the list "..listID..")")
+    sea.success("Removed projectile (ID: "..id.." from the list "..playerID..")")
         
     return true
 end
 
 --[[
-    @mode (number) : can be either 0 (flying objects) or 1 (ground projectiles)
+    @playerID (number) : player ID (0 for all players)
+    @return (number) : returns the first available projectile ID starting from 1
 ]]
-function Projectile.getLastID(mode, listID)
-    local projectileIDs = projectile(mode, listID, "table")
-    return projectileIDs[#projectileIDs]
+function Projectile.getAvailableID(playerID)
+    local usedIDs = {}
+
+    -- Check both flying and on-ground projectiles, since the ID is shared between them
+    for m = 0, 1 do
+        local projectiles = projectilelist(m, playerID or 0)
+        for _, p in pairs(projectiles) do
+            usedIDs[p.id] = true
+        end
+    end
+
+    local availableID = 1
+    while usedIDs[availableID] do
+        availableID = availableID + 1
+    end
+
+    return availableID
 end
 
-function Projectile.spawn(listID, itemTypeID, x, y, range, direction)
-    parse("spawnprojectile", listID, itemTypeID, x, y, range, direction)
+function Projectile.spawn(playerID, itemTypeID, x, y, range, direction)
+    local availableID = Projectile.getAvailableID(playerID)
 
-    return Projectile.create(listID, Projectile.getLastID(0, listID))
+    parse("spawnprojectile", playerID, itemTypeID, x, y, range, direction)
+
+    return Projectile.create(playerID, availableID)
 end
 
 -------------------------
@@ -62,11 +81,11 @@ end
 -------------------------
 
 function Projectile:getExistsAttribute()
-    return projectile(self.id, self.listID, "exists")
+    return projectile(self.id, self.playerID, "exists")
 end
 
 function Projectile:getItemTypeIDAttribute()
-    return projectile(self.id, self.listID, "type")
+    return projectile(self.id, self.playerID, "type")
 end
 
 function Projectile:getItemTypeAttribute()
@@ -74,27 +93,27 @@ function Projectile:getItemTypeAttribute()
 end
 
 function Projectile:getXAttribute()
-    return projectile(self.id, self.listID, "x")
+    return projectile(self.id, self.playerID, "x")
 end
 
 function Projectile:getYAttribute()
-    return projectile(self.id, self.listID, "y")
+    return projectile(self.id, self.playerID, "y")
 end
 
 function Projectile:getDirectionAttribute()
-    return projectile(self.id, self.listID, "dir")
+    return projectile(self.id, self.playerID, "dir")
 end
 
 function Projectile:getRotationAttribute()
-    return projectile(self.id, self.listID, "rotation")
+    return projectile(self.id, self.playerID, "rotation")
 end
 
 function Projectile:getFlyDistanceAttribute()
-    return projectile(self.id, self.listID, "flydist")
+    return projectile(self.id, self.playerID, "flydist")
 end
 
 function Projectile:getTimeAttribute()
-    return projectile(self.id, self.listID, "time")
+    return projectile(self.id, self.playerID, "time")
 end
 
 -------------------------
